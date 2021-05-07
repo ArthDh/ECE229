@@ -88,7 +88,7 @@ def index():
            f'<a href="/currently_playing">currently playing</a> | ' \
 		   f'<a href="/current_user">me</a> | ' \
 		   f'<a href="/recent">recent</a> | ' \
-		   f'<a href="/details">details</a>' \
+		   f'<a href="/details">details</a>' 
 
 
 
