@@ -24,7 +24,10 @@ from flask import Flask, session, request, redirect
 from flask_session import Session
 import spotipy
 import uuid
+from dotenv import load_dotenv
 
+
+load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(64)
 app.config['SESSION_TYPE'] = 'filesystem'
