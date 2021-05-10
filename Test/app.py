@@ -20,12 +20,13 @@ Run app.py
 """
 
 import os
-from flask import Flask, session, request, redirect
+from flask import Flask, session, request, redirect, render_template
 from flask_session import Session
 import spotipy
 import uuid
 from dotenv import load_dotenv
-
+import pandas as pd
+import numpy as np
 
 load_dotenv()
 app = Flask(__name__)
@@ -162,6 +163,17 @@ def recent():
 
     # return     spotify.current_user_top_artists( limit=20, offset=0, time_range="long_term")
     return spotify.current_user_recently_played(limit=50, after=None, before=None)
+
+
+@app.route("/radar")
+def radar():
+    df = pd.read_csv('playlist_features.csv')
+    cols = ['danceability', 'energy', 'key', 'loudness', 'mode',
+       'speechiness', 'acousticness', 'instrumentalness', 'liveness',
+       'valence']
+    values = list(df[cols][:4].values)[3]
+    legend = 'Temp' 
+    return render_template('radar.html', values=values, labels=cols, legend=cols)
 
 
 if __name__ == '__main__':
