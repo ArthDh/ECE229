@@ -32,9 +32,6 @@ from .util.data_callbacks import *
 
 load_dotenv()
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(64)
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SESSION_FILE_DIR'] = './.flask_session/'
 Session(app)
 
 server_bp = Blueprint('main', __name__)
@@ -69,6 +66,10 @@ def index():
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     return render_template('dashboard.html', spotify = spotify)
 
+
+@server_bp.route('/dashboard')
+def dashboard():
+    return redirect('/dashboard')
 
 
 @server_bp.route('/sign_out')
