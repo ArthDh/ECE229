@@ -20,11 +20,13 @@ Run app.py
 """
 
 import os
-from flask import Flask, session, request, redirect
+from flask import Flask, session, request, redirect, render_template, url_for
 from flask_session import Session
 import spotipy
 import uuid
 from dotenv import load_dotenv
+import sys
+from util.data_callbacks import *
 
 
 load_dotenv()
@@ -46,32 +48,7 @@ def index():
     if not session.get('uuid'):
         # Step 1. Visitor is unknown, give random ID
         session['uuid'] = str(uuid.uuid4())
-    scope = ['ugc-image-upload'
-            ,'user-read-recently-played'
-            ,'user-top-read'
-            ,'user-read-playback-position'
-            ,'user-read-playback-state'
-            ,'user-modify-playback-state'
-            ,'user-read-currently-playing'
-            ,'app-remote-control'
-            ,'streaming'
-            ,'playlist-modify-public'
-            ,'playlist-modify-private'
-            ,'playlist-read-private'
-            ,'playlist-read-collaborative'
-            ,'user-follow-modify'
-            ,'user-follow-read'
-            ,'user-library-modify'
-            ,'user-library-read'
-            ,'user-read-email'
-            ,'user-read-private'
-            ]
-
-
-    cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-    auth_manager = spotipy.oauth2.SpotifyOAuth(scope=scope,
-                                                cache_handler=cache_handler, 
-                                                show_dialog=True)
+    auth_manager, cache_handler = get_auth_manager(session_cache_path())
 
     if request.args.get("code"):
         # Step 3. Being redirected from Spotify auth page
@@ -81,17 +58,11 @@ def index():
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         # Step 2. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
-        return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+        return render_template('signin.html', auth_url = auth_url)
 
     # Step 4. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
-    return f'<h2>Hi {spotify.me()["display_name"]}, ' \
-           f'<small><a href="/sign_out">[sign out]<a/></small></h2>' \
-           f'<a href="/playlists">my playlists</a> | ' \
-           f'<a href="/currently_playing">currently playing</a> | ' \
-		   f'<a href="/current_user">me</a> | ' \
-		   f'<a href="/recent">recent</a> | ' \
-		   f'<a href="/details">details</a>' 
+    return render_template('dashboard.html', spotify = spotify)
 
 
 
@@ -106,13 +77,17 @@ def sign_out():
     return redirect('/')
 
 
+
+@app.route('/update')
+def update():
+    return redirect(url_for('index'))
+
+
 @app.route('/playlists')
 def playlists():
-    cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+    auth_manager, cache_handler = get_auth_manager(session_cache_path())
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         return redirect('/')
-
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     print(spotify.current_user_playlists() )
     return spotify.current_user_playlists()
