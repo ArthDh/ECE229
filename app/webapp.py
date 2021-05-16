@@ -20,13 +20,14 @@ Run app.py
 """
 
 import os
-from flask import Flask, session, request, redirect, render_template, url_for
+from flask import Flask, session, request, redirect, render_template, url_for, Blueprint
 from flask_session import Session
 import spotipy
 import uuid
 from dotenv import load_dotenv
 import sys
-from util.data_callbacks import *
+# sys.path.append('..')
+from .util.data_callbacks import *
 
 
 load_dotenv()
@@ -36,6 +37,10 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = './.flask_session/'
 Session(app)
 
+server_bp = Blueprint('main', __name__)
+
+
+
 caches_folder = './.spotify_caches/'
 if not os.path.exists(caches_folder):
     os.makedirs(caches_folder)
@@ -43,7 +48,7 @@ if not os.path.exists(caches_folder):
 def session_cache_path():
     return caches_folder + session.get('uuid')
 
-@app.route('/')
+@server_bp.route('/')
 def index():
     if not session.get('uuid'):
         # Step 1. Visitor is unknown, give random ID
@@ -66,7 +71,7 @@ def index():
 
 
 
-@app.route('/sign_out')
+@server_bp.route('/sign_out')
 def sign_out():
     try:
         # Remove the CACHE file (.cache-test) so that a new user can authorize.
@@ -78,12 +83,12 @@ def sign_out():
 
 
 
-@app.route('/update')
+@server_bp.route('/update')
 def update():
     return redirect(url_for('index'))
 
 
-@app.route('/playlists')
+@server_bp.route('/playlists')
 def playlists():
     auth_manager, cache_handler = get_auth_manager(session_cache_path())
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
@@ -93,7 +98,7 @@ def playlists():
     return spotify.current_user_playlists()
 
 
-@app.route('/currently_playing')
+@server_bp.route('/currently_playing')
 def currently_playing():
     cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
@@ -106,7 +111,7 @@ def currently_playing():
     return "No track currently playing."
 
 
-@app.route('/current_user')
+@server_bp.route('/current_user')
 def current_user():
     cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
@@ -116,7 +121,7 @@ def current_user():
     return spotify.current_user()
 
 
-@app.route('/details')
+@server_bp.route('/details')
 def details():
     cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
@@ -126,7 +131,7 @@ def details():
 
     return spotify.devices()
 
-@app.route('/recent')
+@server_bp.route('/recent')
 def recent():
     cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
@@ -139,6 +144,6 @@ def recent():
     return spotify.current_user_recently_played(limit=50, after=None, before=None)
 
 
-if __name__ == '__main__':
-    app.run(threaded=True, port=int(os.environ.get("PORT",
-                                                   os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))
+    # if __name__ == '__main__':
+    #     app.run(threaded=True, port=int(os.environ.get("PORT",
+    #                                                    os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))
