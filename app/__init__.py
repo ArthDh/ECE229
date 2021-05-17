@@ -9,7 +9,6 @@ from .config import BaseConfig
 def create_app():
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
-    print(server.config)
     register_dashapps(server)
     register_blueprints(server)
 

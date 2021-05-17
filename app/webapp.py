@@ -64,6 +64,12 @@ def index():
 
     # Step 4. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
+
+    # Creating a daemon to save the users CSV file
+    # save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
+    #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
+    # save_tse_csv.start()
+
     return render_template('dashboard.html', spotify = spotify)
 
 
@@ -78,6 +84,8 @@ def sign_out():
         # Remove the CACHE file (.cache-test) so that a new user can authorize.
         os.remove(session_cache_path())
         session.clear()
+        # -- TODO -- 
+        # Remove the cache csv dir with files
     except OSError as e:
         print ("Error: %s - %s." % (e.filename, e.strerror))
     return redirect('/')
