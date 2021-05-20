@@ -6,7 +6,11 @@ from dash.dependencies import Output
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
+from io import BytesIO
+import base64
 from sklearn.preprocessing import MinMaxScaler
+from PIL import Image
+import requests
 
 
 import spotipy
@@ -30,6 +34,7 @@ def get_me(val):
         return redirect('/')
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     return html.H1(spotify.me()[val])
+
 
 def register_callbacks(dashapp):
 
@@ -63,3 +68,108 @@ def register_callbacks(dashapp):
         me = get_me(ip_value)
         return me
 
+
+    def generate_figure_image(groups, layout):
+        data = []
+
+        for idx, val in groups:
+            scatter = go.Scatter3d(
+                name=idx,
+                x=val["x"],
+                y=val["y"],
+                z=val["z"],
+                text=val['name'],
+                textposition="top center",
+                mode="markers",
+                marker=dict(size=5, symbol="circle"),
+                
+            )
+            data.append(scatter)
+
+        figure = go.Figure(data=data, layout=layout, )
+        figure.update_layout(template='plotly_dark')
+
+        return figure
+
+    @dashapp.callback(
+        Output("graph-3d-plot-tsne", "figure"),
+        [
+            Input("playlist_drop", "value"),
+        ],
+    )
+    def display_3d_scatter_plot(
+        playlist,
+    ):
+       
+        path =  '.csv_caches/audio_feature_kmean.csv'
+        try:
+            embedding_df = pd.read_csv(path)
+        except FileNotFoundError as error:
+            print(
+                error,
+                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            )
+            return go.Figure()
+
+        # Plot layout
+        axes = dict(title="", showgrid=True, zeroline=False, showticklabels=False, gridcolor="darkviolet")
+        layout = go.Layout(
+            margin=dict(l=0, r=0, b=0, t=0),
+            scene=dict(xaxis=axes, yaxis=axes, zaxis=axes),
+        )
+
+        # For Image datasets
+        embedding_df = embedding_df[embedding_df['playlist_name'].isin(playlist)]
+        groups = embedding_df.groupby("predicted_genres")
+        figure = generate_figure_image(groups, layout)
+
+
+        return figure
+
+
+    @dashapp.callback(
+        Output("div-plot-click-image", "children"),
+        [
+            Input("graph-3d-plot-tsne", "clickData"),
+            Input("playlist_drop", "value"),
+        ],
+    )
+    def display_click_image(clickData, playlist):
+        path =  '.csv_caches/audio_feature_kmean.csv'
+        try:
+            embedding_df = pd.read_csv(path)
+        except FileNotFoundError as error:
+            print(
+                error,
+                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            )
+            return go.Figure()
+        # Convert the point clicked into float64 numpy array
+        # print(clickData)
+        try:
+            name = clickData['points'][0]['text']
+            row = embedding_df[embedding_df['name']==name ]
+        except:
+            return None
+
+        if any(row):
+            im = Image.open(requests.get(row.album_art.values[0], stream=True).raw)
+            def b64(im_pil):
+                buff = BytesIO()
+                im_pil.save(buff, format="png")
+                im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+                return im_b64
+
+            im_b64 = b64(im)
+            
+            ret = html.Div([
+                row.artist_names.values[0],
+                html.Br(),
+                row.name.values[0],
+                html.Img(
+                    src="data:image/png;base64, " + im_b64,
+                    style={"height": "25vh", "display": "block", "margin": "auto"},
+                )
+            ])
+            return ret
+        return None

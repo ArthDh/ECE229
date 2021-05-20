@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans 
 import copy
 from multiprocessing import Process
@@ -90,6 +92,38 @@ def audio_playlist_features(spotify, playlist_df):
 
     return audio_df
 
+def perform_tsne():
+    dataset = '.csv_caches/audio_feature_kmean.csv'
+    data = pd.read_csv( dataset)
+    X = copy.deepcopy(data)
+    song_features = pd.DataFrame()
+    scaler = MinMaxScaler() # normalizer instance
+    for col in X.columns: 
+        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names','predicted_genres']:
+            scaler.fit(X[[col]])
+            song_features[col] = scaler.transform(X[col].values.reshape(-1,1)).ravel() 
+
+    nb_col = song_features.shape[1]
+
+    pca = PCA(n_components=nb_col)
+    data_pca = pca.fit_transform(song_features.values)
+
+    tsne = TSNE(
+        n_components=3,
+        n_iter=3000,
+        learning_rate=200,
+        perplexity=10,
+        random_state=1131,
+    )
+    embedding = tsne.fit_transform(data_pca)
+
+    embedding_df = pd.DataFrame(embedding, columns=["x", "y", "z"],)
+    data[['x', 'y', 'z']] = embedding_df
+    data.to_csv(csv_folder+'/audio_feature_kmean.csv')
+
+
+
+
 def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k=10):
     '''
     '''
@@ -128,12 +162,29 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
             scaler.fit(X[[col]])
             song_features[col] = scaler.transform(X[col].values.reshape(-1,1)).ravel() 
 
+    nb_col = song_features.shape[1]
+    pca = PCA(n_components=nb_col)
+    data_pca = pca.fit_transform(song_features.values)
+    tsne = TSNE(
+        n_components=3,
+        n_iter=3000,
+        learning_rate=200,
+        perplexity=10,
+        random_state=1131,
+    )
+    embedding = tsne.fit_transform(data_pca)
+    embedding_df = pd.DataFrame(embedding, columns=["x", "y", "z"])
+
+
+
     km = KMeans(n_clusters=k)
     predicted_genres = km.fit_predict(song_features)
     X['predicted_genres'] = predicted_genres
+    
+    X[['x', 'y', 'z']] = embedding_df
 
     X.to_csv(csv_folder+'/audio_feature_kmean.csv')
-    
+    perform_tsne()
 
 
     print('---FILE SAVED---')

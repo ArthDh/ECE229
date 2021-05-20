@@ -40,10 +40,19 @@ layout = html.Div([
             dcc.Dropdown(
             id='playlist_drop',
             options=playlists_kv,
-            value='me'
+            value=playlists,
+            multi=True
         ),
         html.Div(id='playlists')
     ]),
+    html.Div(
+        children=[
+            dcc.Graph(id="graph-3d-plot-tsne", style={"height": "98vh", 'width':'70%', 'float':'left'}),
+            html.Div(id="div-plot-click-image", style={'float':'right'}),
+        ],
+        
+    ),
+
 
 
 

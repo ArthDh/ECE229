@@ -65,10 +65,10 @@ def index():
     # Step 4. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
 
-    # Creating a daemon to save the users CSV file
-    # save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
-    #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
-    # save_tse_csv.start()
+    # # Creating a daemon to save the users CSV file
+    save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
+                                                kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
+    save_tse_csv.start()
 
     return render_template('dashboard.html', spotify = spotify)
 
