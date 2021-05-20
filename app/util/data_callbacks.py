@@ -2,6 +2,8 @@ import spotipy
 import pandas as pd
 import numpy as np
 import os
+from os.path import join
+
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans 
 import copy
@@ -138,4 +140,14 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
 
     print('---FILE SAVED---')
     return X
-     
+
+
+def get_top_artist_csv(spotify):
+    print(f'--- Generating top artist csv ---')
+    data = spotify.current_user_top_artists(limit=5, time_range='long_term')['items']
+    df = pd.DataFrame.from_dict(data)
+    df.to_csv(join(csv_folder, 'top_artist_csv'))
+
+    print(f'--- top artist csv SAVED ---')
+
+

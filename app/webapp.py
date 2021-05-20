@@ -70,6 +70,9 @@ def index():
     #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
     # save_tse_csv.start()
 
+    save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
+    save_top_artist_csv.start()
+
     return render_template('dashboard.html', spotify = spotify)
 
 
