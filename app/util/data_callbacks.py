@@ -8,6 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans 
 import copy
 from multiprocessing import Process
+import datetime
 
 caches_folder = './.spotify_caches/'
 csv_folder = './.csv_caches'
@@ -54,7 +55,10 @@ def clean_top_tracks(spotify, tracks_df):
         
     '''
     tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
-    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+    
+    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+
+    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
     tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
     tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
 
@@ -63,6 +67,31 @@ def clean_top_tracks(spotify, tracks_df):
     drop_cols = ['album', 'artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
                  'track_number', 'duration_ms', 'episode', 'track', 'uri',\
                      'preview_url', 'type',	'album_name', 'album_href','album_release_date' ]
+    tracks_df = tracks_df.drop(drop_cols, axis=1)
+
+    return tracks_df
+
+def clean_saved_tracks(spotify, tracks_df):
+    '''
+        
+    '''
+    tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
+    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
+    tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
+    tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
+
+    tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
+
+
+    '''
+    Uncomment Below to add genre attributes Note: took me about 70s to get 750 songs so expect ~10s for every 100 songs  
+    '''
+    tracks_df['genres'] =tracks_df['artists'].map(lambda x:spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
+
+    drop_cols = ['artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
+                 'track_number', 'duration_ms', 'uri',\
+                     'preview_url', 'type','album','album_href']
     tracks_df = tracks_df.drop(drop_cols, axis=1)
 
     return tracks_df
@@ -89,7 +118,7 @@ def audio_playlist_features(spotify, playlist_df):
     df = pd.DataFrame.from_dict([spotify.audio_features(playlist_df['id'][i])[0] for i in range(len(playlist_df))])
     drop_cols = ['analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type']
     audio_df = df.drop(drop_cols, axis=1)
-
+        
     return audio_df
 
 def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k=10):
@@ -138,7 +167,7 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     
 
 
-    print('---FILE SAVED---')
+    print('---TSNE FILE SAVED---')
     return X
 
 
@@ -151,3 +180,28 @@ def get_top_artist_csv(spotify):
     print(f'--- top artist csv SAVED ---')
 
 
+def get_saved_track_history_csv(spotify, ntracks=1000):
+    '''
+    param: max_songs_per_month: max number of songs to get for each month
+    '''
+    assert isinstance(ntracks,int) and ntracks%20==0  #number of songs 
+    
+    df_saved_tracks=pd.DataFrame() # empty df to append to
+    for i in range(1,int(ntracks/20)): # use 50 to limit to 1000 songs for now 
+        saved_tracks_snip=spotify.current_user_saved_tracks(limit=20, offset=i*20)['items']
+        num_snip= len(saved_tracks_snip) # number of tracks grabbed
+        if num_snip<1: # end of saved tracks
+            break
+        list_tracks=[saved_tracks_snip[i]['track']for i in range(num_snip)]
+        list_add_date=[saved_tracks_snip[i]['added_at']for i in range(num_snip)] # format is a bit different for saved song
+        temp = pd.DataFrame.from_dict(list_tracks)
+        temp['date_added']=list_add_date
+        df_saved_tracks=df_saved_tracks.append(clean_saved_tracks(spotify,temp))
+
+    df_saved_tracks.to_csv(csv_folder+'/saved_track_history.csv')
+    print('--- HIST FILE SAVED---')
+    return(df_saved_tracks)
+
+
+
+     
