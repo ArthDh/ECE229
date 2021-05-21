@@ -28,13 +28,13 @@ def generate_image_column(artist_images, idx):
         'width': '100%',
     })
 
-
 layout = html.Div([
     html.H1('Radar Example'),
     dcc.Dropdown(
         id='radar-dropdown',
         options=playlists_kv,
-        value=playlists[0]
+        value=playlists[0],
+        multi=True
     ),
 
     dcc.Graph(id='radar-graph'),
