@@ -175,7 +175,7 @@ def get_top_artist_csv(spotify):
     print(f'--- Generating top artist csv ---')
     data = spotify.current_user_top_artists(limit=5, time_range='long_term')['items']
     df = pd.DataFrame.from_dict(data)
-    df.to_csv(join(csv_folder, 'top_artist_csv'))
+    df.to_csv(join(csv_folder, 'top_5_artists.csv'))
 
     print(f'--- top artist csv SAVED ---')
 
