@@ -1,6 +1,7 @@
 .env
 .flask_session
 .spotify_caches
+.csv_caches
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

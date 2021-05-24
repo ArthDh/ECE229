@@ -38,27 +38,29 @@ def get_me(val):
 def register_callbacks(dashapp):
 
     @dashapp.callback(Output('radar-graph', 'figure'), [Input('radar-dropdown', 'value')])
-    def update_graph(playlist):
+    def update_graph(playlists):
+        if isinstance(playlists, str):
+            playlists = [playlists]
         df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
-        playlist_df = df[df['playlist_name']==playlist]
-
-        categories = [ 'danceability', 'energy', 'key', 'loudness', 'mode',
-                       'speechiness', 'acousticness', 'instrumentalness', 'liveness',
-                       'valence', 'tempo']
-        for col in playlist_df.columns: 
-            if col  in categories:
-                scaler.fit(playlist_df[[col]])
-                playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1,1)).ravel() 
-        feature_val_playlist= playlist_df[categories].mean(0)
-
         fig = go.Figure()
+        for playlist in playlists:
+            playlist_df = df[df['playlist_name']==playlist]
+            categories = [ 'danceability', 'energy', 'key', 'loudness', 'mode',
+                           'speechiness', 'acousticness', 'instrumentalness', 'liveness',
+                           'valence', 'tempo']
+            for col in playlist_df.columns:
+                if col  in categories:
+                    scaler.fit(playlist_df[[col]])
+                    playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1,1)).ravel()
+            feature_val_playlist= playlist_df[categories].mean(0)
 
-        fig.add_trace(go.Scatterpolar(
-            r=feature_val_playlist,
-            theta=categories,
-            fill='toself',
-            name=f'{playlist}'
-        ))
+
+            fig.add_trace(go.Scatterpolar(
+                r=feature_val_playlist,
+                theta=categories,
+                fill='toself',
+                name=f'{playlist}'
+            ))
         return fig
 
 
@@ -172,8 +174,6 @@ def register_callbacks(dashapp):
             ])
             return ret
         return None
-
-
     @dashapp.callback(
         Output("div-era-click", "children"),
         [
@@ -243,3 +243,20 @@ def register_callbacks(dashapp):
         
         ret = html.Div(final_ret)
         return ret
+      
+    @dashapp.callback(
+        Output("genre-pie-chart", "figure"), 
+        Input("graph-3d-plot-tsne", "clickData"))
+    def generate_pie_chart(test):
+        df = pd.read_csv('.csv_caches/saved_track_history.csv')
+        df=df['genre'].value_counts()
+        new=pd.DataFrame()
+        new['genre']=df.index
+        new['counts']=df.values
+        clipped=new[new['counts']>5]
+        a=clipped['genre'].tolist()
+        b=clipped['counts'].tolist()
+        trace =go.Pie(labels=a, values=b )
+        data=[trace]
+        fig=go.Figure(data=data)
+        return fig
