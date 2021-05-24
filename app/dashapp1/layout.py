@@ -49,9 +49,18 @@ layout = html.Div([
         ),
         html.Div(id='playlists')
     ]),
+
     html.Div(
         children=[
-            dcc.Graph(figure = display_era_plot(), id='graph-era'),
+            dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'70%', 'float':'left'}),
+            html.Div(id="div-plot-click-image", style={'float':'right'}),
+        ],
+
+    ),
+
+    html.Div(
+        children=[
+            dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'70%', 'float':'left'}),
             html.Div(id="div-era-click", style={'float':'right'}),
         ],
         
