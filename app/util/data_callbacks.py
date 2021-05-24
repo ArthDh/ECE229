@@ -8,6 +8,8 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans 
 import copy
 from multiprocessing import Process
+import plotly.graph_objects as go
+from collections import Counter
 
 caches_folder = './.spotify_caches/'
 csv_folder = './.csv_caches'
@@ -62,7 +64,7 @@ def clean_top_tracks(spotify, tracks_df):
 
     drop_cols = ['album', 'artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
                  'track_number', 'duration_ms', 'episode', 'track', 'uri',\
-                     'preview_url', 'type',	'album_name', 'album_href','album_release_date' ]
+                     'preview_url', 'type',	'album_name', 'album_href']
     tracks_df = tracks_df.drop(drop_cols, axis=1)
 
     return tracks_df
@@ -99,7 +101,7 @@ def perform_tsne():
     song_features = pd.DataFrame()
     scaler = MinMaxScaler() # normalizer instance
     for col in X.columns: 
-        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names','predicted_genres']:
+        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names','predicted_genres', 'album_release_date']:
             scaler.fit(X[[col]])
             song_features[col] = scaler.transform(X[col].values.reshape(-1,1)).ravel() 
 
@@ -133,6 +135,7 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     
     user_playlists = [i['name'] for i in spotify.current_user_playlists()['items']]
     final_df = pd.DataFrame()
+    final_df_alt = pd.DataFrame()
     for playlist_name in user_playlists:
         
         filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
@@ -143,14 +146,22 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
         playlist_filter_id = spotify.playlist(filter_id)
         playlist_tracks = playlist_filter_id['tracks']
         list_tracks = [playlist_tracks['items'][i]['track'] for i in range(min(max_songs_per_playlist, filter_playlist['tracks']['total']))]
+
+        list_tracks_alt = [playlist_tracks['items'][i]['track'] for i in range(min(100, filter_playlist['tracks']['total']))]
+
         temp = pd.DataFrame.from_dict(list_tracks)
+        temp_alt = pd.DataFrame.from_dict(list_tracks_alt)
+
 
         c_tracks = clean_top_tracks(spotify, temp)
+        c_tracks_alt = clean_top_tracks(spotify, temp_alt)
+
         audio_features = audio_playlist_features(spotify, c_tracks)
         merged_inner = pd.merge(left=c_tracks, right=audio_features, left_on='id', right_on='id')
         merged_inner['playlist_name'] = playlist_name
 
         # Stack the DataFrames on top of each other
+        final_df_alt = pd.concat([final_df_alt, c_tracks_alt], axis=0)
         final_df = pd.concat([final_df, merged_inner], axis=0)
 
     # K Means - Predicted Genre feature 
@@ -158,7 +169,7 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     song_features = pd.DataFrame()
     scaler = MinMaxScaler() # normalizer instance
     for col in X.columns: 
-        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names',]:
+        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names','album_release_date']:
             scaler.fit(X[[col]])
             song_features[col] = scaler.transform(X[col].values.reshape(-1,1)).ravel() 
 
@@ -184,9 +195,39 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     X[['x', 'y', 'z']] = embedding_df
 
     X.to_csv(csv_folder+'/audio_feature_kmean.csv')
+    final_df_alt.to_csv(csv_folder+'/playlist_full.csv')
+    
     perform_tsne()
 
 
     print('---FILE SAVED---')
     return X
      
+
+
+def display_era_plot():
+        
+    path =  '.csv_caches/playlist_full.csv'
+    try:
+        embedding_df = pd.read_csv(path)
+    except FileNotFoundError as error:
+        print(
+            error,
+            "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+        )
+        return go.Figure()
+
+    # Plot layout
+    axes = dict(title="", showgrid=True, zeroline=False, showticklabels=False, gridcolor="darkviolet")
+    layout = go.Layout(
+        margin=dict(l=0, r=0, b=0, t=0),
+        scene=dict(xaxis=axes, yaxis=axes, zaxis=axes),
+    )
+
+    embedding_df['year'] = embedding_df.apply(lambda x:x.album_release_date.split('-')[0], axis=1)
+    df_year = embedding_df.groupby('year')
+    years =  list(df_year.groups.keys())
+
+    figure = go.Figure(data=[go.Histogram(x=embedding_df['year'])])
+
+    return figure
