@@ -24,6 +24,10 @@ except FileNotFoundError as error:
 ##################################################################
 
 
+
+
+
+
 def generate_image_column(artist_images, idx):
     return html.Div([
         html.Img(src=artist_images[idx], style={
@@ -47,7 +51,8 @@ layout = html.Div([
     dcc.Dropdown(
         id='radar-dropdown',
         options=playlists_kv,
-        value=playlists[0]
+        value=playlists[0],
+        multi=True
     ),
 
     dcc.Graph(id='radar-graph'),
@@ -95,11 +100,24 @@ layout = html.Div([
             generate_image_column(artist_images, 4)
         ])
 
+
+
     ], style={
         'display': 'flex',
         'flex-wrap': 'wrap',
         'padding': '0 4px',
-    })
+    }),
+
+    html.H1('Saved Song Genre Distribution'),
+    html.Div([
+        dcc.Graph(id='genre-pie-chart')
+    ])
+    
+
+
+    
+
+    
 
 
 
