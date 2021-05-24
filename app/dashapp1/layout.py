@@ -46,6 +46,10 @@ def generate_image_column(artist_images, idx):
 
 
 
+df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
+playlists = list(df['playlist_name'].unique())
+playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
+
 layout = html.Div([
     html.H1('Radar Example'),
     dcc.Dropdown(
@@ -82,10 +86,19 @@ layout = html.Div([
         ),
         html.Div(id='playlists')
     ]),
+
     html.Div(
         children=[
-            dcc.Graph(id="graph-3d-plot-tsne", style={"height": "98vh", 'width':'70%', 'float':'left'}),
+            dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'70%', 'float':'left'}),
             html.Div(id="div-plot-click-image", style={'float':'right'}),
+        ],
+
+    ),
+
+    html.Div(
+        children=[
+            dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'70%', 'float':'left'}),
+            html.Div(id="div-era-click", style={'float':'right'}),
         ],
         
     ),
