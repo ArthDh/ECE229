@@ -28,6 +28,9 @@ from dotenv import load_dotenv
 import sys
 # sys.path.append('..')
 from .util.data_callbacks import *
+import json
+import plotly
+import plotly.express as px
 
 
 load_dotenv()
@@ -69,8 +72,11 @@ def index():
     # save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
     #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
     # save_tse_csv.start()
+    df = pd.DataFrame({ "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"], "Amount": [4, 1, 2, 2, 4, 5],"City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]})
+    fig = px.bar(df, x="Fruit", y="Amount", color="City",    barmode="group")
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template('dashboard.html', spotify = spotify)
+    return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)
 
 
 @server_bp.route('/dashboard')
