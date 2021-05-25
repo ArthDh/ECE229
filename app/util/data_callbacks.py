@@ -204,4 +204,31 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
 
 
 
-     
+def get_saved_track_audio_features(spotify):
+    print('-------- creating get_saved_track_audio_features.csv --------')
+    history = pd.read_csv(join(csv_folder, 'saved_track_history.csv'))
+    final_df = pd.DataFrame()
+
+    for i in range(len(history) // 20 + 1):
+        track_ids = history['id'].iloc[i * 20: (i + 1) * 20].tolist()
+        tmp_df = history.iloc[i * 20: (i + 1) * 20, :]
+
+        audio_df = pd.DataFrame.from_dict(spotify.audio_features(track_ids))
+        merged_inner = pd.merge(left=tmp_df, right=audio_df, left_on='id', right_on='id')
+        drop_cols = ['Unnamed: 0', 'analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type', 'explicit', 'popularity']
+        merged_inner = merged_inner.drop(drop_cols, axis=1)
+        final_df = pd.concat([final_df, merged_inner], axis=0)
+
+    final_df['month_year'] = pd.to_datetime(final_df['date_added']).dt.to_period('M')
+    final_df.to_csv(join(csv_folder, 'saved_track_audio_features.csv'))
+
+    # get normalized monthly mean for features
+    monthly_mean = final_df.groupby(["month_year"]).mean()
+
+    x = monthly_mean.values
+    min_max_scaler = MinMaxScaler()
+    monthly_mean = pd.DataFrame(min_max_scaler.fit_transform(x), index=monthly_mean.index, columns=monthly_mean.columns)
+
+    monthly_mean.to_csv(join(csv_folder, 'audio_features_monthly_mean.csv'))
+    print('--- get_saved_track_audio_features.csv SAVED ---')
+

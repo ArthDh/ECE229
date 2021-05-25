@@ -12,6 +12,10 @@ playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
 
 top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
 artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
+
+monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
+print(monthly_mood_df.columns)
 def generate_image_column(artist_images, idx):
     return html.Div([
         html.Img(src=artist_images[idx], style={
@@ -78,7 +82,17 @@ layout = html.Div([
         'display': 'flex',
         'flex-wrap': 'wrap',
         'padding': '0 4px',
-    })
+    }),
+
+    html.H1('Mood Plots'),
+    dcc.Dropdown(
+        id='mood-dropdown',
+        options=monthly_mood_kv,
+        value=monthly_mood_df.columns[1],
+        multi=True
+    ),
+
+    dcc.Graph(id='mood-graph'),
 
 ], style={'width': '500'})
 

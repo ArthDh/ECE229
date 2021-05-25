@@ -65,3 +65,16 @@ def register_callbacks(dashapp):
         me = get_me(ip_value)
         return me
 
+
+    @dashapp.callback(Output('mood-graph', 'figure'), [Input('mood-dropdown', 'value')])
+    def update_graph(features):
+        print('features: ', features)
+        if isinstance(features, str):
+            features = [features]
+        monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+        fig = go.Figure()
+        for feature in features:
+            fig.add_trace(go.Scatter(x=monthly_mood_df['month_year'], y=monthly_mood_df[feature],
+                                     mode='lines',
+                                     name=f'{feature}'))
+        return fig
