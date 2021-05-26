@@ -107,7 +107,7 @@ input, select, textarea {
 		overflow-x: hidden;
 	}
 
-		is-preload *, is-preload *:before, is-preload *:after {
+		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
 			-moz-animation: none !important;
 			-webkit-animation: none !important;
 			-ms-animation: none !important;
@@ -2359,7 +2359,7 @@ input, select, textarea {
 			display: block;
 		}
 
-		.image[data-position] img {
+		.image img {
 			-moz-object-fit: cover;
 			-webkit-object-fit: cover;
 			-ms-object-fit: cover;
@@ -3218,7 +3218,7 @@ input, select, textarea {
 	#wrapper {
 		position: relative;
 		width: 100vw;
-		padding: 0 0 0rem 0;
+		padding: 0 0 10rem 0;
 	}
 
 		#wrapper:before {
@@ -3798,7 +3798,7 @@ input, select, textarea {
 		transition: opacity 1s ease;
 	}
 
-		is-preload #wrapper:before {
+		body.is-preload #wrapper:before {
 			opacity: 0;
 		}
 
@@ -3815,15 +3815,15 @@ input, select, textarea {
 			transition: transform 1s ease;
 		}
 
-		is-preload #wrapper > section.intro {
+		body.is-preload #wrapper > section.intro {
 			opacity: 0;
 		}
 
-			is-preload #wrapper > section.intro > header {
+			body.is-preload #wrapper > section.intro > header {
 				transform: translateY(1rem);
 			}
 
-			is-preload #wrapper > section.intro > .content {
+			body.is-preload #wrapper > section.intro > .content {
 				transform: translateY(-1rem);
 			}
 
@@ -3833,16 +3833,16 @@ input, select, textarea {
 				transition: transform 1s ease, opacity 1s ease;
 			}
 
-			is-preload #wrapper > section.intro > header {
+			body.is-preload #wrapper > section.intro > header {
 				transform: none;
 			}
 
-				is-preload #wrapper > section.intro > header > * {
+				body.is-preload #wrapper > section.intro > header > * {
 					transform: translate(-0.5rem);
 					opacity: 0;
 				}
 
-			is-preload #wrapper > section.intro > .content {
+			body.is-preload #wrapper > section.intro > .content {
 				transform: none;
 			}
 

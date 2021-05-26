@@ -76,7 +76,8 @@ def index():
     fig = px.bar(df, x="Fruit", y="Amount", color="City",    barmode="group")
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)
+    # return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)
+    return redirect('/dashboard')
 
 
 @server_bp.route('/dashboard')

@@ -2,10 +2,19 @@ import spotipy
 import pandas as pd
 import numpy as np
 import os
+from os.path import join
+
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans 
 import copy
+import datetime
 from multiprocessing import Process
+import datetime
+import plotly.graph_objects as go
+from collections import Counter
+import itertools
 
 caches_folder = './.spotify_caches/'
 csv_folder = './.csv_caches'
@@ -45,6 +54,29 @@ def get_auth_manager(cache_path):
                                                 show_dialog=True)
     return auth_manager, cache_handler    
 
+def add_single_genre(tracks_df):  # I this is ugly and inefficent but it works and it was basically instant when testing on 750 songs
+    '''
+    '''
+    #tracks_df["genres"] = tracks_df["genres"].apply(eval)
+    tmp=tracks_df["genres"]
+
+    merged = list(itertools.chain(*tmp))
+    genre_rank=pd.Series(merged).value_counts()
+
+    single_genre_list=[]
+    for i in tmp:
+        genre_tmp='Unknown'
+        if not i: # no listed genres
+            single_genre_list.append(genre_tmp)
+            continue
+        max_tmp=0
+        for j in i:
+            if genre_rank[j]>max_tmp:
+                genre_tmp=j
+                max_tmp=genre_rank[j]
+        single_genre_list.append(genre_tmp)
+    tracks_df['genre']=single_genre_list
+    return tracks_df
 
 
 def clean_top_tracks(spotify, tracks_df):
@@ -52,7 +84,10 @@ def clean_top_tracks(spotify, tracks_df):
         
     '''
     tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
-    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+    
+    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+
+    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
     tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
     tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
 
@@ -60,7 +95,58 @@ def clean_top_tracks(spotify, tracks_df):
 
     drop_cols = ['album', 'artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
                  'track_number', 'duration_ms', 'episode', 'track', 'uri',\
-                     'preview_url', 'type',	'album_name', 'album_href','album_release_date' ]
+                     'preview_url', 'type',	'album_name', 'album_href']
+    tracks_df = tracks_df.drop(drop_cols, axis=1)
+
+    return tracks_df
+
+
+def clean_saved_tracks(spotify, tracks_df):
+    '''
+        
+    '''
+    tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
+    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
+    tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
+    tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
+
+    tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
+
+
+    '''
+    Uncomment Below to add genre attributes Note: took me about 70s to get 750 songs so expect ~10s for every 100 songs  
+    '''
+    tracks_df['genres'] =tracks_df['artists'].map(lambda x:spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
+
+    drop_cols = ['artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
+                 'track_number', 'duration_ms', 'uri',\
+                     'preview_url', 'type','album','album_href']
+    tracks_df = tracks_df.drop(drop_cols, axis=1)
+
+    return tracks_df
+
+def clean_saved_tracks(spotify, tracks_df):
+    '''
+        
+    '''
+    tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
+    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
+    tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
+    tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
+
+    tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
+
+
+    '''
+    Uncomment Below to add genre attributes Note: took me about 70s to get 750 songs so expect ~10s for every 100 songs  
+    '''
+    tracks_df['genres'] =tracks_df['artists'].map(lambda x:spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
+
+    drop_cols = ['artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
+                 'track_number', 'duration_ms', 'uri',\
+                     'preview_url', 'type','album','album_href']
     tracks_df = tracks_df.drop(drop_cols, axis=1)
 
     return tracks_df
@@ -87,8 +173,40 @@ def audio_playlist_features(spotify, playlist_df):
     df = pd.DataFrame.from_dict([spotify.audio_features(playlist_df['id'][i])[0] for i in range(len(playlist_df))])
     drop_cols = ['analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type']
     audio_df = df.drop(drop_cols, axis=1)
-
+        
     return audio_df
+
+def perform_tsne():
+    dataset = '.csv_caches/audio_feature_kmean.csv'
+    data = pd.read_csv( dataset)
+    X = copy.deepcopy(data)
+    song_features = pd.DataFrame()
+    scaler = MinMaxScaler() # normalizer instance
+    for col in X.columns: 
+        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names','predicted_genres', 'album_release_date']:
+            scaler.fit(X[[col]])
+            song_features[col] = scaler.transform(X[col].values.reshape(-1,1)).ravel() 
+
+    nb_col = song_features.shape[1]
+
+    pca = PCA(n_components=nb_col)
+    data_pca = pca.fit_transform(song_features.values)
+
+    tsne = TSNE(
+        n_components=3,
+        n_iter=3000,
+        learning_rate=200,
+        perplexity=10,
+        random_state=1131,
+    )
+    embedding = tsne.fit_transform(data_pca)
+
+    embedding_df = pd.DataFrame(embedding, columns=["x", "y", "z"],)
+    data[['x', 'y', 'z']] = embedding_df
+    data.to_csv(csv_folder+'/audio_feature_kmean.csv')
+
+
+
 
 def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k=10):
     '''
@@ -99,6 +217,7 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     
     user_playlists = [i['name'] for i in spotify.current_user_playlists()['items']]
     final_df = pd.DataFrame()
+    final_df_alt = pd.DataFrame()
     for playlist_name in user_playlists:
         
         filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
@@ -109,14 +228,22 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
         playlist_filter_id = spotify.playlist(filter_id)
         playlist_tracks = playlist_filter_id['tracks']
         list_tracks = [playlist_tracks['items'][i]['track'] for i in range(min(max_songs_per_playlist, filter_playlist['tracks']['total']))]
+
+        list_tracks_alt = [playlist_tracks['items'][i]['track'] for i in range(min(100, filter_playlist['tracks']['total']))]
+
         temp = pd.DataFrame.from_dict(list_tracks)
+        temp_alt = pd.DataFrame.from_dict(list_tracks_alt)
+
 
         c_tracks = clean_top_tracks(spotify, temp)
+        c_tracks_alt = clean_top_tracks(spotify, temp_alt)
+
         audio_features = audio_playlist_features(spotify, c_tracks)
         merged_inner = pd.merge(left=c_tracks, right=audio_features, left_on='id', right_on='id')
         merged_inner['playlist_name'] = playlist_name
 
         # Stack the DataFrames on top of each other
+        final_df_alt = pd.concat([final_df_alt, c_tracks_alt], axis=0)
         final_df = pd.concat([final_df, merged_inner], axis=0)
 
     # K Means - Predicted Genre feature 
@@ -124,18 +251,129 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     song_features = pd.DataFrame()
     scaler = MinMaxScaler() # normalizer instance
     for col in X.columns: 
-        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names',]:
+        if col not in ['artists','predicted_genres', 'href', 'id', 'name', 'playlist_name',  'album_art', 'artist_names','album_release_date']:
             scaler.fit(X[[col]])
             song_features[col] = scaler.transform(X[col].values.reshape(-1,1)).ravel() 
+
+    nb_col = song_features.shape[1]
+    pca = PCA(n_components=nb_col)
+    data_pca = pca.fit_transform(song_features.values)
+    tsne = TSNE(
+        n_components=3,
+        n_iter=3000,
+        learning_rate=200,
+        perplexity=10,
+        random_state=1131,
+    )
+    embedding = tsne.fit_transform(data_pca)
+    embedding_df = pd.DataFrame(embedding, columns=["x", "y", "z"])
+
+
 
     km = KMeans(n_clusters=k)
     predicted_genres = km.fit_predict(song_features)
     X['predicted_genres'] = predicted_genres
+    
+    X[['x', 'y', 'z']] = embedding_df
 
     X.to_csv(csv_folder+'/audio_feature_kmean.csv')
+    final_df_alt.to_csv(csv_folder+'/playlist_full.csv')
+    
+    perform_tsne()
+
+
+    print('---TSNE FILE SAVED---')
+    return X
+  
+def display_era_plot():
+        
+    path =  '.csv_caches/playlist_full.csv'
+    try:
+        embedding_df = pd.read_csv(path)
+    except FileNotFoundError as error:
+        print(
+            error,
+            "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+        )
+        return go.Figure()
+
+    # Plot layout
+    axes = dict(title="", showgrid=True, zeroline=False, showticklabels=False, gridcolor="darkviolet")
+    layout = go.Layout(
+        margin=dict(l=0, r=0, b=0, t=0),
+        scene=dict(xaxis=axes, yaxis=axes, zaxis=axes),
+    )
+
+    embedding_df['year'] = embedding_df.apply(lambda x:x.album_release_date.split('-')[0], axis=1)
+    df_year = embedding_df.groupby('year')
+    years =  list(df_year.groups.keys())
+
+    figure = go.Figure(data=[go.Histogram(x=embedding_df['year'])])
+
+    return figure
+
+def get_saved_track_history_csv(spotify, ntracks=1000):
+    '''
+    param: max_songs_per_month: max number of songs to get for each month
+    '''
+    assert isinstance(ntracks,int) and ntracks%20==0  #number of songs 
     
 
+    df_saved_tracks=pd.DataFrame() # empty df to append to
+    for i in range(1,int(ntracks/20)): # use 50 to limit to 1000 songs for now 
+        saved_tracks_snip=spotify.current_user_saved_tracks(limit=20, offset=i*20)['items']
+        num_snip= len(saved_tracks_snip) # number of tracks grabbed
+        if num_snip<1: # end of saved tracks
+            break
+        list_tracks=[saved_tracks_snip[i]['track']for i in range(num_snip)]
+        list_add_date=[saved_tracks_snip[i]['added_at']for i in range(num_snip)] # format is a bit different for saved song
+        temp = pd.DataFrame.from_dict(list_tracks)
+        temp['date_added']=list_add_date
+        df_saved_tracks=df_saved_tracks.append(clean_saved_tracks(spotify,temp))
 
-    print('---FILE SAVED---')
-    return X
-     
+        list_add_date=[saved_tracks_snip[i]['added_at']for i in range(num_snip)] # format is a bit different for saved tracks
+        temp = pd.DataFrame.from_dict(list_tracks)
+        temp['date_added']=list_add_date
+        df_saved_tracks=df_saved_tracks.append(clean_saved_tracks(spotify,temp))
+    df_saved_tracks=add_single_genre(df_saved_tracks)          # add a single genre
+    df_saved_tracks.to_csv(csv_folder+'/saved_track_history.csv')
+    print('--- HIST FILE SAVED---')
+    return(df_saved_tracks)
+
+
+
+def get_saved_track_audio_features(spotify):
+    print('-------- creating get_saved_track_audio_features.csv --------')
+    history = pd.read_csv(join(csv_folder, 'saved_track_history.csv'))
+    final_df = pd.DataFrame()
+
+    for i in range(len(history) // 20 + 1):
+        track_ids = history['id'].iloc[i * 20: (i + 1) * 20].tolist()
+        tmp_df = history.iloc[i * 20: (i + 1) * 20, :]
+
+        audio_df = pd.DataFrame.from_dict(spotify.audio_features(track_ids))
+        merged_inner = pd.merge(left=tmp_df, right=audio_df, left_on='id', right_on='id')
+        drop_cols = ['Unnamed: 0', 'analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type', 'explicit', 'popularity']
+        merged_inner = merged_inner.drop(drop_cols, axis=1)
+        final_df = pd.concat([final_df, merged_inner], axis=0)
+
+    final_df['month_year'] = pd.to_datetime(final_df['date_added']).dt.to_period('M')
+    final_df.to_csv(join(csv_folder, 'saved_track_audio_features.csv'))
+
+    # get normalized monthly mean for features
+    monthly_mean = final_df.groupby(["month_year"]).mean()
+
+    x = monthly_mean.values
+    min_max_scaler = MinMaxScaler()
+    monthly_mean = pd.DataFrame(min_max_scaler.fit_transform(x), index=monthly_mean.index, columns=monthly_mean.columns)
+
+    monthly_mean.to_csv(join(csv_folder, 'audio_features_monthly_mean.csv'))
+    print('--- get_saved_track_audio_features.csv SAVED ---')
+
+def get_top_artist_csv(spotify):
+    print(f'--- Generating top artist csv ---')
+    data = spotify.current_user_top_artists(limit=5, time_range='long_term')['items']
+    df = pd.DataFrame.from_dict(data)
+    df.to_csv(join(csv_folder, 'top_5_artists.csv'))
+
+    print(f'--- TOP_ARTISTS FILE SAVED ---')

@@ -20,11 +20,19 @@ def register_dashapps(app):
 
     # Meta tags for viewport responsiveness
     meta_viewport = {"name": "viewport", "content": "width=device-width, initial-scale=1, shrink-to-fit=no"}
-
+    external_stylesheets = ['css/main.css',
+            {
+                'href': 'https://use.fontawesome.com/releases/v5.8.1/css/all.css',
+                'rel': 'stylesheet',
+                'integrity': 'sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf',
+                'crossorigin': 'anonymous'
+            }
+        ]
     dashapp1 = dash.Dash(__name__,
                          server=app,
                          url_base_pathname='/dashboard/',
-                         assets_folder=get_root_path(__name__) + '/dashboard/assets/',
+                         external_stylesheets=external_stylesheets,
+                        #  assets_folder=get_root_path(__name__) + '/dashboard/assets/',
                          meta_tags=[meta_viewport])
 
     with app.app_context():
