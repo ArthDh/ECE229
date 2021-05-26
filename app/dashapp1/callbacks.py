@@ -18,12 +18,10 @@ from ..util.data_callbacks import *
 import math
 import plotly.express as px
 
-
 caches_folder = './.spotify_caches/'
 if not os.path.exists(caches_folder):
     os.makedirs(caches_folder)
-scaler = MinMaxScaler() # normalizer instance
-
+scaler = MinMaxScaler() 
 
 def session_cache_path():
     return caches_folder + session.get('uuid')
@@ -85,6 +83,15 @@ def register_callbacks(dashapp):
         return fig
                                      
     def generate_figure_image(groups, layout):
+        """Generates figure for TSNE points given a specific layout
+
+        :param groups: K-Mean generated groups
+        :type groups: List
+        :param layout: Figure layout for groups in TSNE visualization
+        :type layout: plotly.graph_object.Layout
+        :return: Figure containing the plotted scatter points
+        :rtype: plotly.graph_object
+        """        
         data = []
 
         for idx, val in groups:
@@ -115,6 +122,13 @@ def register_callbacks(dashapp):
     def display_3d_scatter_plot(
         playlist,
     ):
+        """Creates a 3d Scatter Plot for TSNE visualization colored using K-Means clustering
+
+        :param playlist: Playlists for which the plot is to be shown
+        :type playlist: List
+        :return: Scatter Plot   
+        :rtype: plotly.graph_object
+        """    
        
         path =  '.csv_caches/audio_feature_kmean.csv'
         try:
@@ -150,6 +164,16 @@ def register_callbacks(dashapp):
         ],
     )
     def display_click_image(clickData, playlist):
+        """Display Focused view of points in 3D ScatterPlot for TSNE 
+
+        :param clickData: Content information of clicked point 
+        :type clickData: Dict   
+        :param playlist: Playlists for which the plot is to be shown
+        :type playlist: List
+        :return: Extended information of the clicked point
+        :rtype: plotly.graph_object
+        """
+
         path =  '.csv_caches/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
@@ -159,8 +183,7 @@ def register_callbacks(dashapp):
                 "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
             )
             return go.Figure()
-        # Convert the point clicked into float64 numpy array
-        # print(clickData)
+
         try:
             name = clickData['points'][0]['text']
             row = embedding_df[embedding_df['name']==name ]
@@ -188,6 +211,7 @@ def register_callbacks(dashapp):
             ])
             return ret
         return None
+
     @dashapp.callback(
         Output("div-era-click", "children"),
         [
@@ -195,6 +219,14 @@ def register_callbacks(dashapp):
         ],
     )
     def display_era_click(clickData):
+        """Extended view of Era histogram that shows top-3 artists from that particular year 
+
+        :param clickData: More information on the Histogram that was clicked
+        :type clickData: Dict
+        :return: Extended view of Histogram that was clicked on 
+        :rtype: plotly.graph_object
+        """        
+
         path =  '.csv_caches/playlist_full.csv'
         try:
             embedding_df = pd.read_csv(path)
@@ -204,8 +236,7 @@ def register_callbacks(dashapp):
                 "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
             )
             return go.Figure()
-        # Convert the point clicked into float64 numpy array
-        # print(clickData)
+
         year = math.floor(int(clickData['points'][0]['x']))
         years = [year, year+1]
 
@@ -235,6 +266,13 @@ def register_callbacks(dashapp):
 
 
         def b64(im_pil):
+            """Conversion to Base64 
+
+            :param im_pil: Pillow Image to be converted
+            :type im_pil: Pillow Image
+            :return: base64 encoded image
+            :rtype: base64 Image
+            """            
             buff = BytesIO()
             im_pil.save(buff, format="png")
             im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")

@@ -25,6 +25,13 @@ if not os.path.exists(csv_folder):
     os.makedirs(csv_folder)
 
 def get_auth_manager(cache_path):
+    """Returns authentication manager and Cache Handler for reusing in other functions
+
+    :param cache_path: Directory where cache is stored
+    :type cache_path: String
+    :return: Authentication Manger, Cache Handler
+    :rtype: Tuple
+    """    
 
     scope = ['ugc-image-upload'
             ,'user-read-recently-played'
@@ -46,8 +53,6 @@ def get_auth_manager(cache_path):
             ,'user-read-email'
             ,'user-read-private'
             ]
-
-
     cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=cache_path)
     auth_manager = spotipy.oauth2.SpotifyOAuth(scope=scope,
                                                 cache_handler=cache_handler, 
@@ -80,19 +85,21 @@ def add_single_genre(tracks_df):  # I this is ugly and inefficent but it works a
 
 
 def clean_top_tracks(spotify, tracks_df):
-    '''
-        
-    '''
-    tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
-    
-    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
+    """Cleans up Playlist Tracks dataframe to make data usable
 
+    :param spotify: Spotify Class object for a given user
+    :type spotify: spotify.Spotify
+    :param tracks_df: Unparsed Dataframe for given user spotify tracks
+    :type tracks_df: pandas.Dataframe
+    :return: Parsed Dataframe
+    :rtype: pandas.Dataframe
+    """    
+
+    tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
     tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
     tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
     tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
-
     tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
-
     drop_cols = ['album', 'artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
                  'track_number', 'duration_ms', 'episode', 'track', 'uri',\
                      'preview_url', 'type',	'album_name', 'album_href']
@@ -102,23 +109,25 @@ def clean_top_tracks(spotify, tracks_df):
 
 
 def clean_saved_tracks(spotify, tracks_df):
-    '''
-        
-    '''
+    """Cleans up Saved Tracks dataframe to make data usable
+
+    :param spotify: Spotify Class object for a given user
+    :type spotify: spotify.Spotify
+    :param tracks_df: Unparsed Dataframe for given user spotify tracks
+    :type tracks_df: pandas.Dataframe
+    :return: Parsed Dataframe
+    :rtype: pandas.Dataframe
+    """   
+
     tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
-    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
     tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
     tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
     tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
-
     tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
-
-
-    '''
-    Uncomment Below to add genre attributes Note: took me about 70s to get 750 songs so expect ~10s for every 100 songs  
-    '''
+    # '''
+    # Uncomment Below to add genre attributes Note: took me about 70s to get 750 songs so expect ~10s for every 100 songs  
+    # '''
     tracks_df['genres'] =tracks_df['artists'].map(lambda x:spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
-
     drop_cols = ['artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
                  'track_number', 'duration_ms', 'uri',\
                      'preview_url', 'type','album','album_href']
@@ -126,35 +135,19 @@ def clean_saved_tracks(spotify, tracks_df):
 
     return tracks_df
 
-def clean_saved_tracks(spotify, tracks_df):
-    '''
-        
-    '''
-    tracks_df['album_name'] = tracks_df['album'].map(lambda x:x['name'])
-    #tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'])
-    tracks_df['album_art'] = tracks_df['album'].map(lambda x:x['images'][0]['url'] if len(x['images'])!=0 else 0)
-    tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
-    tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
-
-    tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
-
-
-    '''
-    Uncomment Below to add genre attributes Note: took me about 70s to get 750 songs so expect ~10s for every 100 songs  
-    '''
-    tracks_df['genres'] =tracks_df['artists'].map(lambda x:spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
-
-    drop_cols = ['artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
-                 'track_number', 'duration_ms', 'uri',\
-                     'preview_url', 'type','album','album_href']
-    tracks_df = tracks_df.drop(drop_cols, axis=1)
-
-    return tracks_df
 
 def clean_playlist(spotify, user_playlists, playlist):
-    '''
+    """Clean a filtered playlist from a given list of playlist for a particular user
 
-    '''
+    :param spotify: Spotify Class object for a given user
+    :type spotify: spotify.Spotify
+    :param user_playlists: All user playlists
+    :type user_playlists: List
+    :param playlist: Playlist of interest
+    :type playlist: String
+    :return: Parsed Playlist specific to the user
+    :rtype: pandas.Dataframe
+    """
 
     filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
     filter_id = filter_playlist['id']
@@ -167,9 +160,16 @@ def clean_playlist(spotify, user_playlists, playlist):
     return temp_df
 
 def audio_playlist_features(spotify, playlist_df):
-    '''
+    """Queries Spotify API to generate an Audio Features Dataframe of songs in a given Playlist for the user
 
-    '''
+    :param spotify: Spotify Class object for a given user
+    :type spotify: spotify.Spotify
+    :param playlist_df: Cleaned DataFrame for that particular playlist 
+    :type playlist_df: pandas.Dataframe
+    :return: Audio features dataframe for all songs in a given playlist
+    :rtype: pandas.Dataframe
+    """
+
     df = pd.DataFrame.from_dict([spotify.audio_features(playlist_df['id'][i])[0] for i in range(len(playlist_df))])
     drop_cols = ['analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type']
     audio_df = df.drop(drop_cols, axis=1)
@@ -177,6 +177,8 @@ def audio_playlist_features(spotify, playlist_df):
     return audio_df
 
 def perform_tsne():
+    """Performs TSNE on saved audio feature dataset appended with Kmeans and saves to CSV
+    """    
     dataset = '.csv_caches/audio_feature_kmean.csv'
     data = pd.read_csv( dataset)
     X = copy.deepcopy(data)
@@ -209,8 +211,19 @@ def perform_tsne():
 
 
 def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k=10):
-    '''
-    '''
+    """Creates base csv to perform TSNE 
+
+    :param spotify: Spotify class object for user
+    :type spotify: spotify.Spotify
+    :param min_songs_per_playlist: Minimum number of songs a particular playlist must have, defaults to 5
+    :type min_songs_per_playlist: int, optional
+    :param max_songs_per_playlist: Maximum number of songs a particular playlist must have, defaults to 10
+    :type max_songs_per_playlist: int, optional
+    :param k: k-value for K-Means will define the number of clusters in the final plot, defaults to 10
+    :type k: int, optional
+    :return: Saves and Returns the final CSV for plotting of TSNE
+    :rtype: pandas.Dataframe
+    """
     print(f'---MIN SONGS {min_songs_per_playlist}---')
     print(f'---MAX SONGS {max_songs_per_playlist}---')
     print(f'---K value for K Means {k}---')
@@ -269,24 +282,23 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     embedding_df = pd.DataFrame(embedding, columns=["x", "y", "z"])
 
 
-
     km = KMeans(n_clusters=k)
     predicted_genres = km.fit_predict(song_features)
     X['predicted_genres'] = predicted_genres
-    
     X[['x', 'y', 'z']] = embedding_df
-
     X.to_csv(csv_folder+'/audio_feature_kmean.csv')
     final_df_alt.to_csv(csv_folder+'/playlist_full.csv')
     
     perform_tsne()
-
-
     print('---TSNE FILE SAVED---')
     return X
   
 def display_era_plot():
-        
+    """Static plot of Artist distribution over years
+
+    :return: Plot of artists belonging to particular years
+    :rtype: plotly.graph_objects
+    """        
     path =  '.csv_caches/playlist_full.csv'
     try:
         embedding_df = pd.read_csv(path)
