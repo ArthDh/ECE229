@@ -116,6 +116,11 @@ layout = html.Div([
     html.Div([
         dcc.Graph(id='genre-pie-chart')
     ]),
+
+    html.H1('Saved Song Genre History'),
+        html.Div([
+        dcc.Graph(id='genre-history-chart')
+    ]),
     
     html.H1('Mood Plots'),
     dcc.Dropdown(

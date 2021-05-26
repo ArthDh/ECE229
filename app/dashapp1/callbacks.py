@@ -16,6 +16,7 @@ import os
 from flask import session
 from ..util.data_callbacks import *
 import math
+import plotly.express as px
 
 
 caches_folder = './.spotify_caches/'
@@ -272,4 +273,33 @@ def register_callbacks(dashapp):
         trace =go.Pie(labels=a, values=b )
         data=[trace]
         fig=go.Figure(data=data)
+        return fig
+
+    @dashapp.callback(
+        Output("genre-history-chart", "figure"), 
+        Input("graph-3d-plot-tsne", "clickData"))
+    def generate_genre_history_chart(test):
+        '''
+        '''
+        number_of_stacked_genres=5
+        num_months=11
+        #need to make this a try block
+        df=pd.read_csv('.csv_caches/saved_track_history.csv')
+        df['date_added']=pd.to_datetime(df['date_added'])
+        df['month_yr']=df['date_added'].dt.to_period('M')
+        count_series=df.groupby(['month_yr','genre']).size()
+        new_df = count_series.to_frame(name = 'size')
+        new_df = new_df.reset_index() \
+            .sort_values(['month_yr','size'],ascending=False) \
+            .set_index(['month_yr','genre']) \
+            .rename_axis([None, 'genre'])
+
+        new_df=new_df.groupby(level=0).head(number_of_stacked_genres)
+
+        new_df=new_df.reset_index(level=[0,1])
+        new_df=new_df.rename(columns={'level_0':'month_yr'})
+        new_df=new_df[:5*num_months ]
+        new_df['month_yr']=new_df['month_yr'].astype(str)
+
+        fig=px.bar(new_df, x="month_yr", y="size", color="genre")
         return fig
