@@ -65,7 +65,7 @@ def index():
     # Step 4. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
 
-    # Creating a daemon to save the users CSV file
+    # # Creating a daemon to save the users CSV file
     # save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
     #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
     # save_tse_csv.start()
@@ -84,6 +84,18 @@ def index():
 
     saved_track_audio_features = Process(target=get_saved_track_audio_features, args=([spotify]), daemon=True)
     saved_track_audio_features.start()
+
+
+    save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
+                                                kwargs={'ntracks':1000},  daemon=True)
+
+    save_hist_csv.start()
+    
+     
+
+
+    save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
+    save_top_artist_csv.start()
 
     return render_template('dashboard.html', spotify = spotify)
 
