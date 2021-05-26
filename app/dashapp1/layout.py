@@ -6,8 +6,6 @@ from ..util.data_callbacks import *
 from flask import session
 import pandas as pd
 import json
-<<<<<<< HEAD
-=======
 
 ############# This NEEDS to be changed super sloppy ##############
 
@@ -19,46 +17,14 @@ try:
 
     top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
     artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
+
+    monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+    monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
+    # print(monthly_mood_df.columns)
 except FileNotFoundError as error:
         print ("One or more CSV Files not found ")
         
 
-##################################################################
-
-
-
-
-
-
-def generate_image_column(artist_images, idx):
-    return html.Div([
-        html.Img(src=artist_images[idx], style={
-            'margin-top': '8px',
-            'vertical-align': 'middle',
-            'width': '100%',
-        })
-    ], style={
-        'flex': '25%',
-        'max-width': '25%',
-        'padding': '0 4px',
-        'margin-top': '8px',
-        'vertical-align': 'middle',
-        'width': '100%',
-    })
-
-
->>>>>>> More-Plots
-
-df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
-playlists = list(df['playlist_name'].unique())
-playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
-
-top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
-artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
-
-monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
-monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
-print(monthly_mood_df.columns)
 def generate_image_column(artist_images, idx):
     return html.Div([
         html.Img(src=artist_images[idx], style={

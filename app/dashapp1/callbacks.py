@@ -71,7 +71,7 @@ def register_callbacks(dashapp):
 
 
     @dashapp.callback(Output('mood-graph', 'figure'), [Input('mood-dropdown', 'value')])
-    def update_graph(features):
+    def update_graph2(features):
         print('features: ', features)
         if isinstance(features, str):
             features = [features]
@@ -81,6 +81,8 @@ def register_callbacks(dashapp):
             fig.add_trace(go.Scatter(x=monthly_mood_df['month_year'], y=monthly_mood_df[feature],
                                      mode='lines',
                                      name=f'{feature}'))
+        return fig
+                                     
     def generate_figure_image(groups, layout):
         data = []
 
