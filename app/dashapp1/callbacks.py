@@ -38,6 +38,13 @@ def register_callbacks(dashapp):
 
     @dashapp.callback(Output('radar-graph', 'figure'), [Input('radar-dropdown', 'value')])
     def update_graph(playlists):
+        """
+        callback function for radar graph for playlists
+        :param playlists: list of playlists
+        :type playlists: String or List of Strings
+        :return: Figure containing radar graph for audio features in playlists
+        :rtype: plotly.graph_objs
+        """
         if isinstance(playlists, str):
             playlists = [playlists]
         df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
@@ -70,7 +77,14 @@ def register_callbacks(dashapp):
 
 
     @dashapp.callback(Output('mood-graph', 'figure'), [Input('mood-dropdown', 'value')])
-    def update_graph2(features):
+    def update_mood_graph(features):
+        """
+        callback function for mood graph
+        :param features: list of audio features
+        :type features: String or List of Strings
+        :return: line graph for mood over time
+        :rtype: plotly.graph_objs
+        """
         print('features: ', features)
         if isinstance(features, str):
             features = [features]

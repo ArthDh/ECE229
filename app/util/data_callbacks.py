@@ -355,6 +355,13 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
 
 
 def get_saved_track_audio_features(spotify):
+    """
+    generate csv for audio features from saved tracks
+    :param spotify: Spotify class object for user
+    :type spotify: spotify.Spotify
+    :return: None
+    :rtype: None
+    """
     print('-------- creating get_saved_track_audio_features.csv --------')
     history = pd.read_csv(join(csv_folder, 'saved_track_history.csv'))
     final_df = pd.DataFrame()
@@ -383,6 +390,13 @@ def get_saved_track_audio_features(spotify):
     print('--- get_saved_track_audio_features.csv SAVED ---')
 
 def get_top_artist_csv(spotify):
+    """
+    Generate csv containing current user's top artists
+    :param spotify: Spotify class object for user
+    :type spotify: spotify.Spotify
+    :return: None
+    :rtype: None
+    """
     print(f'--- Generating top artist csv ---')
     data = spotify.current_user_top_artists(limit=5, time_range='long_term')['items']
     df = pd.DataFrame.from_dict(data)
