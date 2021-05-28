@@ -18,6 +18,7 @@ from ..util.data_callbacks import *
 import math
 import plotly.express as px
 
+
 caches_folder = './.spotify_caches/'
 if not os.path.exists(caches_folder):
     os.makedirs(caches_folder)
@@ -312,21 +313,28 @@ def register_callbacks(dashapp):
       
     @dashapp.callback(
         Output("genre-pie-chart", "figure"), 
-        Input("graph-3d-plot-tsne", "clickData"))
-    def generate_pie_chart(test):
+        Input("month-slider", "value"))
+    def generate_pie_chart(date_range):
         """Genrates pie chart displaying genre distribution of users saved tracks
 
-        :param test: test variable 
-        :type test: None
-        :return: pie char figure
+        :param date_range: date range shown on slider to filter dataframe by
+        :type range: list
+        :return: pie chart figure
         :rtype: plotly.graph_object
-        """        
+        """
+        dates_dict=get_slider_info()[1]
+        before=dates_dict[date_range[1]].tz_localize(None)
+        after=dates_dict[date_range[0]].tz_localize(None)
         df = pd.read_csv('.csv_caches/saved_track_history.csv')
+        df['date_added'] = pd.to_datetime(df['date_added']).apply(lambda x: x.replace(tzinfo=None)) 
+        df=df[df['date_added']<before]
+        df=df[df['date_added']>after]
         df=df['genre'].value_counts()
         new=pd.DataFrame()
         new['genre']=df.index
         new['counts']=df.values
-        clipped=new[new['counts']>5]
+        #clipped=new[new['counts']>5]# removing infrequent genres distribution
+        clipped=new
         a=clipped['genre'].tolist()
         b=clipped['counts'].tolist()
         trace =go.Pie(labels=a, values=b )

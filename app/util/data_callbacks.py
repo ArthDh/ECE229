@@ -15,6 +15,8 @@ import datetime
 import plotly.graph_objects as go
 from collections import Counter
 import itertools
+from pandas.tseries.offsets import *
+
 
 caches_folder = './.spotify_caches/'
 csv_folder = './.csv_caches'
@@ -396,10 +398,10 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
     :rtype: None
     """    
     assert isinstance(ntracks,int) and ntracks%20==0  #number of songs 
-    
+    print('----- Generating Saved Track History ---- ')
 
     df_saved_tracks=pd.DataFrame() # empty df to append to
-    for i in range(1,int(ntracks/20)): # use 50 to limit to 1000 songs for now 
+    for i in range(0,int(ntracks/20)): # use 50 to limit to 1000 songs for now 
         saved_tracks_snip=spotify.current_user_saved_tracks(limit=20, offset=i*20)['items']
         num_snip= len(saved_tracks_snip) # number of tracks grabbed
         if num_snip<1: # end of saved tracks
@@ -471,3 +473,21 @@ def get_top_artist_csv(spotify):
     df.to_csv(join(csv_folder, 'top_5_artists.csv'))
 
     print(f'--- TOP_ARTISTS FILE SAVED ---')
+
+
+
+def get_slider_info():
+    maxmarks=13
+    tday=pd.Timestamp.today() #gets timestamp of today
+    m1date=tday+DateOffset(months=-maxmarks+1) #first month on slider
+    datelist=pd.date_range(m1date, periods=maxmarks, freq='M') # list of months as dates
+
+    dlist=pd.DatetimeIndex(datelist).normalize()
+    tags={} #dictionary relating marks on slider to tags. tags are shown as "Apr', "May', etc
+    datevalues={} #dictionary relating mark to date value
+    x=1
+    for i in dlist:
+        tags[x]=(i+DateOffset(months=1)).strftime('%b-%Y') #gets the string representation of next month ex:'Apr'
+        datevalues[x]=i
+        x=x+1
+    return (tags,datevalues)
