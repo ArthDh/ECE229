@@ -75,10 +75,10 @@ def index():
 
     #for saved song history csv file
 
-    save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
-                                                kwargs={'ntracks':1000},  daemon=True)
+    # save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
+    #                                             kwargs={'ntracks':1000},  daemon=True)
     
-    save_hist_csv.start()
+    # save_hist_csv.start()
     #
     #
     # save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
