@@ -251,7 +251,7 @@ def register_callbacks(dashapp):
             )
             return go.Figure()
 
-        year = math.floor(int(clickData['points'][0]['x']))
+        year = math.floor(int(clickData['points'][0]['y']))
         years = [year, year+1]
 
 
@@ -274,7 +274,7 @@ def register_callbacks(dashapp):
             spotify = spotipy.Spotify(auth_manager=auth_manager)
             artist_dict = [(artist, spotify.search(artist, type='artist', limit=1)['artists']['items'][0]['images'][0]['url']) for artist in sorted_artists[:3]]
 
-            print(artist_dict)
+            # print(artist_dict)
         except:
             return None
 

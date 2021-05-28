@@ -323,8 +323,65 @@ def display_era_plot():
     embedding_df['year'] = embedding_df.apply(lambda x:x.album_release_date.split('-')[0], axis=1)
     df_year = embedding_df.groupby('year')
     years =  list(df_year.groups.keys())
+    # print(years)
 
-    figure = go.Figure(data=[go.Histogram(x=embedding_df['year'])])
+    colors = [
+                "#F4EC15",
+                "#DAF017",
+                "#BBEC19",
+                "#9DE81B",
+                "#80E41D",
+                "#66E01F",
+                "#4CDC20",
+                "#34D822",
+                "#24D249",
+                "#25D042",
+                "#26CC58",
+                "#28C86D",
+                "#29C481",
+                "#2AC093",
+                "#2BBCA4",
+                "#2BB5B8",
+                "#2C99B4",
+                "#2D7EB0",
+                "#2D65AC",
+                "#2E4EA4",
+                "#2E38A4",
+                "#3B2FA0",
+                "#4E2F9C",
+                "#603099",]
+    year_skip10 = [int(i) for i in years[::5]]
+    colored = []
+
+    for i in range(len(years)):
+        mc = 9999
+        c_index = 0
+        for j in range(len(year_skip10)):
+            if abs(year_skip10[j]-int(years[i])) < mc:
+                mc =  abs(year_skip10[j]-int(years[i]))
+                c_index = j
+        colored.append(colors[c_index])
+    layout = go.Layout(
+        bargap=0.01,
+        bargroupgap=0,
+        barmode="group",
+        margin=go.layout.Margin(l=15, r=0, t=0, b=50),
+        showlegend=False,)   
+
+    figure = go.Figure(data=[
+                            go.Histogram(
+                                        y=sorted(embedding_df['year']),
+                                        marker=dict(
+                                            color= colored
+                                        ),
+                                        hovertemplate="<b>Decade:</b> %{y} <br><b>Count:</b> %{x}<br>"
+                                        )
+                            ],
+                        layout=layout,
+                        
+                            )
+    figure.update_xaxes(showspikes=True)
+    figure.update_yaxes(showspikes=True)
 
     return figure
 
