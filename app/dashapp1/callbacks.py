@@ -314,6 +314,13 @@ def register_callbacks(dashapp):
         Output("genre-pie-chart", "figure"), 
         Input("graph-3d-plot-tsne", "clickData"))
     def generate_pie_chart(test):
+        """Genrates pie chart displaying genre distribution of users saved tracks
+
+        :param test: test variable 
+        :type test: None
+        :return: pie char figure
+        :rtype: plotly.graph_object
+        """        
         df = pd.read_csv('.csv_caches/saved_track_history.csv')
         df=df['genre'].value_counts()
         new=pd.DataFrame()
@@ -331,8 +338,13 @@ def register_callbacks(dashapp):
         Output("genre-history-chart", "figure"), 
         Input("graph-3d-plot-tsne", "clickData"))
     def generate_genre_history_chart(test):
-        '''
-        '''
+        """Generates genre history chart of user saved saved tracks
+
+        :param test: test var
+        :type test: none
+        :return: genre history chart
+        :rtype:  plotly.express.graph_object
+        """        
         number_of_stacked_genres=5
         num_months=11
         #need to make this a try block

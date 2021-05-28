@@ -59,10 +59,14 @@ def get_auth_manager(cache_path):
                                                 show_dialog=True)
     return auth_manager, cache_handler    
 
-def add_single_genre(tracks_df):  # I this is ugly and inefficent but it works and it was basically instant when testing on 750 songs
-    '''
-    '''
-    #tracks_df["genres"] = tracks_df["genres"].apply(eval)
+def add_single_genre(tracks_df):  
+    """Adds a single genre to tracks data frame by mapping each arist to the most common genre attribute
+
+    :param tracks_df: Dataframe of Tracks
+    :type tracks_df: pd.DataFrame
+    :return: dataframe with 'genre' column
+    :rtype: pd.DataFrame
+    """    
     tmp=tracks_df["genres"]
 
     merged = list(itertools.chain(*tmp))
@@ -325,9 +329,15 @@ def display_era_plot():
     return figure
 
 def get_saved_track_history_csv(spotify, ntracks=1000):
-    '''
-    param: max_songs_per_month: max number of songs to get for each month
-    '''
+    """Generates csv for users saved spotify tracks
+
+    :param spotify: Spotify class object for user
+    :type spotify: spotify.Spotify
+    :param ntracks: max num of songs to grab, defaults to 1000
+    :type ntracks: int, optional
+    :return: None
+    :rtype: None
+    """    
     assert isinstance(ntracks,int) and ntracks%20==0  #number of songs 
     
 
@@ -357,6 +367,7 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
 def get_saved_track_audio_features(spotify):
     """
     generate csv for audio features from saved tracks
+
     :param spotify: Spotify class object for user
     :type spotify: spotify.Spotify
     :return: None
