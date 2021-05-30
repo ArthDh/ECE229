@@ -6,11 +6,19 @@ from ..util.data_callbacks import *
 from flask import session
 import pandas as pd
 import json
+from pandas.tseries.offsets import *
+
+
+
+
+maxmarks=13
+
 
 try:
     df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
     playlists = list(df['playlist_name'].unique())
     playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
+
 
     top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
     artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
@@ -155,7 +163,20 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				html.Strong(children=["Saved Song Genre Distribution"])
 			]),
 			html.Div([
-				dcc.Graph(id='genre-pie-chart')
+				dcc.Graph(id='genre-pie-chart'),
+			]),
+			html.Div([
+				dcc.RangeSlider(
+					id='month-slider',
+					updatemode='mouseup',
+					count=1,
+					min=1,
+					max=maxmarks,
+					step=1,
+					value=[maxmarks-5,maxmarks],
+					marks=get_slider_info()[0],
+					pushable=1
+				)
 			])
 		])
 	]),
