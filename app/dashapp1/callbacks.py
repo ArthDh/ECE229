@@ -17,12 +17,14 @@ from flask import session
 from ..util.data_callbacks import *
 import math
 import plotly.express as px
+from plotly.subplots import make_subplots
+
 
 
 caches_folder = './.spotify_caches/'
 if not os.path.exists(caches_folder):
     os.makedirs(caches_folder)
-scaler = MinMaxScaler() 
+scaler = MinMaxScaler()
 
 def session_cache_path():
     return caches_folder + session.get('uuid')
@@ -36,7 +38,6 @@ def get_me(val):
 
 
 def register_callbacks(dashapp):
-
     @dashapp.callback(Output('radar-graph', 'figure'), [Input('radar-dropdown', 'value')])
     def update_graph(playlists):
         """
@@ -51,15 +52,15 @@ def register_callbacks(dashapp):
         df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
         fig = go.Figure()
         for playlist in playlists:
-            playlist_df = df[df['playlist_name']==playlist]
-            categories = [ 'danceability', 'energy', 'key', 'loudness', 'mode',
-                           'speechiness', 'acousticness', 'instrumentalness', 'liveness',
-                           'valence', 'tempo']
+            playlist_df = df[df['playlist_name'] == playlist]
+            categories = ['danceability', 'energy', 'key', 'loudness', 'mode',
+                          'speechiness', 'acousticness', 'instrumentalness', 'liveness',
+                          'valence', 'tempo']
             for col in playlist_df.columns:
-                if col  in categories:
+                if col in categories:
                     scaler.fit(playlist_df[[col]])
-                    playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1,1)).ravel()
-            feature_val_playlist= playlist_df[categories].mean(0)
+                    playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1, 1)).ravel()
+            feature_val_playlist = playlist_df[categories].mean(0)
 
 
             fig.add_trace(go.Scatterpolar(
@@ -68,6 +69,35 @@ def register_callbacks(dashapp):
                 fill='toself',
                 name=f'{playlist}'
             ))
+        return fig
+
+    @dashapp.callback(
+        Output("playlist-pie-graph", "figure"),
+        [
+            Input("radar-graph", "clickData"),
+            Input("radar-dropdown", "value"),
+        ],
+    )
+    def generate_playlist_pie_chart(clickData, playlists):
+        if isinstance(playlists, str):
+            playlists = [playlists]
+        print(clickData)
+        print(playlists)
+        print('----------------------yoooo---------------')
+        fig = go.Figure()
+        df = pd.read_csv('.csv_caches/playlist_songs_genre.csv')
+        idx = clickData['points'][0]['curveNumber']
+        print(playlists[idx])
+        df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
+        print(df)
+        new = pd.DataFrame()
+        new['genre'] = df.index
+        new['counts'] = df.values
+        # clipped = new[new['counts'] > 5]
+        a = df.index.tolist()
+        b = df.values.tolist()
+        trace = go.Pie(labels=a, values=b)
+        fig.add_trace(trace)
         return fig
 
 
@@ -96,7 +126,7 @@ def register_callbacks(dashapp):
                                      mode='lines',
                                      name=f'{feature}'))
         return fig
-                                     
+
     def generate_figure_image(groups, layout):
         """Generates figure for TSNE points given a specific layout
 
@@ -106,7 +136,7 @@ def register_callbacks(dashapp):
         :type layout: plotly.graph_object.Layout
         :return: Figure containing the plotted scatter points
         :rtype: plotly.graph_object
-        """        
+        """
         data = []
 
         for idx, val in groups:
@@ -119,7 +149,7 @@ def register_callbacks(dashapp):
                 textposition="top center",
                 mode="markers",
                 marker=dict(size=5, symbol="circle"),
-                
+
             )
             data.append(scatter)
 
@@ -143,8 +173,8 @@ def register_callbacks(dashapp):
         :type playlist: List
         :return: Scatter Plot   
         :rtype: plotly.graph_object
-        """    
-       
+        """
+
         path =  '.csv_caches/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
@@ -188,7 +218,7 @@ def register_callbacks(dashapp):
         :return: Extended information of the clicked point
         :rtype: plotly.graph_object
         """
-
+        print(clickData)
         path =  '.csv_caches/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
@@ -214,7 +244,7 @@ def register_callbacks(dashapp):
                 return im_b64
 
             im_b64 = b64(im)
-            
+
             ret = html.Div([
                 row.artist_names.values[0],
                 html.Br(),
@@ -240,7 +270,7 @@ def register_callbacks(dashapp):
         :type clickData: Dict
         :return: Extended view of Histogram that was clicked on 
         :rtype: plotly.graph_object
-        """        
+        """
 
         path =  '.csv_caches/playlist_full.csv'
         try:
@@ -263,7 +293,7 @@ def register_callbacks(dashapp):
             artist_era =[]
             for y in years:
                 artist_era.extend(list(df_year.get_group(str(y)).artist_names))
-            t = []    
+            t = []
             _ = [ t.extend(a.split(',')) for a in  artist_era]
             artists = [a.strip(' ') for a in t]
             artist_counter = Counter(artists)
@@ -287,7 +317,7 @@ def register_callbacks(dashapp):
             :type im_pil: Pillow Image
             :return: base64 encoded image
             :rtype: base64 Image
-            """            
+            """
             buff = BytesIO()
             im_pil.save(buff, format="png")
             im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
@@ -307,12 +337,12 @@ def register_callbacks(dashapp):
                 )])
                 )
 
-        
+
         ret = html.Div(final_ret)
         return ret
-      
+
     @dashapp.callback(
-        Output("genre-pie-chart", "figure"), 
+        Output("genre-pie-chart", "figure"),
         Input("month-slider", "value"))
     def generate_pie_chart(date_range):
         """Genrates pie chart displaying genre distribution of users saved tracks
@@ -343,7 +373,7 @@ def register_callbacks(dashapp):
         return fig
 
     @dashapp.callback(
-        Output("genre-history-chart", "figure"), 
+        Output("genre-history-chart", "figure"),
         Input("graph-3d-plot-tsne", "clickData"))
     def generate_genre_history_chart(test):
         """Generates genre history chart of user saved saved tracks
@@ -352,7 +382,7 @@ def register_callbacks(dashapp):
         :type test: none
         :return: genre history chart
         :rtype:  plotly.express.graph_object
-        """        
+        """
         number_of_stacked_genres=5
         num_months=11
         #need to make this a try block
