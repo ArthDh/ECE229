@@ -7,7 +7,7 @@ from flask import session
 import pandas as pd
 import json
 
-try: 
+try:
     df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
     playlists = list(df['playlist_name'].unique())
     playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
@@ -69,8 +69,11 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				value=playlists[0],
 				multi=True
 			),
-
-			dcc.Graph(id='radar-graph'),
+			html.Div(
+				children=[
+					dcc.Graph(id='radar-graph', style={'width': '50%', 'float': 'left'}),
+					dcc.Graph(id='playlist-pie-graph', style={'width': '50%', 'float': 'right'}),
+				])
 		])
 	])]),
 	html.Section(id="second", children=[
@@ -79,7 +82,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["TSNE Plot"])			
+				html.Strong(children=["TSNE Plot"])
 			]),
 			html.Div([
 				'Playlist',
@@ -105,14 +108,14 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Era Plot"])			
+				html.Strong(children=["Era Plot"])
 			]),
 			html.Div(
         children=[
             dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'70%', 'float':'left'}),
             html.Div(id="div-era-click", style={'float':'right'}),
         ],
-        
+
     )
 		])
 	]),
@@ -122,7 +125,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Era Plot"])			
+				html.Strong(children=["Era Plot"])
 			]),
 			html.H1('Your Top 5 Artists'),
 			html.Div([
@@ -149,7 +152,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Saved Song Genre Distribution"])			
+				html.Strong(children=["Saved Song Genre Distribution"])
 			]),
 			html.Div([
 				dcc.Graph(id='genre-pie-chart')
@@ -162,7 +165,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Saved Song Genre History"])			
+				html.Strong(children=["Saved Song Genre History"])
 			]),
 			html.Div([
         		dcc.Graph(id='genre-history-chart')
@@ -175,7 +178,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Mood Plots"])			
+				html.Strong(children=["Mood Plots"])
 			]),
 			html.Div([
         		dcc.Dropdown(

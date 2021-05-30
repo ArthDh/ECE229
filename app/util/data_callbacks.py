@@ -104,7 +104,7 @@ def clean_top_tracks(spotify, tracks_df):
     tracks_df['album_href'] = tracks_df['album'].map(lambda x:x['href'])
     tracks_df['album_release_date'] = tracks_df['album'].map(lambda x:x['release_date'])
     tracks_df['artist_names'] = tracks_df['artists'].map(lambda x: ', '.join([a['name'] for a in x]))
-    drop_cols = ['album', 'artists', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
+    drop_cols = ['album', 'available_markets', 'disc_number', 'external_ids', 'is_local', 'external_urls',\
                  'track_number', 'duration_ms', 'episode', 'track', 'uri',\
                      'preview_url', 'type',	'album_name', 'album_href']
     tracks_df = tracks_df.drop(drop_cols, axis=1)
@@ -180,6 +180,12 @@ def audio_playlist_features(spotify, playlist_df):
         
     return audio_df
 
+def get_genres(spotify, tracks_df):
+    tracks_df['genres'] = tracks_df['artists'].map(
+        lambda x: spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
+    tracks_df = add_single_genre(tracks_df)
+    return tracks_df
+
 def perform_tsne():
     """Performs TSNE on saved audio feature dataset appended with Kmeans and saves to CSV
     """    
@@ -236,7 +242,7 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     final_df = pd.DataFrame()
     final_df_alt = pd.DataFrame()
     for playlist_name in user_playlists:
-        
+        print(f'getting tsne for {playlist_name}')
         filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
         if filter_playlist['tracks']['total'] <min_songs_per_playlist:
             continue
@@ -247,7 +253,8 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
         list_tracks = [playlist_tracks['items'][i]['track'] for i in range(min(max_songs_per_playlist, filter_playlist['tracks']['total']))]
 
         list_tracks_alt = [playlist_tracks['items'][i]['track'] for i in range(min(100, filter_playlist['tracks']['total']))]
-
+        list_tracks = [x for x in list_tracks if x]
+        list_tracks_alt = [x for x in list_tracks_alt if x]
         temp = pd.DataFrame.from_dict(list_tracks)
         temp_alt = pd.DataFrame.from_dict(list_tracks_alt)
 
@@ -292,7 +299,8 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     X[['x', 'y', 'z']] = embedding_df
     X.to_csv(csv_folder+'/audio_feature_kmean.csv')
     final_df_alt.to_csv(csv_folder+'/playlist_full.csv')
-    
+    final_df_genre = get_genres(spotify, final_df)
+    final_df_genre.to_csv(join(csv_folder, 'playlist_songs_genre.csv'))
     perform_tsne()
     print('---TSNE FILE SAVED---')
     return X
