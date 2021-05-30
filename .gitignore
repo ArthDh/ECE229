@@ -1,3 +1,6 @@
+
+wsgi
+ECE229.wsgi
 .env
 .flask_session
 .spotify_caches
