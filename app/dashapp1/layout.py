@@ -213,7 +213,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
         		dcc.Dropdown(
 					id='mood-dropdown',
 					options=monthly_mood_kv,
-					value=monthly_mood_df.columns[1] if not monthly_mood_df==None else 0,
+					value=monthly_mood_df.columns[1] if not playlists==None else 0,
 					multi=True
 				),
 
