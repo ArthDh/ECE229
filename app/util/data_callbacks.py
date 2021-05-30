@@ -409,6 +409,7 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
     print('----- Generating Saved Track History ---- ')
 
     df_saved_tracks=pd.DataFrame() # empty df to append to
+    df_audio_feature = pd.DataFrame() # empty df for audio features
     for i in range(0,int(ntracks/20)): # use 50 to limit to 1000 songs for now 
         saved_tracks_snip=spotify.current_user_saved_tracks(limit=20, offset=i*20)['items']
         num_snip= len(saved_tracks_snip) # number of tracks grabbed
@@ -423,9 +424,30 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
         list_add_date=[saved_tracks_snip[i]['added_at']for i in range(num_snip)] # format is a bit different for saved tracks
         temp = pd.DataFrame.from_dict(list_tracks)
         temp['date_added']=list_add_date
-        df_saved_tracks=df_saved_tracks.append(clean_saved_tracks(spotify,temp))
+        cleaned_temp = clean_saved_tracks(spotify, temp)
+        df_saved_tracks = df_saved_tracks.append(cleaned_temp)
+
+        track_ids = cleaned_temp['id'].tolist()
+        audio_df = pd.DataFrame.from_dict(spotify.audio_features(track_ids))
+        merged_inner = pd.merge(left=cleaned_temp, right=audio_df, left_on='id', right_on='id')
+        drop_cols = ['analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type', 'explicit',
+                     'popularity']
+        merged_inner = merged_inner.drop(drop_cols, axis=1)
+        df_audio_feature = pd.concat([df_audio_feature, merged_inner], axis=0)
+
     df_saved_tracks=add_single_genre(df_saved_tracks)          # add a single genre
     df_saved_tracks.to_csv(csv_folder+'/saved_track_history.csv')
+
+    # save audio feature df
+    df_audio_feature['month_year'] = pd.to_datetime(df_audio_feature['date_added']).dt.to_period('M')
+    df_audio_feature.to_csv(join(csv_folder, 'saved_track_audio_features.csv'))
+
+    monthly_mean = df_audio_feature.groupby(["month_year"]).mean()
+    x = monthly_mean.values
+    min_max_scaler = MinMaxScaler()
+    monthly_mean = pd.DataFrame(min_max_scaler.fit_transform(x), index=monthly_mean.index, columns=monthly_mean.columns)
+    monthly_mean.to_csv(join(csv_folder, 'audio_features_monthly_mean.csv'))
+
     print('--- HIST FILE SAVED---')
     return(df_saved_tracks)
 
