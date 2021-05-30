@@ -27,9 +27,23 @@ try:
     monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
     # print(monthly_mood_df.columns)
 except FileNotFoundError as error:
-        print ("One or more CSV Files not found ")
+
+    # df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
+    # playlists = list(df['playlist_name'].unique())
+    playlists = None
+    artist_images = None
+    monthly_mood_df = None
+	
+    playlists_kv = [dict()]
+    # top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
+    # artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
+    # monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+    monthly_mood_kv = [dict()]
+    print ("One or more CSV Files not found ")
 
 def generate_image_column(artist_images, idx):
+    if not artist_images:
+        return 0
     return html.Div([
         html.Img(src=artist_images[idx], style={
             'margin-top': '8px',
@@ -74,7 +88,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				dcc.Dropdown(
 				id='radar-dropdown',
 				options=playlists_kv,
-				value=playlists[0],
+				value=playlists[0] if not playlists==None else 0,
 				multi=True
 			),
 
@@ -202,7 +216,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
         		dcc.Dropdown(
 					id='mood-dropdown',
 					options=monthly_mood_kv,
-					value=monthly_mood_df.columns[1],
+					value=monthly_mood_df.columns[1] if not monthly_mood_df==None else 0,
 					multi=True
 				),
 
