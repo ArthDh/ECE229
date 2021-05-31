@@ -1,6 +1,9 @@
 .env
 .flask_session
 .spotify_caches
+# Large files
+*.pkl
+SPF_user_song-score.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
