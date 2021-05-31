@@ -3,6 +3,10 @@
 .spotify_caches
 .csv_caches
 
+# large files
+*.pkl
+SPF_user_song_score.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
