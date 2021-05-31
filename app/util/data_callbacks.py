@@ -384,7 +384,7 @@ def display_era_plot():
                                         marker=dict(
                                             color= colored
                                         ),
-                                        hovertemplate="<b>Decade:</b> %{y} <br><b>Count:</b> %{x}<br>"
+                                        hovertemplate="<b>Year:</b> %{y} <br><b>Count:</b> %{x}<br>"
                                         )
                             ],
                         layout=layout,
@@ -392,7 +392,10 @@ def display_era_plot():
                             )
     figure.update_xaxes(showspikes=True)
     figure.update_yaxes(showspikes=True)
-
+    figure.update_layout(
+        xaxis_title="Counts",
+        yaxis_title="Years",
+    )
     return figure
 
 def get_saved_track_history_csv(spotify, ntracks=1000):

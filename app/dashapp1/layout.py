@@ -94,7 +94,8 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	])]),
 	html.Section(id="second", children=[
 		html.Header(children=[
-			html.H2(children=["Magna sed nullam nisl adipiscing"])
+			html.H2(children=["Your Real Sound Cloud"]),
+			html.Div(id="div-plot-click-image"),
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
@@ -113,23 +114,25 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 			]),
 			html.Div(
 				children=[
-					dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'70%', 'float':'left'}),
-					html.Div(id="div-plot-click-image", style={'float':'right'}),
+					dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'100%', 'float':'left'}),
+					
 				])
 		])
 	]),
 	html.Section(id="third", children=[
 		html.Header(children=[
-			html.H2(children=["Magna sed nullam nisl adipiscing"])
+			html.H2(children=["Magna sed nullam nisl adipiscing"]),
+			html.Div(id="div-era-click"),
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Era Plot"])
+				html.Strong(children=["Annual Artist Plot"])
 			]),
 			html.Div(
         children=[
-            dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'70%', 'float':'left'}),
-            html.Div(id="div-era-click", style={'float':'right'}),
+            dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'100%', 'float':'left'}),
+			html.H2('Latest Songs by Artists of Selected Year!', style={'display':'None'}, id='era_title'),
+			html.Div(id="div-era-results"),
         ],
 
     )

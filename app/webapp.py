@@ -70,7 +70,7 @@ def index():
 
     # # Creating a daemon to save the users CSV file
     # save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
-    #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':10, 'k':10},  daemon=True)
+    #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':30, 'k':10},  daemon=True)
     # save_tse_csv.start()
 
     # #for saved song history csv file
