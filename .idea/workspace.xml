@@ -26,15 +26,15 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/assets/rec-files" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/util" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/util" />
       <recent name="$PROJECT_DIR$/app/assets/rec-files" />
       <recent name="$PROJECT_DIR$/Test" />
       <recent name="$PROJECT_DIR$/.csv_caches" />
-      <recent name="$PROJECT_DIR$/app/util" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/util" />

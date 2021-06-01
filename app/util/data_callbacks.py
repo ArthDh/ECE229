@@ -17,6 +17,8 @@ from collections import Counter
 import itertools
 from pandas.tseries.offsets import *
 
+from .recommender import *
+
 
 caches_folder = './.spotify_caches/'
 csv_folder = './.csv_caches'
@@ -524,3 +526,26 @@ def get_slider_info():
         datevalues[x]=i
         x=x+1
     return (tags,datevalues)
+
+
+def recommend(spotify):
+    """
+    saved_songs_csv: csv file with saved track history
+    spotify: Spotify auth token
+    """
+    saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
+
+    model_folder = './assets/rec_files/'
+    model = os.path.join(model_folder, 'recommender_model_final.pkl')
+    user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
+    songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
+
+    user_data, saved_songs = get_user_song_df(saved_songs_csv)
+    sim_user_id = get_sim_user(user_data, song_id_user_csv=user_song_csv)
+    new_songs = get_new_songs(saved_songs, songs_pool_file=songs_pool_csv)
+    top_songs, _ = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs, model=model)
+
+    tracks = spotify.tracks(top_songs)
+    for t in top_songs_id['tracks']:
+        print('Track: ', t['name'], '\nArtist: ', t['artists'][0]['name'])
+    return tracks
