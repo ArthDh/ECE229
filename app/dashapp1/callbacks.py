@@ -18,7 +18,7 @@ from ..util.data_callbacks import *
 import math
 import plotly.express as px
 from plotly.subplots import make_subplots
-
+import textwrap
 
 
 caches_folder = './.spotify_caches/'
@@ -62,12 +62,12 @@ def register_callbacks(dashapp):
                     playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1, 1)).ravel()
             feature_val_playlist = playlist_df[categories].mean(0)
 
-
+            legend_str = '<br>'.join(textwrap.wrap(playlist, width=12))
             fig.add_trace(go.Scatterpolar(
                 r=feature_val_playlist,
                 theta=categories,
                 fill='toself',
-                name=f'{playlist}'
+                name=f'{legend_str}'
             ))
         return fig
 
@@ -84,10 +84,12 @@ def register_callbacks(dashapp):
         print(clickData)
         print(playlists)
         print('----------------------yoooo---------------')
+        if not clickData:
+            idx = 0
+        else:
+            idx = clickData['points'][0]['curveNumber']
         fig = go.Figure()
         df = pd.read_csv('.csv_caches/playlist_songs_genre.csv')
-        idx = clickData['points'][0]['curveNumber']
-        print(playlists[idx])
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
         print(df)
         new = pd.DataFrame()
@@ -509,3 +511,14 @@ def register_callbacks(dashapp):
 
         fig=px.bar(new_df, x="month_yr", y="size", color="genre")
         return fig
+
+
+
+    @dashapp.callback(
+        Output('rec_results', 'children'),
+        [Input('gen_rec', 'n_clicks')])
+    def update_output(n_clicks):
+
+        return 'The input value was "{}" and the button has been clicked times'.format(
+            n_clicks
+        )
