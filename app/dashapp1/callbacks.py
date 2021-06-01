@@ -78,11 +78,20 @@ def register_callbacks(dashapp):
         ],
     )
     def generate_playlist_pie_chart(clickData, playlists):
+        """
+        generate pie chart based on the selected playlist
+        :param clickData: Dictionary of the clicked datapoint
+        :type clickData: Dict
+        :param playlists: Selected playlists from the dropdown menu
+        :type playlists: List
+        :return:Figure containing pie chart for the genres in the playlist
+        :rtype: plotly.graph_objs
+        """
         if isinstance(playlists, str):
             playlists = [playlists]
         print(clickData)
         print(playlists)
-        print('----------------------yoooo---------------')
+        print('-------------------------------------')
         if not clickData:
             idx = 0
         else:
@@ -126,6 +135,7 @@ def register_callbacks(dashapp):
             fig.add_trace(go.Scatter(x=monthly_mood_df['month_year'], y=monthly_mood_df[feature],
                                      mode='lines',
                                      name=f'{feature}'))
+        fig.update_layout(xaxis_title="Time", yaxis_title="Normalized Index")
         return fig
 
     def generate_figure_image(groups, layout):
