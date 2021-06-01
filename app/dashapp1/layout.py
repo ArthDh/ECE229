@@ -15,43 +15,104 @@ maxmarks=13
 
 
 try:
-    df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
-    playlists = list(df['playlist_name'].unique())
-    playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
+	df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
+	playlists = list(df['playlist_name'].unique())
+	playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
 
 
-    top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
-    artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
+	top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
+	artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
 
-    monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
-    monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
-    # print(monthly_mood_df.columns)
+	monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+	monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
+	# print(monthly_mood_df.columns)
 except FileNotFoundError as error:
-    playlists = None
-    artist_images = None
-    monthly_mood_df = None
+	playlists = None
+	artist_images = None
+	monthly_mood_df = None
 	
-    playlists_kv = [dict()]
-    monthly_mood_kv = [dict()]
-    print ("One or more CSV Files not found ")
+	playlists_kv = [dict()]
+	monthly_mood_kv = [dict()]
+	print ("One or more CSV Files not found ")
 
 def generate_image_column(artist_images, idx):
-    if not artist_images:
-        return 0
-    return html.Div([
-        html.Img(src=artist_images[idx], style={
-            'margin-top': '8px',
-            'vertical-align': 'middle',
-            'width': '100%',
-        })
-    ], style={
-        'flex': '25%',
-        'max-width': '25%',
-        'padding': '0 4px',
-        'margin-top': '8px',
-        'vertical-align': 'middle',
-        'width': '100%',
-    })
+	if not artist_images:
+		return 0
+	if idx == 0:
+		res = html.Div([
+			html.Img(src=artist_images[0], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height':'240px',
+				#'position': 'relative',
+				#'left': '100px'
+			}),
+			html.Img(src=artist_images[1], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '50px',
+				#'padding-left': '50px'
+				# 'position': 'relative',
+				# 'left': '100px'
+			}),
+			html.Img(src=artist_images[2], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '50px',
+				#'padding-left': '50px'
+				# 'position': 'relative',
+				# 'left': '100px'
+			}),
+
+		], style={
+			'display':'inline',
+			#'flex': '25%',
+			#'max-width': '25%',
+			'padding': '0 4px',
+			'margin-top': '8px',
+			'vertical-align': 'middle',
+			'width': '100%',
+		},
+		)
+	else:
+		res = html.Div([
+			html.Img(src=artist_images[3], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '130px',
+				# 'position': 'relative',
+				# 'left': '100px'
+			}),
+			html.Img(src=artist_images[4], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '50px',
+				# 'padding-left': '50px'
+				# 'position': 'relative',
+				# 'left': '100px'
+			})
+		], style={
+			'display': 'inline',
+			# 'flex': '25%',
+			# 'max-width': '25%',
+			'padding': '0 4px',
+			'margin-top': '8px',
+			'vertical-align': 'middle',
+			'width': '100%',
+		},
+		)
+
+
+	return res
 
 layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	children=[html.Section(className="intro", children=[
@@ -94,8 +155,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	])]),
 	html.Section(id="second", children=[
 		html.Header(children=[
-			html.H2(children=["Your Real Sound Cloud"]),
-			html.Div(id="div-plot-click-image"),
+			html.H2(children=["Magna sed nullam nisl adipiscing"])
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
@@ -114,28 +174,26 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 			]),
 			html.Div(
 				children=[
-					dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'100%', 'float':'left'}),
-					
+					dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'70%', 'float':'left'}),
+					html.Div(id="div-plot-click-image", style={'float':'right'}),
 				])
 		])
 	]),
 	html.Section(id="third", children=[
 		html.Header(children=[
-			html.H2(children=["Magna sed nullam nisl adipiscing"]),
-			html.Div(id="div-era-click"),
+			html.H2(children=["Magna sed nullam nisl adipiscing"])
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Annual Artist Plot"])
+				html.Strong(children=["Era Plot"])
 			]),
 			html.Div(
-        children=[
-            dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'100%', 'float':'left'}),
-			html.H2('Latest Songs by Artists of Selected Year!', style={'display':'None'}, id='era_title'),
-			html.Div(id="div-era-results"),
-        ],
+		children=[
+			dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'70%', 'float':'left'}),
+			html.Div(id="div-era-click", style={'float':'right'}),
+		],
 
-    )
+	)
 		])
 	]),
 	html.Section(id="four", children=[
@@ -151,12 +209,12 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				html.Div([
 					generate_image_column(artist_images, 0),
 					generate_image_column(artist_images, 1),
-					generate_image_column(artist_images, 2),
-					generate_image_column(artist_images, 3),
-					generate_image_column(artist_images, 4)
-				])
-
-
+					#generate_image_column(artist_images, 2),
+					#generate_image_column(artist_images, 3),
+					#generate_image_column(artist_images, 4)
+				]
+				,id = 'top_artist_czz'
+				)
 
 			], style={
 				'display': 'flex',
@@ -200,8 +258,8 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				html.Strong(children=["Saved Song Genre History"])
 			]),
 			html.Div([
-        		dcc.Graph(id='genre-history-chart')
-    		])
+				dcc.Graph(id='genre-history-chart')
+			])
 		])
 	]),
 	html.Section(id="seven", children=[
@@ -213,7 +271,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				html.Strong(children=["Mood Plots"])
 			]),
 			html.Div([
-        		dcc.Dropdown(
+				dcc.Dropdown(
 					id='mood-dropdown',
 					options=monthly_mood_kv,
 					value=monthly_mood_df.columns[1] if not playlists==None else 0,
@@ -221,7 +279,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				),
 
 				dcc.Graph(id='mood-graph'),
-    		])
+			])
 		])
 	])
 	])])
