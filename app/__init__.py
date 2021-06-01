@@ -36,7 +36,7 @@ def register_dashapps(app):
                          meta_tags=[meta_viewport])
 
     with app.app_context():
-        dashapp1.title = 'Dashapp 1'
+        dashapp1.title = 'Mus-X'
         dashapp1.layout = layout
         register_callbacks(dashapp1)
 

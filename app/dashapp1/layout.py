@@ -36,27 +36,88 @@ except FileNotFoundError as error:
     print ("One or more CSV Files not found ")
 
 def generate_image_column(artist_images, idx):
-    if not artist_images:
-        return 0
-    return html.Div([
-        html.Img(src=artist_images[idx], style={
-            'margin-top': '8px',
-            'vertical-align': 'middle',
-            'width': '100%',
-        })
-    ], style={
-        'flex': '25%',
-        'max-width': '25%',
-        'padding': '0 4px',
-        'margin-top': '8px',
-        'vertical-align': 'middle',
-        'width': '100%',
-    })
+	if not artist_images:
+		return 0
+	if idx == 0:
+		res = html.Div([
+			html.Img(src=artist_images[0], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height':'240px',
+				#'position': 'relative',
+				#'left': '100px'
+			}),
+			html.Img(src=artist_images[1], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '50px',
+				#'padding-left': '50px'
+				# 'position': 'relative',
+				# 'left': '100px'
+			}),
+			html.Img(src=artist_images[2], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '50px',
+				#'padding-left': '50px'
+				# 'position': 'relative',
+				# 'left': '100px'
+			}),
+
+		], style={
+			'display':'inline',
+			#'flex': '25%',
+			#'max-width': '25%',
+			'padding': '0 4px',
+			'margin-top': '8px',
+			'vertical-align': 'middle',
+			'width': '100%',
+		},
+		)
+	else:
+		res = html.Div([
+			html.Img(src=artist_images[3], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '130px',
+				# 'position': 'relative',
+				# 'left': '100px'
+			}),
+			html.Img(src=artist_images[4], style={
+				'margin-top': '8px',
+				'vertical-align': 'middle',
+				'width': '25%',
+				'height': '240px',
+				'margin-left': '50px',
+				# 'padding-left': '50px'
+				# 'position': 'relative',
+				# 'left': '100px'
+			})
+		], style={
+			'display': 'inline',
+			# 'flex': '25%',
+			# 'max-width': '25%',
+			'padding': '0 4px',
+			'margin-top': '8px',
+			'vertical-align': 'middle',
+			'width': '100%',
+		},
+		)
+
+
+	return res
 
 layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	children=[html.Section(className="intro", children=[
 		html.Header(children=[
-			html.H1(className="app_title", children="MuseX"),
+			html.H1(className="app_title", children="Mus-X"),
 			html.P(children="Let's analyse your music taste."),
 			html.A(className="signin", href="#first", children=[
 				html.Span(style={'padding-right':'3px'}, children=[
@@ -151,9 +212,6 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				html.Div([
 					generate_image_column(artist_images, 0),
 					generate_image_column(artist_images, 1),
-					generate_image_column(artist_images, 2),
-					generate_image_column(artist_images, 3),
-					generate_image_column(artist_images, 4)
 				])
 
 
