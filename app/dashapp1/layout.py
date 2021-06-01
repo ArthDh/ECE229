@@ -118,7 +118,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	children=[html.Section(className="intro", children=[
 		html.Header(children=[
 			html.H1(className="app_title", children="Mus-X"),
-			html.P(children="Let's analyse your music taste."),
+			html.P(children="Let's analyze your music taste."),
 			html.A(className="signin", href="#first", children=[
 				html.Span(style={'padding-right':'3px'}, children=[
 					html.Span(children=["Let's go"], style={'padding-right':'5px'}),
@@ -134,36 +134,23 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	]),
 	html.Section(id="first", children=[
 		html.Header(children=[
-			html.H2(children=["Magna sed nullam nisl adipiscing"])
-		]),
-		html.Div(className="content", children=[
-			html.P(children=[
-				html.H2(children=["RadarPlot"])]),
-			html.Div([
-				dcc.Dropdown(
-				id='radar-dropdown',
-				options=playlists_kv,
-				value=playlists[0] if not playlists==None else 0,
-				multi=True
-			),
-			html.Div(
-				children=[
-					dcc.Graph(id='radar-graph', style={'width': '50%', 'float': 'left'}),
-					dcc.Graph(id='playlist-pie-graph', style={'width': '50%', 'float': 'right'}),
-				])
-		])
-	])]),
-	html.Section(id="second", children=[
-		html.Header(children=[
-			html.H2(children=["Your Real Sound Cloud"]),
+			html.H2(children=["What does your music look like?"]),
 			html.Div(id="div-plot-click-image"),
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["TSNE Plot"])
+				html.H2("Let your \"Real\" Sound Cloud decide"),
+				html.Span(children=[html.Strong("Begin your music exploration journey with a spatial visualization of your Spotify playlists, clustered based on audio features")]),
+				html.Br(),
+				html.Span(children=["Hover to check the song and click to know more"])
 			]),
+			html.Div(
+				children=[
+					dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'100%', 'float':'left'}),
+					
+				]),
 			html.Div([
-				'Playlist',
+				'Playlists',
 
 				dcc.Dropdown(
 					id='playlist_drop',
@@ -173,22 +160,42 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				),
 				html.Div(id='playlists')
 			]),
-			html.Div(
-				children=[
-					dcc.Graph(id="graph-3d-plot-tsne", style={ 'width':'100%', 'float':'left'}),
-					
-				])
 		])
 	]),
+	html.Section(id="second", children=[
+		html.Header(children=[
+			html.H2(children=["What flavours do you like?"])
+		]),
+		html.Div(className="content", children=[
+			html.H2("Grab a piece of your \"spoti-pie\""),
+			html.Span(children=html.Strong("Get a closer look at the composition of your playlists. Let's delve into your choice of flavors")),
+			html.Br(),
+			html.Span("Click the radar plot to show the genre distribution of one playlists"),
+			html.Div(
+				children=[
+					dcc.Graph(id='radar-graph', style={'width': '50%', 'float': 'left'}),
+					dcc.Graph(id='playlist-pie-graph', style={'width': '50%', 'float': 'right'}),
+				]),
+			html.Div([
+				dcc.Dropdown(
+				id='radar-dropdown',
+				options=playlists_kv,
+				value=playlists[0] if not playlists==None else 0,
+				multi=True
+			),
+		])
+	])]),
 	html.Section(id="third", children=[
 		html.Header(children=[
-			html.H2(children=["Magna sed nullam nisl adipiscing"]),
+			html.H2(children=["Are you a Boomer or a zoomer?"]),
 			html.Div(id="div-era-click"),
 		]),
 		html.Div(className="content", children=[
-			html.P(children=[
-				html.Strong(children=["Annual Artist Plot"])
-			]),
+			html.H2("Let's travel back in time and find out"),
+			html.Span(children=html.Strong("Let's take a look at the release dates for your music and explore your favourite artists from each time period")),
+			html.Br(),
+			html.Span("Select a year to fetch the latest albums from your top artists"),
+			html.P(),
 			html.Div(
         children=[
             dcc.Graph(figure = display_era_plot(), id='graph-era', style={'width':'100%', 'float':'left'}),
@@ -201,13 +208,12 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	]),
 	html.Section(id="four", children=[
 		html.Header(children=[
-			html.H2(children=["Magna sed nullam nisl adipiscing"])
+			html.H2(children=["What's your jam?"])
 		]),
 		html.Div(className="content", children=[
-			html.P(children=[
-				html.Strong(children=["Era Plot"])
-			]),
-			html.H1('Your Top 5 Artists'),
+			html.H2("It's favorites time!"),
+			html.Span(children=html.Strong("")),
+			html.Br(),
 			html.Div([
 				html.Div([
 					generate_image_column(artist_images, 0),
@@ -225,12 +231,13 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	]),
 	html.Section(id="five", children=[
 		html.Header(children=[
-			html.H2(children=["Saved Song Genre Distribution"])
+			html.H2(children=["What's your genre pallette?"])
 		]),
 		html.Div(className="content", children=[
-			html.P(children=[
-				html.Strong(children=["Saved Song Genre Distribution"])
-			]),
+			html.H2("It's ever changing"),
+			html.Span(children=html.Strong("Let's break-down the changes in your musical taste over time. This analysis is based on your saved songs")),
+			html.Br(),
+			html.P("Slide the filter around to pick the time period"),
 			html.Div([
 				dcc.Graph(id='genre-pie-chart'),
 			]),
@@ -246,29 +253,22 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 					marks=get_slider_info()[0],
 					pushable=1
 				)
-			])
+			]),
+			html.Hr(),
+			html.Span("Select one or more genres and hover over the graph for more"),
+			html.Div([
+        		dcc.Graph(id='genre-history-chart')
+    		])
+
 		])
 	]),
 	html.Section(id="six", children=[
 		html.Header(children=[
-			html.H2(children=["Genres"])
+			html.H2(children=["What do you learn from this one?"])
 		]),
 		html.Div(className="content", children=[
 			html.P(children=[
-				html.Strong(children=["Saved Song Genre History"])
-			]),
-			html.Div([
-        		dcc.Graph(id='genre-history-chart')
-    		])
-		])
-	]),
-	html.Section(id="seven", children=[
-		html.Header(children=[
-			html.H2(children=["Mood Plots"])
-		]),
-		html.Div(className="content", children=[
-			html.P(children=[
-				html.Strong(children=["Mood Plots"])
+				html.Strong(children=["You decide. Mood plot? Maybe?"])
 			]),
 			html.Div([
         		dcc.Dropdown(
@@ -282,17 +282,14 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
     		])
 		])
 	]),
-	html.Section(id="eight", children=[
+	html.Section(id="seven", children=[
 		html.Header(children=[
 			html.H2(children=["Lost in the soundscape?"])
 		]),
 		html.Div(className="content", children=[
-			html.P(children=[
-				html.H1('We got you!')
-			]),
+			html.H2("Let us guide you through the musical woods"),
+			html.P("Click to see what we think you will like"),
 			html.Div([
-
-
 				html.Button('Surprise me!', id='gen_rec', n_clicks=0),
 				html.Div(id="rec_results"),
 
