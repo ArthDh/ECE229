@@ -36,7 +36,6 @@ def get_me(val):
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     return html.H1(spotify.me()[val])
 
-
 def register_callbacks(dashapp):
     @dashapp.callback(Output('radar-graph', 'figure'), [Input('radar-dropdown', 'value')])
     def update_graph(playlists):
@@ -519,7 +518,45 @@ def register_callbacks(dashapp):
         Output('rec_results', 'children'),
         [Input('gen_rec', 'n_clicks')])
     def update_output(n_clicks):
+        if n_clicks==0: 
+            return  None
+        else:
+            if os.path.exists('rec.json'):
+                data = json.load( open( "rec.json" ) )
+                
+                def b64(im_pil):
+                    """Conversion to Base64 
 
-        return 'The input value was "{}" and the button has been clicked times'.format(
-            n_clicks
-        )
+                    :param im_pil: Pillow Image to be converted
+                    :type im_pil: Pillow Image
+                    :return: base64 encoded image
+                    :rtype: base64 Image
+                    """
+                    buff = BytesIO()
+                    im_pil.save(buff, format="png")
+                    im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+                    return im_b64
+                temp = []
+
+                for k,v in data.items():
+                    print(k, v)
+                    im = Image.open(requests.get(v['img_href'], stream=True).raw)
+                    im_b64 = b64(im)
+
+                    temp.append(html.Div([
+                                html.H2(v['artist'], style={'text-align':'center', 'margin':'0'}),
+                                html.H3(v['track'], style={'text-align':'center', 'margin':'0'}),
+                                html.Img(
+                                src="data:image/png;base64, " + im_b64,
+                                style={"height": "25vh", "display": "block", "margin": "auto", 'border-radius':'15em'},
+                                ),
+                                
+                                html.Div([
+
+                                    html.Audio(src=v['preview_href'],controls=True, style={'margin-top':'1em'}),                  
+
+                                ], style={'text-align':'center'})
+
+                            ],style={'margin-top':'2em'}))
+
+                return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})

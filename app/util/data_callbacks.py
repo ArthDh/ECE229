@@ -3,6 +3,11 @@ import pandas as pd
 import numpy as np
 import os
 from os.path import join
+import dash_html_components as html
+from PIL import Image
+from io import BytesIO
+import base64
+import requests
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.manifold import TSNE
@@ -15,6 +20,7 @@ import datetime
 import plotly.graph_objects as go
 from collections import Counter
 import itertools
+import json
 from pandas.tseries.offsets import *
 
 from .recommender import *
@@ -577,17 +583,62 @@ def recommend(spotify):
     """
     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
 
-    model_folder = './assets/rec_files/'
+    model_folder = 'app/assets/rec-files/'
     model = os.path.join(model_folder, 'recommender_model_final.pkl')
     user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
     songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
 
+    print('\nloaded_csvs\n')
+
     user_data, saved_songs = get_user_song_df(saved_songs_csv)
+    print('user_data loaded')
     sim_user_id = get_sim_user(user_data, song_id_user_csv=user_song_csv)
+    print('sim user loaded')
+    
     new_songs = get_new_songs(saved_songs, songs_pool_file=songs_pool_csv)
+    print('SAved songs loaded')
+    
     top_songs, _ = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs, model=model)
+    print('TOP songs loaded')
 
     tracks = spotify.tracks(top_songs)
-    for t in top_songs_id['tracks']:
-        print('Track: ', t['name'], '\nArtist: ', t['artists'][0]['name'])
+    print(tracks['tracks'])
+
+    d = dict()
+    for i, t in enumerate(tracks['tracks']):
+        d[i] = {'track':t['name'], 'artist':t['artists'][0]['name'], \
+                'img_href': t['album']['images'][0]['url'],  'preview_href': t['preview_url'], \
+                'id':t['id']}
+
+    json.dump(d, open( "rec.json", 'w' ) )
     return tracks
+
+
+def get_user_info():
+    if os.path.exists('me.json'):
+        data = json.load( open( "me.json" ) )
+        im = Image.open(requests.get(data['img_url'], stream=True).raw)
+        def b64(im_pil):
+            """Conversion to Base64 
+
+            :param im_pil: Pillow Image to be converted
+            :type im_pil: Pillow Image
+            :return: base64 encoded image
+            :rtype: base64 Image
+            """
+            buff = BytesIO()
+            im_pil.save(buff, format="png")
+            im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+            return im_b64
+        im_b64 = b64(im)
+
+        return html.Div([
+                        html.H2(data['name'], style={'text-align':'center', 'margin':'0'}),
+                        html.Img(
+                        src="data:image/png;base64, " + im_b64,
+                        style={"height": "25vh", "display": "block", "margin": "auto", 'border-radius':'15em'},
+                        ),
+                        
+                    ],style={'margin-top':'5em'})
+    else:
+        return None

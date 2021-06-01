@@ -54,7 +54,7 @@ def get_sim_user(user_data, song_id_user_csv=None):
     song_id_user_csv: filemane for curated user id - song id - rating dataset
     returns: user_id of most similar user in the training set
     """
-    num_entries = 800000  # dataset to large to be used in full, has to cap # of entries
+    num_entries = 500000  # dataset to large to be used in full, has to cap # of entries
     df_song_id_user = pd.read_csv(song_id_user_csv).iloc[:num_entries, :10]
     df_song_id_user.append(user_data)
 
