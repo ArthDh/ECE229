@@ -84,10 +84,12 @@ def register_callbacks(dashapp):
         print(clickData)
         print(playlists)
         print('----------------------yoooo---------------')
+        if not clickData:
+            idx = 0
+        else:
+            idx = clickData['points'][0]['curveNumber']
         fig = go.Figure()
         df = pd.read_csv('.csv_caches/playlist_songs_genre.csv')
-        idx = clickData['points'][0]['curveNumber']
-        print(playlists[idx])
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
         print(df)
         new = pd.DataFrame()
