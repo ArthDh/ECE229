@@ -200,6 +200,7 @@ def register_callbacks(dashapp):
         embedding_df = embedding_df[embedding_df['playlist_name'].isin(playlist)]
         groups = embedding_df.groupby("predicted_genres")
         figure = generate_figure_image(groups, layout)
+        figure.update_layout(showlegend=False)
 
 
         return figure
