@@ -89,6 +89,48 @@ def add_single_genre(tracks_df):
                 max_tmp=genre_rank[j]
         single_genre_list.append(genre_tmp)
     tracks_df['genre']=single_genre_list
+
+    g=genre_rank.index.to_list()
+    g.sort(key=len)
+    counts=tracks_df['genre'].value_counts()
+    tmp=tracks_df['genre'].value_counts().index.to_list()
+    tmp.sort(key=len)
+    map_dict={}
+    # one_split 
+    for i in tmp:
+        if i in map_dict.keys():
+            continue
+        split=i.split()
+        if i in tmp[:5]:
+            continue
+        if len(split)==1: # skip single genres
+            continue
+        for j in split:
+            for k in tmp:
+                if j in k:
+                    if i not in map_dict.keys():
+                        map_dict[i]=(k,counts[k])
+                        #print("\ngenre",i,"\nkey_word",j,"\nmapped",k)
+                    elif map_dict[i][1]<counts[k]:
+                        map_dict[i]=(k,counts[k])
+                        #print("\ngenre",i,"\nkey_word",j,"\nmapped",k)
+
+    new_genres=[]
+    counts_mean=sum(counts.to_list())/len(counts.to_list())
+    glist=tracks_df['genre'].to_list()
+    for i in glist:
+        if i in map_dict.keys() and counts[i]<counts_mean:
+            new_genres.append(map_dict[i][0])
+        else:
+            new_genres.append(i)
+    new_genres2=[]
+    for g in new_genres:#hardcoding to reduce extra genres
+        if counts[g]<7:  
+            new_genres2.append('rock')
+        else:
+            new_genres2.append(g)
+
+    tracks_df['genre']=new_genres2
     return tracks_df
 
 

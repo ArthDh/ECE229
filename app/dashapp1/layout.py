@@ -291,8 +291,6 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				html.H1('We got you!')
 			]),
 			html.Div([
-
-
 				html.Button('Surprise me!', id='gen_rec', n_clicks=0),
 				html.Div(id="rec_results"),
 
@@ -300,6 +298,23 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		])
 	]),
 
+	html.Section(id="nine", children=[
+		html.Header(children=[
+			html.H2(children=["See you again!"]),
+			html.Button('Logout', id='logout', n_clicks=0),
+
+		]),
+		# html.Div(className="content", children=[
+		# 	html.P(children=[
+		# 		html.H1('We got you!')
+		# 	]),
+		# 	html.Div([
+		# 		html.Button('Surprise me!', id='gen_rec', n_clicks=0),
+		# 		html.Div(id="rec_results"),
+
+    	# 	])
+		# ])
+	]),
 
 
 	])])
