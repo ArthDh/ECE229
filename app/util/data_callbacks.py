@@ -17,6 +17,8 @@ from collections import Counter
 import itertools
 from pandas.tseries.offsets import *
 
+from .recommender import *
+
 
 caches_folder = './.spotify_caches/'
 csv_folder = './.csv_caches'
@@ -87,6 +89,48 @@ def add_single_genre(tracks_df):
                 max_tmp=genre_rank[j]
         single_genre_list.append(genre_tmp)
     tracks_df['genre']=single_genre_list
+
+    g=genre_rank.index.to_list()
+    g.sort(key=len)
+    counts=tracks_df['genre'].value_counts()
+    tmp=tracks_df['genre'].value_counts().index.to_list()
+    tmp.sort(key=len)
+    map_dict={}
+    # one_split 
+    for i in tmp:
+        if i in map_dict.keys():
+            continue
+        split=i.split()
+        if i in tmp[:5]:
+            continue
+        if len(split)==1: # skip single genres
+            continue
+        for j in split:
+            for k in tmp:
+                if j in k:
+                    if i not in map_dict.keys():
+                        map_dict[i]=(k,counts[k])
+                        #print("\ngenre",i,"\nkey_word",j,"\nmapped",k)
+                    elif map_dict[i][1]<counts[k]:
+                        map_dict[i]=(k,counts[k])
+                        #print("\ngenre",i,"\nkey_word",j,"\nmapped",k)
+
+    new_genres=[]
+    counts_mean=sum(counts.to_list())/len(counts.to_list())
+    glist=tracks_df['genre'].to_list()
+    for i in glist:
+        if i in map_dict.keys() and counts[i]<counts_mean:
+            new_genres.append(map_dict[i][0])
+        else:
+            new_genres.append(i)
+    new_genres2=[]
+    for g in new_genres:#hardcoding to reduce extra genres
+        if counts[g]<7:  
+            new_genres2.append('rock')
+        else:
+            new_genres2.append(g)
+
+    tracks_df['genre']=new_genres2
     return tracks_df
 
 
@@ -524,3 +568,26 @@ def get_slider_info():
         datevalues[x]=i
         x=x+1
     return (tags,datevalues)
+
+
+def recommend(spotify):
+    """
+    saved_songs_csv: csv file with saved track history
+    spotify: Spotify auth token
+    """
+    saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
+
+    model_folder = './assets/rec_files/'
+    model = os.path.join(model_folder, 'recommender_model_final.pkl')
+    user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
+    songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
+
+    user_data, saved_songs = get_user_song_df(saved_songs_csv)
+    sim_user_id = get_sim_user(user_data, song_id_user_csv=user_song_csv)
+    new_songs = get_new_songs(saved_songs, songs_pool_file=songs_pool_csv)
+    top_songs, _ = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs, model=model)
+
+    tracks = spotify.tracks(top_songs)
+    for t in top_songs_id['tracks']:
+        print('Track: ', t['name'], '\nArtist: ', t['artists'][0]['name'])
+    return tracks

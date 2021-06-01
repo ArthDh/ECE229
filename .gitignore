@@ -5,6 +5,14 @@ ECE229.wsgi
 .flask_session
 .spotify_caches
 
+# Large files
+.csv_caches
+*.pkl
+SPF_user_song_score.csv
+
+# IDE
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
