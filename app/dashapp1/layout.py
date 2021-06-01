@@ -15,15 +15,15 @@ maxmarks=13
 
 
 try:
-    df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
+    df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
     playlists = list(df['playlist_name'].unique())
     playlists_kv = [dict([('label', k), ('value', k)]) for k in playlists]
 
 
-    top_5_artists = pd.read_csv('.csv_caches/top_5_artists.csv')
+    top_5_artists = pd.read_csv(f'.csv_caches/{get_my_id()}/top_5_artists.csv')
     artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
 
-    monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+    monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
     monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
     # print(monthly_mood_df.columns)
 except FileNotFoundError as error:

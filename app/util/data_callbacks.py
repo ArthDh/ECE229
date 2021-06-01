@@ -34,6 +34,13 @@ if not os.path.exists(caches_folder):
 if not os.path.exists(csv_folder):
     os.makedirs(csv_folder)
 
+def get_my_id():
+    if os.path.exists('me.json'):
+        data = json.load( open( "me.json" ) )
+        return data['id']
+    
+
+
 def get_auth_manager(cache_path):
     """Returns authentication manager and Cache Handler for reusing in other functions
 
@@ -241,7 +248,9 @@ def get_genres(spotify, tracks_df):
 def perform_tsne():
     """Performs TSNE on saved audio feature dataset appended with Kmeans and saves to CSV
     """    
-    dataset = '.csv_caches/audio_feature_kmean.csv'
+    dataset = f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
+
+    csv_folder =  f'.csv_caches/{get_my_id()}'
     data = pd.read_csv( dataset)
     X = copy.deepcopy(data)
     song_features = pd.DataFrame()
@@ -272,7 +281,7 @@ def perform_tsne():
 
 
 
-def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k=10):
+def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k=10, csv_folder=csv_folder):
     """Creates base csv to perform TSNE 
 
     :param spotify: Spotify class object for user
@@ -286,6 +295,10 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     :return: Saves and Returns the final CSV for plotting of TSNE
     :rtype: pandas.Dataframe
     """
+    csv_folder =  f'.csv_caches/{get_my_id()}'
+    print(f'\n {csv_folder}')
+    if not os.path.exists(csv_folder):
+        os.makedirs(csv_folder)
     print(f'---MIN SONGS {min_songs_per_playlist}---')
     print(f'---MAX SONGS {max_songs_per_playlist}---')
     print(f'---K value for K Means {k}---')
@@ -363,7 +376,7 @@ def display_era_plot():
     :return: Plot of artists belonging to particular years
     :rtype: plotly.graph_objects
     """        
-    path =  '.csv_caches/playlist_full.csv'
+    path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
     try:
         embedding_df = pd.read_csv(path)
     except FileNotFoundError as error:
@@ -459,7 +472,12 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
     :rtype: None
     """    
     assert isinstance(ntracks,int) and ntracks%20==0  #number of songs 
-    print('----- Generating Saved Track History ---- ')
+    print('\n----- Generating Saved Track History ---- ')
+    csv_folder =  f'.csv_caches/{get_my_id()}'
+    
+    print(f'{csv_folder}')
+
+    print('-'*50)
 
     df_saved_tracks=pd.DataFrame() # empty df to append to
     df_audio_feature = pd.DataFrame() # empty df for audio features
@@ -516,6 +534,8 @@ def get_saved_track_audio_features(spotify):
     :rtype: None
     """
     print('-------- creating get_saved_track_audio_features.csv --------')
+    csv_folder =  f'.csv_caches/{get_my_id()}'
+
     history = pd.read_csv(join(csv_folder, 'saved_track_history.csv'))
     final_df = pd.DataFrame()
 
@@ -550,6 +570,8 @@ def get_top_artist_csv(spotify):
     :return: None
     :rtype: None
     """
+    csv_folder =  f'.csv_caches/{get_my_id()}'
+
     print(f'--- Generating top artist csv ---')
     data = spotify.current_user_top_artists(limit=5, time_range='long_term')['items']
     df = pd.DataFrame.from_dict(data)
@@ -581,6 +603,8 @@ def recommend(spotify):
     saved_songs_csv: csv file with saved track history
     spotify: Spotify auth token
     """
+    csv_folder =  f'.csv_caches/{get_my_id()}'
+
     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
 
     model_folder = 'app/assets/rec-files/'
@@ -596,7 +620,7 @@ def recommend(spotify):
     print('sim user loaded')
     
     new_songs = get_new_songs(saved_songs, songs_pool_file=songs_pool_csv)
-    print('SAved songs loaded')
+    print('Saved songs loaded')
     
     top_songs, _ = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs, model=model)
     print('TOP songs loaded')
@@ -610,7 +634,7 @@ def recommend(spotify):
                 'img_href': t['album']['images'][0]['url'],  'preview_href': t['preview_url'], \
                 'id':t['id']}
 
-    json.dump(d, open( "rec.json", 'w' ) )
+    json.dump(d, open( os.path.join(csv_folder,"rec.json"), 'w' ) )
     return tracks
 
 

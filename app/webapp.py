@@ -69,43 +69,32 @@ def index():
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     
     me =spotify.me() 
-    me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url']}
+    me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': me['id']}
     
     json.dump( me_dict, open( "me.json", 'w' ) )
 
     # # Creating a daemon to save the users CSV file
-    # save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
-    #                                             kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':30, 'k':10},  daemon=True)
-    # save_tse_csv.start()
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_feature_kmean.csv'):
+        save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
+                                                    kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':5, 'k':10},  daemon=True)
+        save_tse_csv.start()
 
     # #for saved song history csv file
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_audio_features.csv'):
+        save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
+                                                    kwargs={'ntracks':1000},  daemon=True)
+        save_hist_csv.start()
 
-    # save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
-    #                                             kwargs={'ntracks':1000},  daemon=True)
-    # save_hist_csv.start()
-
-    # save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
-    # save_top_artist_csv.start()
-
-
-    # save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
-    #                                             kwargs={'ntracks':1000},  daemon=True)
-
-    # save_hist_csv.start()
-    
-
-    # save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
-    # save_top_artist_csv.start()
-
-    if os.path.exists('.csv_caches/saved_track_history.csv'):
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_5_artists.csv'):
+        save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
+        save_top_artist_csv.start()
         
-        print('\nGenerating recs\n')
-
-        gen_recs = Process(target=recommend, args=([spotify]), \
-                                                    daemon=True)
-
-        gen_recs.start()
-        
+    if os.path.exists(f'.csv_caches/{get_my_id()}/saved_track_history.csv'):
+        print("---Generating RECS---")
+        if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
+            gen_recs = Process(target=recommend, args=([spotify]), \
+                                                        daemon=True)
+            gen_recs.start()
 
     print("\n Done creating CSVs \n")
     # return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)

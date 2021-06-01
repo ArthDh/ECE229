@@ -48,7 +48,7 @@ def register_callbacks(dashapp):
         """
         if isinstance(playlists, str):
             playlists = [playlists]
-        df = pd.read_csv('.csv_caches/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
+        df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv').drop(['Unnamed: 0'], axis=1)
         fig = go.Figure()
         for playlist in playlists:
             playlist_df = df[df['playlist_name'] == playlist]
@@ -88,7 +88,7 @@ def register_callbacks(dashapp):
         else:
             idx = clickData['points'][0]['curveNumber']
         fig = go.Figure()
-        df = pd.read_csv('.csv_caches/playlist_songs_genre.csv')
+        df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
         print(df)
         new = pd.DataFrame()
@@ -120,7 +120,7 @@ def register_callbacks(dashapp):
         print('features: ', features)
         if isinstance(features, str):
             features = [features]
-        monthly_mood_df = pd.read_csv('.csv_caches/audio_features_monthly_mean.csv')
+        monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
         fig = go.Figure()
         for feature in features:
             fig.add_trace(go.Scatter(x=monthly_mood_df['month_year'], y=monthly_mood_df[feature],
@@ -178,7 +178,7 @@ def register_callbacks(dashapp):
         :rtype: plotly.graph_object
         """
 
-        path =  '.csv_caches/audio_feature_kmean.csv'
+        path =  f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
@@ -222,7 +222,7 @@ def register_callbacks(dashapp):
         :return: Extended information of the clicked point
         :rtype: plotly.graph_object
         """
-        path =  '.csv_caches/audio_feature_kmean.csv'
+        path =  f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
@@ -278,7 +278,7 @@ def register_callbacks(dashapp):
 
         
         try:
-            path =  '.csv_caches/playlist_full.csv'
+            path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
             print(
@@ -366,7 +366,7 @@ def register_callbacks(dashapp):
 
         
         try:
-            path =  '.csv_caches/playlist_full.csv'
+            path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
             print(
@@ -461,7 +461,7 @@ def register_callbacks(dashapp):
         dates_dict=get_slider_info()[1]
         before=dates_dict[date_range[1]].tz_localize(None)
         after=dates_dict[date_range[0]].tz_localize(None)
-        df = pd.read_csv('.csv_caches/saved_track_history.csv')
+        df = pd.read_csv(f'.csv_caches/{get_my_id()}/saved_track_history.csv')
         df['date_added'] = pd.to_datetime(df['date_added']).apply(lambda x: x.replace(tzinfo=None)) 
         df=df[df['date_added']<before]
         df=df[df['date_added']>after]
@@ -492,7 +492,7 @@ def register_callbacks(dashapp):
         number_of_stacked_genres=5
         num_months=11
         #need to make this a try block
-        df=pd.read_csv('.csv_caches/saved_track_history.csv')
+        df=pd.read_csv(f'.csv_caches/{get_my_id()}/saved_track_history.csv')
         df['date_added']=pd.to_datetime(df['date_added'])
         df['month_yr']=df['date_added'].dt.to_period('M')
         count_series=df.groupby(['month_yr','genre']).size()
@@ -521,8 +521,8 @@ def register_callbacks(dashapp):
         if n_clicks==0: 
             return  None
         else:
-            if os.path.exists('rec.json'):
-                data = json.load( open( "rec.json" ) )
+            if os.path.exists(os.path.join(f'{csv_folder}/{get_my_id()}','rec.json')):
+                data = json.load( open( os.path.join(f'{csv_folder}/{get_my_id()}','rec.json')) )
                 
                 def b64(im_pil):
                     """Conversion to Base64 
