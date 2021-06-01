@@ -223,5 +223,25 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 				dcc.Graph(id='mood-graph'),
     		])
 		])
-	])
+	]),
+	html.Section(id="eight", children=[
+		html.Header(children=[
+			html.H2(children=["Lost in the soundscape?"])
+		]),
+		html.Div(className="content", children=[
+			html.P(children=[
+				html.H1('We got you!')
+			]),
+			html.Div([
+
+
+				html.Button('Surprise me!', id='gen_rec', n_clicks=0),
+				html.Div(id="rec_results"),
+
+    		])
+		])
+	]),
+
+
+
 	])])

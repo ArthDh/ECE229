@@ -509,3 +509,14 @@ def register_callbacks(dashapp):
 
         fig=px.bar(new_df, x="month_yr", y="size", color="genre")
         return fig
+
+
+
+    @dashapp.callback(
+        Output('rec_results', 'children'),
+        [Input('gen_rec', 'n_clicks')])
+    def update_output(n_clicks):
+
+        return 'The input value was "{}" and the button has been clicked times'.format(
+            n_clicks
+        )
