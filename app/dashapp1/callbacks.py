@@ -18,7 +18,7 @@ from ..util.data_callbacks import *
 import math
 import plotly.express as px
 from plotly.subplots import make_subplots
-
+import textwrap
 
 
 caches_folder = './.spotify_caches/'
@@ -62,12 +62,12 @@ def register_callbacks(dashapp):
                     playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1, 1)).ravel()
             feature_val_playlist = playlist_df[categories].mean(0)
 
-
+            legend_str = '<br>'.join(textwrap.wrap(playlist, width=12))
             fig.add_trace(go.Scatterpolar(
                 r=feature_val_playlist,
                 theta=categories,
                 fill='toself',
-                name=f'{playlist}'
+                name=f'{legend_str}'
             ))
         return fig
 
