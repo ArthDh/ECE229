@@ -117,7 +117,7 @@ def generate_image_column(artist_images, idx):
 layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	children=[html.Section(className="intro", children=[
 		html.Header(children=[
-			html.H1(className="app_title", children="MuseX"),
+			html.H1(className="app_title", children="Mus-X"),
 			html.P(children="Let's analyse your music taste."),
 			html.A(className="signin", href="#first", children=[
 				html.Span(style={'padding-right':'3px'}, children=[
