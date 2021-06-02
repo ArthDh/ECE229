@@ -78,6 +78,15 @@ def register_callbacks(dashapp):
         ],
     )
     def generate_playlist_pie_chart(clickData, playlists):
+        """
+        generate pie chart based on the selected playlist
+        :param clickData: Dictionary of the clicked datapoint
+        :type clickData: Dict
+        :param playlists: Selected playlists from the dropdown menu
+        :type playlists: List
+        :return:Figure containing pie chart for the genres in the playlist
+        :rtype: plotly.graph_objs
+        """
         if isinstance(playlists, str):
             playlists = [playlists]
         # print(clickData)
@@ -126,6 +135,7 @@ def register_callbacks(dashapp):
             fig.add_trace(go.Scatter(x=monthly_mood_df['month_year'], y=monthly_mood_df[feature],
                                      mode='lines',
                                      name=f'{feature}'))
+        fig.update_layout(xaxis_title="Time", yaxis_title="Normalized Index")
         return fig
 
     def generate_figure_image(groups, layout):
@@ -558,8 +568,34 @@ def register_callbacks(dashapp):
 
                 return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})
 
+    @dashapp.callback(
+        Output('user_info', 'children'),
+        [Input('url', 'pathname')])
+    def get_user_info(pathname):
+        if os.path.exists('me.json'):
+            data = json.load( open( "me.json" ) )
+            im = Image.open(requests.get(data['img_url'], stream=True).raw)
+            def b64(im_pil):
+                """Conversion to Base64 
 
-    # @dashapp.callback(
-    #     Output('rec_results', 'children'),
-    #     [Input('gen_rec', 'n_clicks')])
-    # def get_user_info(n_clicks):                
+                :param im_pil: Pillow Image to be converted
+                :type im_pil: Pillow Image
+                :return: base64 encoded image
+                :rtype: base64 Image
+                """
+                buff = BytesIO()
+                im_pil.save(buff, format="png")
+                im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+                return im_b64
+            im_b64 = b64(im)
+ 
+            return html.Div(className='user-info',children=[
+                    html.Img(
+                    src="data:image/png;base64, " + im_b64,
+                    className='user-image',
+                    ),
+                    html.P(children=[
+                    html.H3(children=["Hi ", data['name']], className='user-name')])
+                ],style={'margin-top':'1em'})
+        else:
+            return None
