@@ -3889,6 +3889,34 @@ input, select, textarea {
 		display: None !important
 	}
 
+
+    .img_row{
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .img_row_half{
+        display: flex;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+	.img_col{
+        flex: 33%;
+
+	}
+
+	.img_in_row{
+        margin-top: 30px;
+        vertical-align: middle;
+        width: 240px;
+        height: 240px;
+        position: relative;
+        margin-right: auto;
+        margin-left: auto;
+	}
+
 	/* Arrow */
 
 	a.signin {

@@ -22,6 +22,7 @@ try:
 
     top_5_artists = pd.read_csv(f'.csv_caches/{get_my_id()}/top_5_artists.csv')
     artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
+    artist_names = top_5_artists.name.to_list()
 
     monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
     monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
@@ -113,6 +114,50 @@ def generate_image_column(artist_images, idx):
 
 
 	return res
+
+def generate_image_section(artist_images, titles):
+
+	if not artist_images:
+		return 0
+
+	row1 = html.Div([
+		html.Div([
+			html.Img(src=artist_images[0], className='img_in_row'),
+			html.H3(titles[0], style={'margin': 'auto', 'text-align':'center'}),
+		], className='img_col'),
+
+		html.Div([
+			html.Img(src=artist_images[1], className='img_in_row'),
+			html.H3(titles[1], style={'margin': 'auto', 'text-align':'center'}),
+		], className='img_col'),
+
+		html.Div([
+			html.Img(src=artist_images[2], className='img_in_row'),
+			html.H3(titles[2], style={'margin': 'auto', 'text-align':'center'}),
+		], className='img_col'),
+	],
+		className='img_row',
+
+	)
+	row2 = html.Div([
+		html.Div(style={'width': '17%'}),
+
+		html.Div([
+			html.Img(src=artist_images[3], className='img_in_row'),
+			html.H3(titles[3], style={'margin': 'auto', 'text-align':'center'}),
+		], className='img_col'),
+
+		html.Div([
+			html.Img(src=artist_images[4], className='img_in_row'),
+			html.H3(titles[4], style={'margin': 'auto', 'text-align':'center'}),
+		], className='img_col'),
+
+		html.Div(style={'width': '17%'}),
+	],
+		className='img_row_half',
+	)
+
+	return html.Div([row1, row2])
 
 layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	children=[
@@ -218,21 +263,9 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 		]),
 		html.Div(className="content", children=[
 			html.H2("It's favorites time!"),
-			html.Span(children=html.Strong("")),
-			html.Br(),
-			html.Div([
-				html.Div([
-					generate_image_column(artist_images, 0),
-					generate_image_column(artist_images, 1),
-				])
-
-
-
-			], style={
-				'display': 'flex',
-				'flex-wrap': 'wrap',
-				'padding': '0 4px',
-			})
+			html.Span(children=html.Strong("Here are the top 5 artists who shine through your music space, followed by your top 5 tracks.")),
+			html.P("Are they who you have in mind?"),
+			generate_image_section(artist_images, artist_names),
 		])
 	]),
 	html.Section(id="five", children=[
