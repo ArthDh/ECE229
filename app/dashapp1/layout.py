@@ -303,8 +303,9 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 			html.Div([
 				html.Button('Surprise me!', id='gen_rec', n_clicks=0),
 				html.Div(id="rec_results"),
-
-    		])
+    		]),
+			html.Button('Export the result to Spotify!', id='export_playlist', n_clicks=0),
+			html.Div(id="export_result"),
 		])
 	]),
 

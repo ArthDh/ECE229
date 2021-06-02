@@ -570,3 +570,25 @@ def register_callbacks(dashapp):
                             ],style={'margin-top':'2em'}))
 
                 return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})
+
+    @dashapp.callback(
+        Output('export_result', 'children'),
+        [Input('export_playlist', 'n_clicks')])
+    def export_playlist(n_clicks):
+        if n_clicks==0:
+            return  None
+        auth_manager, cache_handler = get_auth_manager(session_cache_path())
+        if not auth_manager.validate_token(cache_handler.get_cached_token()):
+            return redirect('/')
+        spotify = spotipy.Spotify(auth_manager=auth_manager)
+        user_id = spotify.current_user()['id']
+        playlist = spotify.user_playlist_create(user_id, 'Mus-X Recommendations')
+
+
+        data = json.load(open("me.json"))
+        rec = json.load(open(f".csv_caches/{data['id']}/rec.json", 'r'))
+        rec_ids = [v['id'] for x, v in rec.items()]
+        spotify.playlist_add_items(playlist['id'], rec_ids)
+        print('---created---')
+
+        return "done"
