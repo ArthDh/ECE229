@@ -621,7 +621,7 @@ def recommend(spotify):
 
     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
 
-    model_folder = './app/assets/rec-files/'
+    model_folder = '/home/ubuntu/ECE229/app/assets/rec-files/'
     model = os.path.join(model_folder, 'recommender_model_final.pkl')
     user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
     songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
