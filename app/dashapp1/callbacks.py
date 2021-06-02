@@ -570,3 +570,35 @@ def register_callbacks(dashapp):
                             ],style={'margin-top':'2em'}))
 
                 return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})
+
+    @dashapp.callback(
+        Output('user_info', 'children'),
+        [Input('url', 'pathname')])
+    def get_user_info(pathname):
+        if os.path.exists('me.json'):
+            data = json.load( open( "me.json" ) )
+            im = Image.open(requests.get(data['img_url'], stream=True).raw)
+            def b64(im_pil):
+                """Conversion to Base64 
+
+                :param im_pil: Pillow Image to be converted
+                :type im_pil: Pillow Image
+                :return: base64 encoded image
+                :rtype: base64 Image
+                """
+                buff = BytesIO()
+                im_pil.save(buff, format="png")
+                im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+                return im_b64
+            im_b64 = b64(im)
+ 
+            return html.Div(className='user-info',children=[
+                    html.Img(
+                    src="data:image/png;base64, " + im_b64,
+                    className='user-image',
+                    ),
+                    html.P(children=[
+                    html.H3(children=["Hi ", data['name']], className='user-name')])
+                ],style={'margin-top':'1em'})
+        else:
+            return None

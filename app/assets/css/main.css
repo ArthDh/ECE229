@@ -72,6 +72,25 @@ input, select, textarea {
 	appearance: none;
 }
 
+.user-info{
+	margin-top: 1em;
+	float: right;
+	text-align: right !important;
+}
+.user-name{
+	text-transform: None;
+	padding-bottom: 1rem;
+	font-size: 20px;
+}
+
+.user-image{
+	height: 15vh;
+	border-radius: 15em;
+	display: block;
+    margin: 0 auto;
+	height: 12vh;
+	border-radius: 15em;
+}
 /* Basic */
 
 	@-ms-viewport {
@@ -3897,4 +3916,5 @@ input, select, textarea {
 		font-weight: 700;
 		position: relative;
 		text-transform: uppercase;
+		text-align: center;
 	}
