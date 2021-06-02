@@ -31,6 +31,7 @@ from .util.data_callbacks import *
 import json
 import plotly
 import plotly.express as px
+import shutil
 
 
 load_dotenv()
@@ -105,6 +106,7 @@ def sign_out():
         # Remove the CACHE file (.cache-test) so that a new user can authorize.
         os.remove(session_cache_path())
         session.clear()
+        shutil.rmtree('/home/ubuntu/.spotify_caches')
         # -- TODO -- 
     except OSError as e:
         print ("Error: %s - %s." % (e.filename, e.strerror))
