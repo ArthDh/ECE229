@@ -232,16 +232,22 @@ def audio_playlist_features(spotify, playlist_df):
     :return: Audio features dataframe for all songs in a given playlist
     :rtype: pandas.Dataframe
     """
+    ids = [playlist_df['id'][i] for i in range(len(playlist_df))]
+    # print(ids)
+    # df = pd.DataFrame.from_dict([spotify.audio_features(playlist_df['id'][i])[0] for i in range(len(playlist_df))])
+    # af_list = [spotify.audio_features(playlist_df['id'][i])[0] for i in range(len(playlist_df))]
+    af_list = spotify.audio_features(ids)
 
-    df = pd.DataFrame.from_dict([spotify.audio_features(playlist_df['id'][i])[0] for i in range(len(playlist_df))])
+    f_none = [i for i in af_list if not i==None]
+    df = pd.DataFrame.from_dict(f_none)
+    # df = pd.DataFrame.from_dict(spotify.audio_features(ids))
     drop_cols = ['analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type']
     audio_df = df.drop(drop_cols, axis=1)
         
     return audio_df
 
 def get_genres(spotify, tracks_df):
-    tracks_df['genres'] = tracks_df['artists'].map(
-        lambda x: spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
+    tracks_df['genres'] = tracks_df['artists'].map(lambda x: spotify.artist(x[0]["external_urls"]["spotify"])["genres"])
     tracks_df = add_single_genre(tracks_df)
     return tracks_df
 
@@ -308,6 +314,7 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     final_df_alt = pd.DataFrame()
     for playlist_name in user_playlists:
         print(f'getting tsne for {playlist_name}')
+        print('*'*30)
         filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
         if filter_playlist['tracks']['total'] <min_songs_per_playlist:
             continue
@@ -326,7 +333,6 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
 
         c_tracks = clean_top_tracks(spotify, temp)
         c_tracks_alt = clean_top_tracks(spotify, temp_alt)
-
         audio_features = audio_playlist_features(spotify, c_tracks)
         merged_inner = pd.merge(left=c_tracks, right=audio_features, left_on='id', right_on='id')
         merged_inner['playlist_name'] = playlist_name
@@ -364,9 +370,14 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     X[['x', 'y', 'z']] = embedding_df
     X.to_csv(csv_folder+'/audio_feature_kmean.csv')
     final_df_alt.to_csv(csv_folder+'/playlist_full.csv')
+    perform_tsne()
+
+    # --------------------UNCOMMENT -----------------
     final_df_genre = get_genres(spotify, final_df)
     final_df_genre.to_csv(join(csv_folder, 'playlist_songs_genre.csv'))
-    perform_tsne()
+    # -----------------------------------------------
+
+    # Not this
     print('---TSNE FILE SAVED---')
     return X
   
@@ -380,10 +391,10 @@ def display_era_plot():
     try:
         embedding_df = pd.read_csv(path)
     except FileNotFoundError as error:
-        print(
-            error,
-            "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-        )
+        # print(
+        #     error,
+        #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+        # )
         return go.Figure()
 
     # Plot layout
@@ -519,6 +530,9 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
     monthly_mean = pd.DataFrame(min_max_scaler.fit_transform(x), index=monthly_mean.index, columns=monthly_mean.columns)
     monthly_mean.to_csv(join(csv_folder, 'audio_features_monthly_mean.csv'))
 
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
+        recommend(spotify)
+        
     print('--- HIST FILE SAVED---')
     return(df_saved_tracks)
 
@@ -612,21 +626,21 @@ def recommend(spotify):
     user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
     songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
 
-    print('\nloaded_csvs\n')
+    # print('\nloaded_csvs\n')
 
     user_data, saved_songs = get_user_song_df(saved_songs_csv)
-    print('user_data loaded')
+    # print('user_data loaded')
     sim_user_id = get_sim_user(user_data, song_id_user_csv=user_song_csv)
-    print('sim user loaded')
+    # print('sim user loaded')
     
     new_songs = get_new_songs(saved_songs, songs_pool_file=songs_pool_csv)
-    print('Saved songs loaded')
+    # print('Saved songs loaded')
     
     top_songs, _ = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs, model=model)
-    print('TOP songs loaded')
+    # print('TOP songs loaded')
 
     tracks = spotify.tracks(top_songs)
-    print(tracks['tracks'])
+    # print(tracks['tracks'])
 
     d = dict()
     for i, t in enumerate(tracks['tracks']):

@@ -89,9 +89,9 @@ def register_callbacks(dashapp):
         """
         if isinstance(playlists, str):
             playlists = [playlists]
-        print(clickData)
-        print(playlists)
-        print('-------------------------------------')
+        # print(clickData)
+        # print(playlists)
+        # print('----------------------yoooo---------------')
         if not clickData:
             idx = 0
         else:
@@ -99,7 +99,7 @@ def register_callbacks(dashapp):
         fig = go.Figure()
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
-        print(df)
+        # print(df)
         new = pd.DataFrame()
         new['genre'] = df.index
         new['counts'] = df.values
@@ -126,7 +126,7 @@ def register_callbacks(dashapp):
         :return: line graph for mood over time
         :rtype: plotly.graph_objs
         """
-        print('features: ', features)
+        # print('features: ', features)
         if isinstance(features, str):
             features = [features]
         monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
@@ -161,8 +161,6 @@ def register_callbacks(dashapp):
                 mode="markers",
                 marker=dict(size=5, symbol="circle"),
                 hovertemplate = "Song:<br><b>%{text}<b> "
-
-
             )
             data.append(scatter)
 
@@ -192,10 +190,10 @@ def register_callbacks(dashapp):
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         # Plot layout
@@ -236,10 +234,10 @@ def register_callbacks(dashapp):
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -291,10 +289,10 @@ def register_callbacks(dashapp):
             path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -379,10 +377,10 @@ def register_callbacks(dashapp):
             path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -549,7 +547,6 @@ def register_callbacks(dashapp):
                 temp = []
 
                 for k,v in data.items():
-                    print(k, v)
                     im = Image.open(requests.get(v['img_href'], stream=True).raw)
                     im_b64 = b64(im)
 
@@ -592,3 +589,35 @@ def register_callbacks(dashapp):
         print('---created---')
 
         return "done"
+
+    @dashapp.callback(
+    Output('user_info', 'children'),
+        [Input('url', 'pathname')])
+    def get_user_info(pathname):
+        if os.path.exists('me.json'):
+            data = json.load( open( "me.json" ) )
+            im = Image.open(requests.get(data['img_url'], stream=True).raw)
+            def b64(im_pil):
+                """Conversion to Base64 
+
+                :param im_pil: Pillow Image to be converted
+                :type im_pil: Pillow Image
+                :return: base64 encoded image
+                :rtype: base64 Image
+                """
+                buff = BytesIO()
+                im_pil.save(buff, format="png")
+                im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+                return im_b64
+            im_b64 = b64(im)
+ 
+            return html.Div(className='user-info',children=[
+                    html.Img(
+                    src="data:image/png;base64, " + im_b64,
+                    className='user-image',
+                    ),
+                    html.P(children=[
+                    html.H3(children=["Hi ", data['name']], className='user-name')])
+                ],style={'margin-top':'1em'})
+        else:
+            return None
