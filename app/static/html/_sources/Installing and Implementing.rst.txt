@@ -1,0 +1,67 @@
+.. MusEx documentation master file, created by
+   sphinx-quickstart on Sat May 15 14:19:26 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Installing and Implementing
+=================================
+
+Installation
+"""""""""""""""""""""""""""""""""
+::
+
+   git clone https://github.com/ArthDh/ECE229.git [file path]
+   cd <file path>
+   python -m venv venv
+   source venv/bin/activate  # Windows: \venv\scripts\activate
+   pip install -r requirements.txt
+
+
+Getting certification(For developers)
+"""""""""""""""""""""""""""""""""
+
+   This procedure is only to be done for the first time.
+
+   #. Login to Spotify developer dashboard_.
+
+   #. Create an app.
+
+      .. image:: images/create_app.png
+         :scale: 40 %
+
+   #. Remember your \ *SPOTIPY_CLIENT_ID* \ and \ *SPOTIPY_CLIENT_SECRET* \ .
+      Set \ *SPOTIPY_REDIRECT_URI* \ to \  ``http://127.0.0.1:5000/``
+
+      add ".env" file under "/app", whose content is ::
+
+         FLASK_DEBUG=1
+         SPOTIPY_CLIENT_ID=YOUR_ID
+         SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
+         SPOTIPY_REDIRECT_URI='http://127.0.0.1:5000/'
+
+
+
+Using Mus-X
+"""""""""""""""""""""""""""""""""
+
+   #. Open MusX_.
+
+   #. Login.
+
+      .. image:: images/click_signin.png
+
+   #. Click \ *let's go* \ or scroll down for more contents.
+
+
+
+
+
+
+
+
+.. _dashboard : https://developer.spotify.com/dashboard/
+.. _MusX : http://127.0.0.1:5000/
+
+
+
+

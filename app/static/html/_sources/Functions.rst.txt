@@ -1,0 +1,42 @@
+.. MusEx documentation master file, created by
+   sphinx-quickstart on Sat May 15 14:19:26 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Functions
+=================================
+
+
+
+app.dashapp.callbacks
+"""""""""""""""""""""""""""""""""
+
+   .. automodule:: app.dashapp1.callback
+      :members:
+
+app.util.recommender
+"""""""""""""""""""""""""""""""""
+
+   .. automodule:: app.util.recommender
+      :members:
+
+app.util.data_callbacks
+"""""""""""""""""""""""""""""""""
+
+   .. automodule:: app.util.data_callbacks
+      :members:
+
+app.util.K-means
+""""""""""""""""""""""""
+
+   .. automodule:: app.util.Kmean
+      :members:
+
+app.util.spotify_interface
+"""""""""""""""""""""""""""""""""
+
+   .. automodule:: app.util.spotify_interface
+      :members:
+
+
+

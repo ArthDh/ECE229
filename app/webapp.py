@@ -106,12 +106,19 @@ def sign_out():
         os.remove(session_cache_path())
         session.clear()
         # -- TODO -- 
-        # Remove the cache csv dir with files
     except OSError as e:
         print ("Error: %s - %s." % (e.filename, e.strerror))
     return redirect('/')
 
+@server_bp.route('/docs')
+def serve_sphinx_docs():
+    return redirect( url_for('static', filename='html/index.html'))
 
+# @server_bp.route('/doc/index.html')
+# def docs(dir='',filename='index.html'):
+#     path = join('doc/html',filename)
+#     print(path)
+#     return server_bp.send_static_file('')
 
 @server_bp.route('/update')
 def update():

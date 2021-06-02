@@ -621,3 +621,11 @@ def register_callbacks(dashapp):
                 ],style={'margin-top':'1em'})
         else:
             return None
+
+    @dashapp.callback(Output("temp", "children"),
+                [Input("logout", "n_clicks")])
+    def logout_user(n_clicks):
+        if n_clicks:
+            return dcc.Location(pathname="/sign_out", id="_")
+        else:
+            return

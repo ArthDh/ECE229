@@ -1,0 +1,19 @@
+Introduction
+=================================
+
+\  **Mus-X**\  is a web dashboard where users can interact with your Spotify
+data in a fun way. It allow Spotify users to learn more
+about themselves through their listening taste and even provide some recommendations for new music.
+
+
+In\  **Mus-X**\ , there are
+
+   - 3-D point cloud representations of user's playlists;
+   - Radar plots displaying audio features components;
+   - User's favorite artists and songs.
+   - Bin plots showing musical taste over time.
+   - Mood curves that may provide some hints to everchaning feelings.
+   - Recommending systems that recommend new songs based on listening history.
+
+If you are curious about your own musical taste, if you want to keep a recording of your music life,
+or if you desire to meet the music to your ears, Mus-X would be the one you are looking for.
