@@ -34,7 +34,7 @@ except FileNotFoundError as error:
 	
     playlists_kv = [dict()]
     monthly_mood_kv = [dict()]
-    print ("One or more CSV Files not found ")
+    # print ("One or more CSV Files not found ")
 
 def generate_image_column(artist_images, idx):
 	if not artist_images:
@@ -162,17 +162,14 @@ def generate_image_section(artist_images, titles):
 layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 	children=[
 		html.Section(className="intro", children=[
-		html.Header(children=[
+		dcc.Location(id='url', refresh=False),
+		html.Header(id='header',children=[
 			html.H1(className="app_title", children="Mus-X"),
 			html.P(children="Let's analyze your music taste."),
 			html.A(className="signin", href="#first", children=[
 				html.Span(style={'padding-right':'3px'}, children=[
-					html.Span(
-						children=[
-							"Let's go",
-					], style={'padding-right':'5px'}),
-					html.I(className="fas fa-play-circle"),
-					get_user_info(),
+					html.Div(id='user_info'),
+					# get_user_info(),
 
 				])
 			])
@@ -222,19 +219,24 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 			html.Span(children=html.Strong("Get a closer look at the composition of your playlists. Let's delve into your choice of flavors")),
 			html.Br(),
 			html.Span("Click the radar plot to show the genre distribution of one playlists"),
+			html.Div([
+				dcc.Dropdown(
+					id='radar-dropdown',
+					options=playlists_kv,
+					value=playlists[0] if not playlists == None else 0,
+					multi=True
+				),
+			]),
 			html.Div(
 				children=[
 					dcc.Graph(id='radar-graph', style={'width': '50%', 'float': 'left'}),
 					dcc.Graph(id='playlist-pie-graph', style={'width': '50%', 'float': 'right'}),
 				]),
-			html.Div([
-				dcc.Dropdown(
-				id='radar-dropdown',
-				options=playlists_kv,
-				value=playlists[0] if not playlists==None else 0,
-				multi=True
-			),
-		])
+			html.Br(),
+			html.A(html.Strong("Learn more about Audio Features on Spotify!"),
+				   href='https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features')
+
+
 	])]),
 	html.Section(id="third", children=[
 		html.Header(children=[
@@ -331,8 +333,9 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 			html.Div([
 				html.Button('Surprise me!', id='gen_rec', n_clicks=0),
 				html.Div(id="rec_results"),
-
-    		])
+    		]),
+			html.Button('Export the result to Spotify!', id='export_playlist', n_clicks=0),
+			html.Div(id="export_result"),
 		])
 	]),
 

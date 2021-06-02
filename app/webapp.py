@@ -76,7 +76,7 @@ def index():
     # # Creating a daemon to save the users CSV file
     if not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_feature_kmean.csv'):
         save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
-                                                    kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':5, 'k':10},  daemon=True)
+                                                    kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':100, 'k':10},  daemon=True)
         save_tse_csv.start()
 
     # #for saved song history csv file
@@ -88,13 +88,6 @@ def index():
     if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_5_artists.csv'):
         save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
         save_top_artist_csv.start()
-        
-    if os.path.exists(f'.csv_caches/{get_my_id()}/saved_track_history.csv'):
-        print("---Generating RECS---")
-        if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
-            gen_recs = Process(target=recommend, args=([spotify]), \
-                                                        daemon=True)
-            gen_recs.start()
 
     print("\n Done creating CSVs \n")
     # return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)

@@ -78,11 +78,20 @@ def register_callbacks(dashapp):
         ],
     )
     def generate_playlist_pie_chart(clickData, playlists):
+        """
+        generate pie chart based on the selected playlist
+        :param clickData: Dictionary of the clicked datapoint
+        :type clickData: Dict
+        :param playlists: Selected playlists from the dropdown menu
+        :type playlists: List
+        :return:Figure containing pie chart for the genres in the playlist
+        :rtype: plotly.graph_objs
+        """
         if isinstance(playlists, str):
             playlists = [playlists]
-        print(clickData)
-        print(playlists)
-        print('----------------------yoooo---------------')
+        # print(clickData)
+        # print(playlists)
+        # print('----------------------yoooo---------------')
         if not clickData:
             idx = 0
         else:
@@ -90,7 +99,7 @@ def register_callbacks(dashapp):
         fig = go.Figure()
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
-        print(df)
+        # print(df)
         new = pd.DataFrame()
         new['genre'] = df.index
         new['counts'] = df.values
@@ -117,7 +126,7 @@ def register_callbacks(dashapp):
         :return: line graph for mood over time
         :rtype: plotly.graph_objs
         """
-        print('features: ', features)
+        # print('features: ', features)
         if isinstance(features, str):
             features = [features]
         monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
@@ -126,6 +135,7 @@ def register_callbacks(dashapp):
             fig.add_trace(go.Scatter(x=monthly_mood_df['month_year'], y=monthly_mood_df[feature],
                                      mode='lines',
                                      name=f'{feature}'))
+        fig.update_layout(xaxis_title="Time", yaxis_title="Normalized Index")
         return fig
 
     def generate_figure_image(groups, layout):
@@ -151,8 +161,6 @@ def register_callbacks(dashapp):
                 mode="markers",
                 marker=dict(size=5, symbol="circle"),
                 hovertemplate = "Song:<br><b>%{text}<b> "
-
-
             )
             data.append(scatter)
 
@@ -182,10 +190,10 @@ def register_callbacks(dashapp):
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         # Plot layout
@@ -226,10 +234,10 @@ def register_callbacks(dashapp):
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -281,10 +289,10 @@ def register_callbacks(dashapp):
             path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -369,10 +377,10 @@ def register_callbacks(dashapp):
             path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -539,7 +547,6 @@ def register_callbacks(dashapp):
                 temp = []
 
                 for k,v in data.items():
-                    print(k, v)
                     im = Image.open(requests.get(v['img_href'], stream=True).raw)
                     im_b64 = b64(im)
 
@@ -560,3 +567,57 @@ def register_callbacks(dashapp):
                             ],style={'margin-top':'2em'}))
 
                 return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})
+
+    @dashapp.callback(
+        Output('export_result', 'children'),
+        [Input('export_playlist', 'n_clicks')])
+    def export_playlist(n_clicks):
+        if n_clicks==0:
+            return  None
+        auth_manager, cache_handler = get_auth_manager(session_cache_path())
+        if not auth_manager.validate_token(cache_handler.get_cached_token()):
+            return redirect('/')
+        spotify = spotipy.Spotify(auth_manager=auth_manager)
+        user_id = spotify.current_user()['id']
+        playlist = spotify.user_playlist_create(user_id, 'Mus-X Recommendations')
+
+
+        data = json.load(open("me.json"))
+        rec = json.load(open(f".csv_caches/{data['id']}/rec.json", 'r'))
+        rec_ids = [v['id'] for x, v in rec.items()]
+        spotify.playlist_add_items(playlist['id'], rec_ids)
+        print('---created---')
+
+        return "done"
+
+    @dashapp.callback(
+    Output('user_info', 'children'),
+        [Input('url', 'pathname')])
+    def get_user_info(pathname):
+        if os.path.exists('me.json'):
+            data = json.load( open( "me.json" ) )
+            im = Image.open(requests.get(data['img_url'], stream=True).raw)
+            def b64(im_pil):
+                """Conversion to Base64 
+
+                :param im_pil: Pillow Image to be converted
+                :type im_pil: Pillow Image
+                :return: base64 encoded image
+                :rtype: base64 Image
+                """
+                buff = BytesIO()
+                im_pil.save(buff, format="png")
+                im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
+                return im_b64
+            im_b64 = b64(im)
+ 
+            return html.Div(className='user-info',children=[
+                    html.Img(
+                    src="data:image/png;base64, " + im_b64,
+                    className='user-image',
+                    ),
+                    html.P(children=[
+                    html.H3(children=["Hi ", data['name']], className='user-name')])
+                ],style={'margin-top':'1em'})
+        else:
+            return None
