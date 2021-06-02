@@ -626,18 +626,24 @@ def recommend(spotify):
     user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
     songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
 
-    # print('\nloaded_csvs\n')
+    print('\nloaded_csvs\n')
+    print('*'*20)
 
     user_data, saved_songs = get_user_song_df(saved_songs_csv)
-    # print('user_data loaded')
+    print('user_data loaded')
+    print('*'*20)
+    
     sim_user_id = get_sim_user(user_data, song_id_user_csv=user_song_csv)
-    # print('sim user loaded')
+    print('sim user loaded')
+    print('*'*20)
     
     new_songs = get_new_songs(saved_songs, songs_pool_file=songs_pool_csv)
-    # print('Saved songs loaded')
+    print('Saved songs loaded')
+    print('*'*20)
     
     top_songs, _ = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs, model=model)
-    # print('TOP songs loaded')
+    print('TOP songs loaded')
+    print('*'*20)
 
     tracks = spotify.tracks(top_songs)
     # print(tracks['tracks'])
