@@ -33,7 +33,7 @@ except FileNotFoundError as error:
 	
     playlists_kv = [dict()]
     monthly_mood_kv = [dict()]
-    print ("One or more CSV Files not found ")
+    # print ("One or more CSV Files not found ")
 
 def generate_image_column(artist_images, idx):
 	if not artist_images:
@@ -127,8 +127,7 @@ layout=html.Div(className="is-preload", children=[html.Div(id="wrapper",
 							"Let's go",
 					], style={'padding-right':'5px'}),
 					html.I(className="fas fa-play-circle"),
-					get_user_info(),
-
+					html.Div(id='user_info')
 				])
 			])
 		]),

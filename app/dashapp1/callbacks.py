@@ -80,9 +80,9 @@ def register_callbacks(dashapp):
     def generate_playlist_pie_chart(clickData, playlists):
         if isinstance(playlists, str):
             playlists = [playlists]
-        print(clickData)
-        print(playlists)
-        print('----------------------yoooo---------------')
+        # print(clickData)
+        # print(playlists)
+        # print('----------------------yoooo---------------')
         if not clickData:
             idx = 0
         else:
@@ -90,7 +90,7 @@ def register_callbacks(dashapp):
         fig = go.Figure()
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
-        print(df)
+        # print(df)
         new = pd.DataFrame()
         new['genre'] = df.index
         new['counts'] = df.values
@@ -117,7 +117,7 @@ def register_callbacks(dashapp):
         :return: line graph for mood over time
         :rtype: plotly.graph_objs
         """
-        print('features: ', features)
+        # print('features: ', features)
         if isinstance(features, str):
             features = [features]
         monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
@@ -151,8 +151,6 @@ def register_callbacks(dashapp):
                 mode="markers",
                 marker=dict(size=5, symbol="circle"),
                 hovertemplate = "Song:<br><b>%{text}<b> "
-
-
             )
             data.append(scatter)
 
@@ -182,10 +180,10 @@ def register_callbacks(dashapp):
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         # Plot layout
@@ -226,10 +224,10 @@ def register_callbacks(dashapp):
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -281,10 +279,10 @@ def register_callbacks(dashapp):
             path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -369,10 +367,10 @@ def register_callbacks(dashapp):
             path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
-            print(
-                error,
-                "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-            )
+            # print(
+            #     error,
+            #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
+            # )
             return go.Figure()
 
         try:
@@ -539,7 +537,6 @@ def register_callbacks(dashapp):
                 temp = []
 
                 for k,v in data.items():
-                    print(k, v)
                     im = Image.open(requests.get(v['img_href'], stream=True).raw)
                     im_b64 = b64(im)
 
@@ -560,3 +557,9 @@ def register_callbacks(dashapp):
                             ],style={'margin-top':'2em'}))
 
                 return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})
+
+
+    # @dashapp.callback(
+    #     Output('rec_results', 'children'),
+    #     [Input('gen_rec', 'n_clicks')])
+    # def get_user_info(n_clicks):                
