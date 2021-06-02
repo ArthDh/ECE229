@@ -501,12 +501,16 @@ def register_callbacks(dashapp):
         num_months=11
         #need to make this a try block
         df=pd.read_csv(f'.csv_caches/{get_my_id()}/saved_track_history.csv')
+        top10genres=df["genre"].value_counts()
+        counts=top10genres.index.to_list()[:10]
+        df=df[df["genre"].isin(counts)]
+
         df['date_added']=pd.to_datetime(df['date_added'])
         df['month_yr']=df['date_added'].dt.to_period('M')
         count_series=df.groupby(['month_yr','genre']).size()
-        new_df = count_series.to_frame(name = 'size')
+        new_df = count_series.to_frame(name = 'count')
         new_df = new_df.reset_index() \
-            .sort_values(['month_yr','size'],ascending=False) \
+            .sort_values(['month_yr','count'],ascending=False) \
             .set_index(['month_yr','genre']) \
             .rename_axis([None, 'genre'])
 
@@ -514,10 +518,11 @@ def register_callbacks(dashapp):
 
         new_df=new_df.reset_index(level=[0,1])
         new_df=new_df.rename(columns={'level_0':'month_yr'})
-        new_df=new_df[:5*num_months ]
+        new_df=new_df[:4*num_months ]
         new_df['month_yr']=new_df['month_yr'].astype(str)
-
-        fig=px.bar(new_df, x="month_yr", y="size", color="genre")
+        print(new_df.head())
+        fig=px.bar(new_df, x="month_yr", y="count", color="genre", hover_data={"genre":True,"count":True, "month_yr":False})
+        fig.update_layout(xaxis_title='Month', yaxis_title='Number of Songs Added')
         return fig
 
 
