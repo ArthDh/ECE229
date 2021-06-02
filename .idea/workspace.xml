@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9905b333-a0b0-46f3-9ef2-31e23a549092" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/notebooks/1_collab_filtering_music_recommender.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notebooks/2_customize_recommender_for_spotify.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notebooks/3_deployment_ready_recommender.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/3_deployment_ready_recommender.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Test/3_deployment_ready_recommender.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/auth_test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Test/auth_test.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dashapp1/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/callbacks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/dashapp1/layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/layout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/me.json" beforeDir="false" afterPath="$PROJECT_DIR$/me.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/util/data_callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/data_callbacks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webapp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/me.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/3_deployment_ready_recommender.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/3_deployment_ready_recommender.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
