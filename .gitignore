@@ -4,6 +4,7 @@ ECE229.wsgi
 .env
 .flask_session
 .spotify_caches
+me.json
 
 # Large files
 .csv_caches
@@ -90,7 +91,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # IPython
 profile_default/

@@ -18,6 +18,11 @@ try:
     top_5_artists = pd.read_csv(f'.csv_caches/{get_my_id()}/top_5_artists.csv')
     artist_images = [json.loads(url.replace("'", '"'))[0]['url'] for url in top_5_artists['images']]
     artist_names = top_5_artists.name.to_list()
+    top_10_tracks = pd.read_csv(f'.csv_caches/{get_my_id()}/top_10_tracks.csv')
+    track_images_1 = [url for url in top_10_tracks['image']][:5]
+    track_images_2 = [url for url in top_10_tracks['image']][5:]
+    track_names_1 = top_10_tracks.name.to_list()[:5]
+    track_names_2 = top_10_tracks.name.to_list()[5:]
 
     monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
     monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
@@ -26,6 +31,10 @@ except FileNotFoundError as error:
     artist_names = None
     playlists = None
     artist_images = None
+    track_images_1 = None
+    track_images_2 = None
+    track_names_1 = None
+    track_names_2 = None
     monthly_mood_df = None
 
     playlists_kv = [dict()]
@@ -33,88 +42,9 @@ except FileNotFoundError as error:
     # print ("One or more CSV Files not found ")
 
 
-def generate_image_column(artist_images, idx):
-    if not artist_images:
-        return 0
-    if idx == 0:
-        res = html.Div([
-            html.Img(src=artist_images[0], style={
-                'margin-top': '8px',
-                'vertical-align': 'middle',
-                'width': '25%',
-                'height': '240px',
-                # 'position': 'relative',
-                # 'left': '100px'
-            }),
-            html.Img(src=artist_images[1], style={
-                'margin-top': '8px',
-                'vertical-align': 'middle',
-                'width': '25%',
-                'height': '240px',
-                'margin-left': '50px',
-                # 'padding-left': '50px'
-                # 'position': 'relative',
-                # 'left': '100px'
-            }),
-            html.Img(src=artist_images[2], style={
-                'margin-top': '8px',
-                'vertical-align': 'middle',
-                'width': '25%',
-                'height': '240px',
-                'margin-left': '50px',
-                # 'padding-left': '50px'
-                # 'position': 'relative',
-                # 'left': '100px'
-            }),
-
-        ], style={
-            'display': 'inline',
-            # 'flex': '25%',
-            # 'max-width': '25%',
-            'padding': '0 4px',
-            'margin-top': '8px',
-            'vertical-align': 'middle',
-            'width': '100%',
-        },
-        )
-    else:
-        res = html.Div([
-            html.Img(src=artist_images[3], style={
-                'margin-top': '8px',
-                'vertical-align': 'middle',
-                'width': '25%',
-                'height': '240px',
-                'margin-left': '130px',
-                # 'position': 'relative',
-                # 'left': '100px'
-            }),
-            html.Img(src=artist_images[4], style={
-                'margin-top': '8px',
-                'vertical-align': 'middle',
-                'width': '25%',
-                'height': '240px',
-                'margin-left': '50px',
-                # 'padding-left': '50px'
-                # 'position': 'relative',
-                # 'left': '100px'
-            })
-        ], style={
-            'display': 'inline',
-            # 'flex': '25%',
-            # 'max-width': '25%',
-            'padding': '0 4px',
-            'margin-top': '8px',
-            'vertical-align': 'middle',
-            'width': '100%',
-        },
-        )
-
-    return res
-
-
 def generate_image_section(artist_images, titles):
     if not artist_images:
-        return 0
+        return ""
 
     row1 = html.Div([
         html.Div([
@@ -254,7 +184,7 @@ layout = html.Div(className="is-preload", children=[html.Div(id="wrapper",
                                                                          html.Br(),
                                                                          html.A(html.Strong(
                                                                              "Learn more about Audio Features on Spotify!"),
-                                                                                href='https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features')
+                                                                             href='https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features')
 
                                                                      ])]),
                                                                  html.Section(id="third", children=[
@@ -295,10 +225,14 @@ layout = html.Div(className="is-preload", children=[html.Div(id="wrapper",
                                                                      html.Div(className="content", children=[
                                                                          html.H2("It's favorites time!"),
                                                                          html.Span(children=html.Strong(
-                                                                             "Here are the top 5 artists who shine through your music space, followed by your top 5 tracks.")),
-                                                                         html.P("Are they who you have in mind?"),
+                                                                             "This gallery displays the top 5 artists who shine through your music space, followed by your top 10 tracks.")),
+                                                                         html.P("Are they who you have in mind? Take a moment to sip your connection with their music :)"),
                                                                          generate_image_section(artist_images,
                                                                                                 artist_names),
+                                                                         generate_image_section(track_images_1,
+                                                                                                track_names_1),
+                                                                         generate_image_section(track_images_2,
+                                                                                                track_names_2),
                                                                      ])
                                                                  ]),
                                                                  html.Section(id="five", children=[
@@ -385,19 +319,19 @@ layout = html.Div(className="is-preload", children=[html.Div(id="wrapper",
                                                                      html.Header(children=[
                                                                          html.H2(children=["See you again!"]),
                                                                          html.Button('Logout', id='logout', n_clicks=0),
-																		 html.Div(id='temp', style={'display':'None'})
+                                                                         html.Div(id='temp', style={'display': 'None'})
 
                                                                      ]),
                                                                  ]),
 
                                                                  html.Section(id="ten", children=[
                                                                      html.Header(children=[
-                                                                         html.H2(children=["Check out our Documentation!"])
+                                                                         html.H2(
+                                                                             children=["Check out our Documentation!"])
                                                                      ]),
                                                                      html.Div(className="content", children=[
-																		html.A(className="signin", href="/docs",
-                                                                        children = [html.H2("Made with ❤️")],)
-
+                                                                         html.A(className="signin", href="/docs",
+                                                                                children=[html.H2("Made with ❤️")], )
 
                                                                      ])
                                                                  ]),

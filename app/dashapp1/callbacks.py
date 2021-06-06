@@ -57,8 +57,8 @@ def register_callbacks(dashapp):
                           'valence', 'tempo']
             for col in playlist_df.columns:
                 if col in categories:
-                    scaler.fit(playlist_df[[col]])
-                    playlist_df[col] = scaler.transform(playlist_df[col].values.reshape(-1, 1)).ravel()
+                    scaler.fit(playlist_df.loc[:, [col]])
+                    playlist_df.loc[:, col] = scaler.transform(playlist_df.loc[:, col].values.reshape(-1, 1)).ravel()
             feature_val_playlist = playlist_df[categories].mean(0)
 
             legend_str = '<br>'.join(textwrap.wrap(playlist, width=12))
@@ -87,6 +87,7 @@ def register_callbacks(dashapp):
         :return:Figure containing pie chart for the genres in the playlist
         :rtype: plotly.graph_objs
         """
+        assert isinstance(playlists, (list, str))
         if isinstance(playlists, str):
             playlists = [playlists]
         # print(clickData)
@@ -98,8 +99,10 @@ def register_callbacks(dashapp):
             idx = clickData['points'][0]['curveNumber']
         fig = go.Figure()
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
+        print(df['playlist_name'])
+        print(playlists)
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
-        # print(df)
+
         new = pd.DataFrame()
         new['genre'] = df.index
         new['counts'] = df.values

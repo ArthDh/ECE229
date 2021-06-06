@@ -315,16 +315,19 @@ def get_tsne_csv(spotify, min_songs_per_playlist=5, max_songs_per_playlist=10, k
     for playlist_name in user_playlists:
         print(f'getting tsne for {playlist_name}')
         print('*'*30)
-        filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
-        if filter_playlist['tracks']['total'] <min_songs_per_playlist:
+        filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name'] == playlist_name][0]
+
+        if filter_playlist['tracks']['total'] < min_songs_per_playlist:
             continue
-        # print(playlist_name, filter_playlist['tracks']['total'])
+
         filter_id = filter_playlist['id']
         playlist_filter_id = spotify.playlist(filter_id)
         playlist_tracks = playlist_filter_id['tracks']
-        list_tracks = [playlist_tracks['items'][i]['track'] for i in range(min(max_songs_per_playlist, filter_playlist['tracks']['total']))]
+        playlist_len = len(playlist_tracks['items'])
 
-        list_tracks_alt = [playlist_tracks['items'][i]['track'] for i in range(min(100, filter_playlist['tracks']['total']))]
+        list_tracks = [playlist_tracks['items'][i]['track'] for i in range(min(max_songs_per_playlist, playlist_len))]
+
+        list_tracks_alt = [playlist_tracks['items'][i]['track'] for i in range(min(100, playlist_len))]
         list_tracks = [x for x in list_tracks if x]
         list_tracks_alt = [x for x in list_tracks_alt if x]
         temp = pd.DataFrame.from_dict(list_tracks)
@@ -593,6 +596,24 @@ def get_top_artist_csv(spotify):
 
     print(f'--- TOP_ARTISTS FILE SAVED ---')
 
+def get_top_tracks_csv(spotify, num=10):
+    csv_folder = f'.csv_caches/{get_my_id()}'
+
+    print(f'--- Generating top tracks csv ---')
+    data = spotify.current_user_top_tracks(limit=num, offset=0, time_range='medium_term')
+    df = pd.DataFrame.from_dict(data)
+    image = []
+    name = []
+    for item_dict in df['items']:
+        image.append(item_dict['album']['images'][0]['url'])
+        name.append(item_dict['name'])
+
+    df_cleaned = pd.DataFrame.from_dict({'image': image, 'name': name})
+    df_cleaned.to_csv(join(csv_folder, 'top_10_tracks.csv'))
+
+    print(f'--- TOP_TRACKS FILE SAVED ---')
+    return None
+
 
 
 def get_slider_info():
@@ -621,12 +642,16 @@ def recommend(spotify):
 
     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
 
-    model_folder = '/home/ubuntu/ECE229/app/assets/rec-files/'
+    model_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'rec_files')
+    print(model_folder)
+
+    #model_folder = 'app/assets/rec-files/' # used to be absolute file path
     model = os.path.join(model_folder, 'recommender_model_final.pkl')
     user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
     songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
+    test = pd.read_csv(user_song_csv)
 
-    print('\nloaded_csvs\n')
+    print('\nloaded_csvs')
     print('*'*20)
 
     user_data, saved_songs = get_user_song_df(saved_songs_csv)

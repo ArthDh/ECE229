@@ -90,6 +90,10 @@ def index():
         save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
         save_top_artist_csv.start()
 
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_10_tracks.csv'):
+        save_top_tracks_csv = Process(target=get_top_tracks_csv, args=([spotify]), daemon=True)
+        save_top_tracks_csv.start()
+
     print("\n Done creating CSVs \n")
     # return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)
     return redirect('/dashboard')

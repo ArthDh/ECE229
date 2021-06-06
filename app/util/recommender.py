@@ -95,58 +95,6 @@ def generate_rec_songs(user_id=None, top=20, pool=None, model=None):
     return top_songs, top_scores
 
 
-# def get_rec_tracks(saved_songs_csv=None, song_id_user_csv=None, spotify, model):
-#     """
-#     saved_songs_csv: csv file with saved track history
-#     spotify: Spotify auth token
-#     """
-#     user_data, saved_songs = get_user_song_df(saved_songs_csv)
-#     sim_user_id = get_sim_user(user_data, )
-#     new_songs = get_new_songs(saved_songs)
-#     top_songs, top_scores = generate_rec_songs(user_id=sim_user_id, top=20, pool=new_songs)
-#     tracks = spotify.tracks(top_songs)
-#     return tracks
-
-
-# if __name__ == '__main__':
-#     load_dotenv()
-#
-#     scope = ['ugc-image-upload'
-#         , 'user-read-recently-played'
-#         , 'user-top-read'
-#         , 'user-read-playback-position'
-#         , 'user-read-playback-state'
-#         , 'user-modify-playback-state'
-#         , 'user-read-currently-playing'
-#         , 'app-remote-control'
-#         , 'streaming'
-#         , 'playlist-modify-public'
-#         , 'playlist-modify-private'
-#         , 'playlist-read-private'
-#         , 'playlist-read-collaborative'
-#         , 'user-follow-modify'
-#         , 'user-follow-read'
-#         , 'user-library-modify'
-#         , 'user-library-read'
-#         , 'user-read-email'
-#         , 'user-read-private'
-#              ]
-#
-#     auth_manager = spotipy.oauth2.SpotifyOAuth(scope=scope,
-#                                                show_dialog=True)
-#
-#     # auth_manager.get_access_token(request.args.get("code"))
-#     auth_url = auth_manager.get_authorize_url()
-#     sp = spotipy.Spotify(auth_manager=auth_manager)
-#
-#     csv_folder = '..'
-#
-#     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
-#
-#     top_tracks = get_rec_tracks(saved_songs_csv, sp)
-#
-#     # for t in top_tracks['tracks']:
-#     #     print('Track: ', t['name'], '\nArtist: ', t['artists'][0]['name'])
 
 
 
