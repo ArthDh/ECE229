@@ -2,7 +2,7 @@
 
 By ECE 229 Group 4: Arth D., Chin L., John O., Moira F., Tawaana H., Zizhan C.
 
-(insert main page screenshot)
+![Home Page](https://github.com/ArthDh/ECE229/readme_images/welcome_page.png)
 
 ## About
 
@@ -59,6 +59,8 @@ Note: We have also deployed this web app on AWS for the period of this course, b
 
 We used Flask as the web framework, and integrated Dash by Plotly to create interactive data visualization plots that ties to modern UI elements. The web application is deployed on AWS EC2 Scaling Group, with S3 used for large files storage and Dynamo DB for session cache. Data analysis, processing and integration are coded in Python. The Spotify Python API and OAuth Security handles the Spotify user log-in credentials. 
 
+![app architetcure](https://github.com/ArthDh/ECE229/readme_images/app_architetcure1.png)
+
 ## Data Visualization
 
 The plots in this dashcoard are coded using Plotly. We wrote callback functions to allow a more interactive data exploration experience for the user.
@@ -67,19 +69,18 @@ The plots in this dashcoard are coded using Plotly. We wrote callback functions 
 
 We used K-mean for clustering and all visualizations regarding K-mean are also showed in final notebook. The original data used for hyper dimensional visualization are stoed in [data](https://github.com/ArthDh/ECE-143/tree/main/data) folder, named df_cleaned.tsv and df_cleaned_genre_10.tsv.
 
-### Genre Radar Plot & Pie Charts for Playlists
+![TSNE plot](https://github.com/ArthDh/ECE229/readme_images/TSNE.png)
 
-PCA
+### Genre Breakdown Over Time
 
-![PCA](https://github.com/ArthDh/ECE-143/blob/main/images/PCA.gif)
+![data visual plot](https://github.com/ArthDh/ECE229/readme_images/genre_time.png)
 
-UMAP
+### Top Artists & Tracks
 
-![UMAP](https://github.com/ArthDh/ECE-143/blob/main/images/UMAP.gif)
-
-In order to see the 3D visualization of the dataset with predicted genres and artist names as index, use the following link:<br>
-[Embedding Visualizer](https://projector.tensorflow.org/?config=https://gist.githubusercontent.com/ArthDh/804b7297af76e5d0e626c8c01af2d158/raw/0d0c110e2ca731df7a63dcc7e8e0370d9dd29dd0/projector_config.json)
+![top artists & tracks](https://github.com/ArthDh/ECE229/readme_images/top_artists.png)
 
 ### Songs Recommender Model
 
-We built a user-item collaborative filtering recommender to generate personalized song recommendations for users. The model applies SVD (Probablistic Matrix Factorization) algorithm to learn user preferences of songs from external training dataset, and predicts scores of songs during inference.
+We built a user-item collaborative filtering recommender to generate personalized song recommendations for users. The model applies SVD (Probablistic Matrix Factorization) algorithm to learn user preferences of songs from external training dataset, and predicts scores of songs during inference. The user can export the recommended tracks playlist to Spotify by a simple button-click.
+
+![recommender](https://github.com/ArthDh/ECE229/readme_images/recommender.png)
