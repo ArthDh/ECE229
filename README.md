@@ -6,7 +6,11 @@ By ECE 229 Group 4: Arth D., Chin L., John O., Moira F., Tawaana H., Zizhan C.
 
 ## About
 
-This dashboard is developed by a group of music-lover graduate students as the final project for ECE 229: Computational Data Science & Product Development at UCSD. If you're interested in learning more about your music listening preferences, this dashboard is for you. By signing in with your Spotify Credentials, you'll be able to see analysis and visualization of your music tastes, such as TSNE spatial clustering of all tracks, genre breakdown, top artists & top tracks, recommended tracks for you and more. We hope Mus-X brings our users a pleasant visual & interactive experience, and help understand one's music preferences better.
+This dashboard is developed by a group of music-lover graduate students as the final project for ECE 229: Computational Data Science & Product Development at UCSD. 
+
+If you're interested in learning more about your music listening preferences, this dashboard is for you. By signing in with your Spotify Credentials, you'll be able to see analysis and visualization of your music tastes, such as TSNE spatial clustering of all tracks, genre breakdown, top artists & top tracks, recommended tracks for you and more. 
+
+We hope Mus-X brings our users a pleasant visual & interactive experience, and help understand one's music preferences better.
 
 ## Installation
 
@@ -67,7 +71,7 @@ The plots in this dashcoard are coded using Plotly. We wrote callback functions 
 
 ### All Tracks TSNE
 
-We used K-mean for clustering and all visualizations regarding K-mean are also showed in final notebook. The original data used for hyper dimensional visualization are stoed in [data](https://github.com/ArthDh/ECE-143/tree/main/data) folder, named df_cleaned.tsv and df_cleaned_genre_10.tsv.
+We used TSNE(T-Distributed Stochastic Neighbor Embedding) to cluster and visualize tracks in a users playlists based on the 13 audio features of each track. The user can select playlists of interest in the dropdown list to visualize the similarity of songs.
 
 ![TSNE plot](readme_images/TSNE.png?raw=true)
 
