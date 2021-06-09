@@ -74,27 +74,41 @@ def index():
     
     json.dump( me_dict, open( "me.json", 'w' ) )
 
-    # # Creating a daemon to save the users CSV file
-    if not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_feature_kmean.csv'):
+    # Step 5. Creating daemons to save the users CSV file
+    if (not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_feature_kmean.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/playlist_songs_genre.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/playlist_full.csv')):
         save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
                                                     kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':100, 'k':10},  daemon=True)
         save_tse_csv.start()
+        print("\n ---Process launched: generating TSNE files--- \n")
 
-    # #for saved song history csv file
-    if not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_audio_features.csv'):
+    # # for saved song history csv file
+    if (not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_audio_features.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_history.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_features_monthly_mean.csv')):
+
         save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
                                                     kwargs={'ntracks':1000},  daemon=True)
         save_hist_csv.start()
+        print("\n ---Process launched: generating track history files--- \n")
 
     if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_5_artists.csv'):
         save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
         save_top_artist_csv.start()
+        print("\n ---Process launched: generating top artist files--- \n")
 
     if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_10_tracks.csv'):
         save_top_tracks_csv = Process(target=get_top_tracks_csv, args=([spotify]), daemon=True)
         save_top_tracks_csv.start()
+        print("\n ---Process launched: generating top artist files--- \n")
 
-    print("\n Done creating CSVs \n")
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
+        save_rec_tracks = Process(target=recommend, args=([spotify]), daemon=True)
+        save_rec_tracks.start()
+        print("\n ---Process launched: generating recommended tracks files--- \n")
+
+    print("\n --- All files generation processes launched & running... --- \n")
     # return render_template('dashboard.html', spotify = spotify, graphJSON=graphJSON)
     return redirect('/dashboard')
 

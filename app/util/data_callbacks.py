@@ -520,8 +520,8 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
         merged_inner = merged_inner.drop(drop_cols, axis=1)
         df_audio_feature = pd.concat([df_audio_feature, merged_inner], axis=0)
 
-    df_saved_tracks=add_single_genre(df_saved_tracks)          # add a single genre
-    df_saved_tracks.to_csv(csv_folder+'/saved_track_history.csv')
+    df_saved_tracks = add_single_genre(df_saved_tracks)          # add a single genre
+    df_saved_tracks.to_csv(join(csv_folder, 'saved_track_history.csv'))
 
     # save audio feature df
     df_audio_feature['month_year'] = pd.to_datetime(df_audio_feature['date_added']).dt.to_period('M')
@@ -533,10 +533,10 @@ def get_saved_track_history_csv(spotify, ntracks=1000):
     monthly_mean = pd.DataFrame(min_max_scaler.fit_transform(x), index=monthly_mean.index, columns=monthly_mean.columns)
     monthly_mean.to_csv(join(csv_folder, 'audio_features_monthly_mean.csv'))
 
-    if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
-        recommend(spotify)
+    # if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
+    #     recommend(spotify)
         
-    print('--- HIST FILE SAVED---')
+    print('--- HIST & REC FILES SAVED---')
     return(df_saved_tracks)
 
 
@@ -640,16 +640,15 @@ def recommend(spotify):
     """
     csv_folder =  f'.csv_caches/{get_my_id()}'
 
+    print(f'--- Generating recommended tracks ---')
+
     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
 
-    model_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'rec_files')
-    print(model_folder)
+    model_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'rec-files')
 
-    #model_folder = 'app/assets/rec-files/' # used to be absolute file path
     model = os.path.join(model_folder, 'recommender_model_final.pkl')
     user_song_csv = os.path.join(model_folder, 'SPF_user_song_score.csv')
     songs_pool_csv = os.path.join(model_folder, 'songs_pool.csv')
-    test = pd.read_csv(user_song_csv)
 
     print('\nloaded_csvs')
     print('*'*20)
@@ -680,6 +679,7 @@ def recommend(spotify):
                 'id':t['id']}
 
     json.dump(d, open( os.path.join(csv_folder,"rec.json"), 'w' ) )
+    print(f'--- RECOMMENDATION FILE SAVED ---')
     return tracks
 
 

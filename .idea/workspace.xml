@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9905b333-a0b0-46f3-9ef2-31e23a549092" name="Default Changelist" comment="Merge branch 'frontend_design' of https://github.com/ArthDh/ECE229 into Recommender-test&#10;&#10;# Conflicts:&#10;#&#9;app/util/data_callbacks.py">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/dashapp1/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dashapp1/layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/layout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/util/data_callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/data_callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/recommender.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/recommender.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webapp.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/me.json" beforeDir="false" afterPath="$PROJECT_DIR$/me.json" afterDir="false" />
     </list>
@@ -36,7 +33,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/notebooks" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -107,6 +104,17 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="WindowStateProjectService">
     <state x="-1680" y="397" key="#Inspections" timestamp="1622596970256">
       <screen x="-2560" y="23" width="2560" height="1417" />
@@ -138,9 +146,10 @@
     </state>
     <state width="709" height="230" key="GridCell.Tab.0.right/0.23.1440.877/-2560.23.2560.1417@-2560.23.2560.1417" timestamp="1622596769172" />
     <state width="709" height="230" key="GridCell.Tab.0.right/0.23.1440.877/-2560.23.2560.1417@0.23.1440.877" timestamp="1622496178344" />
-    <state x="221" y="100" key="SettingsEditor" timestamp="1621204727708">
-      <screen x="0" y="23" width="1440" height="877" />
+    <state x="221" y="79" key="SettingsEditor" timestamp="1623121950651">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
+    <state x="221" y="79" key="SettingsEditor/0.0.1440.900/-2560.0.2560.1440@0.0.1440.900" timestamp="1623121950651" />
     <state x="221" y="100" key="SettingsEditor/0.23.1440.877@0.23.1440.877" timestamp="1621204727708" />
     <state x="397" y="294" key="com.intellij.ide.util.TipDialog" timestamp="1621593584626">
       <screen x="0" y="23" width="1440" height="877" />

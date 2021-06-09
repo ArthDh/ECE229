@@ -87,7 +87,7 @@ def register_callbacks(dashapp):
         :return:Figure containing pie chart for the genres in the playlist
         :rtype: plotly.graph_objs
         """
-        assert isinstance(playlists, (list, str))
+        #assert isinstance(playlists, (list, str))
         if isinstance(playlists, str):
             playlists = [playlists]
         # print(clickData)
@@ -99,8 +99,8 @@ def register_callbacks(dashapp):
             idx = clickData['points'][0]['curveNumber']
         fig = go.Figure()
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
-        print(df['playlist_name'])
-        print(playlists)
+        #print(df['playlist_name'])
+        #print(playlists)
         df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
 
         new = pd.DataFrame()
@@ -523,7 +523,7 @@ def register_callbacks(dashapp):
         new_df=new_df.rename(columns={'level_0':'month_yr'})
         new_df=new_df[:4*num_months ]
         new_df['month_yr']=new_df['month_yr'].astype(str)
-        print(new_df.head())
+        #print(new_df.head())
         fig=px.bar(new_df, x="month_yr", y="count", color="genre", hover_data={"genre":True,"count":True, "month_yr":False})
         fig.update_layout(xaxis_title='Month', yaxis_title='Number of Songs Added')
         return fig
@@ -587,14 +587,14 @@ def register_callbacks(dashapp):
             return redirect('/')
         spotify = spotipy.Spotify(auth_manager=auth_manager)
         user_id = spotify.current_user()['id']
-        playlist = spotify.user_playlist_create(user_id, 'Mus-X Recommendations')
+        playlist = spotify.user_playlist_create(user_id, 'Mus-X Magic Mix')
 
 
         data = json.load(open("me.json"))
         rec = json.load(open(f".csv_caches/{data['id']}/rec.json", 'r'))
         rec_ids = [v['id'] for x, v in rec.items()]
         spotify.playlist_add_items(playlist['id'], rec_ids)
-        print('---created---')
+        print('--- Mus-X Recommended playlist generated ---')
 
         return "done"
 
