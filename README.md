@@ -59,6 +59,12 @@ This will launch a server locally on your machine. Clicking on the url shown wil
 
 Note: We have also deployed this web app on AWS for the period of this course, but the site will be down when our credits run out.
 
+## OKR Summary
+
+There are a several main milestones that defined this project.
+
+![app architetcure](readme_images/OKRs.png?raw=true)
+
 ## Application Architecture
 
 We used Flask as the web framework, and integrated Dash by Plotly to create interactive data visualization plots that ties to modern UI elements. The web application is deployed on AWS EC2 Scaling Group, with S3 used for large files storage and Dynamo DB for session cache. Data analysis, processing and integration are coded in Python. The Spotify Python API and OAuth Security handles the Spotify user log-in credentials. 
