@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9905b333-a0b0-46f3-9ef2-31e23a549092" name="Default Changelist" comment="Merge branch 'frontend_design' of https://github.com/ArthDh/ECE229 into Recommender-test&#10;&#10;# Conflicts:&#10;#&#9;app/util/data_callbacks.py">
+      <change afterPath="$PROJECT_DIR$/app/dashapp1/callbacks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dashapp1/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/data_callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/data_callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webapp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/me.json" beforeDir="false" afterPath="$PROJECT_DIR$/me.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OKRs.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/OKRs.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TSNE.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/TSNE.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_architetcure1.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/app_architetcure1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_architetcure2.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/app_architetcure2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/genre_time.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/genre_time.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommender.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/recommender.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/top_artists.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/top_artists.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/welcome_page.png" beforeDir="false" afterPath="$PROJECT_DIR$/readme_images/welcome_page.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,15 +41,16 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/util" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/notebooks" />
       <recent name="$PROJECT_DIR$/app/util" />
       <recent name="$PROJECT_DIR$/app/assets/rec-files" />
       <recent name="$PROJECT_DIR$/Test" />
       <recent name="$PROJECT_DIR$/.csv_caches" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/readme_images" />
+      <recent name="$PROJECT_DIR$/app/util" />
     </key>
   </component>
   <component name="RunManager">
@@ -126,6 +132,14 @@
     <state x="-2140" y="23" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877/-2560.23.2560.1417@-2560.23.2560.1417" timestamp="1622507037467" />
     <state x="236" y="23" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877/-2560.23.2560.1417@0.23.1440.877" timestamp="1622421328696" />
     <state x="236" y="23" width="1071" height="818" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.877@0.23.1440.877" timestamp="1621210423741" />
+    <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1623227421196">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900/-2560.0.2560.1440@0.0.1440.900" timestamp="1623227421196" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1623227668393">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.0.1440.900/-2560.0.2560.1440@0.0.1440.900" timestamp="1623227668393" />
     <state width="709" height="230" key="GridCell.Tab.0.bottom" timestamp="1622596769173">
       <screen x="-2560" y="23" width="2560" height="1417" />
     </state>
