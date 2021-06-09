@@ -87,7 +87,7 @@ def register_callbacks(dashapp):
         :return:Figure containing pie chart for the genres in the playlist
         :rtype: plotly.graph_objs
         """
-        assert isinstance(playlists, (list, str))
+        # assert isinstance(playlists, (list, str)``)
         if isinstance(playlists, str):
             playlists = [playlists]
         # print(clickData)
