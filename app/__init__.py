@@ -1,16 +1,19 @@
 import dash
-from flask import Flask
+from flask import Flask, session, request, redirect, render_template, url_for, Blueprint
 from flask.helpers import get_root_path
+from flask_session import Session
 
 
 from .config import BaseConfig
 
 
 def create_app():
+    sess = Session()
     server = Flask(__name__)
     server.config.from_object(BaseConfig)
     register_dashapps(server)
     register_blueprints(server)
+    sess.init_app(server)
 
     return server
 
@@ -40,7 +43,8 @@ def register_dashapps(app):
         dashapp1.layout = layout
         register_callbacks(dashapp1)
 
-    _protect_dashviews(dashapp1)
+    # _protect_dashviews(dashapp1)
+    return dashapp1
 
 
 def _protect_dashviews(dashapp):

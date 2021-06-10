@@ -35,8 +35,9 @@ if not os.path.exists(csv_folder):
     os.makedirs(csv_folder)
 
 def get_my_id():
+    
     if os.path.exists('me.json'):
-        data = json.load( open( "me.json" ) )
+        data = json.load(open( "me.json" ))
         return data['id']
     
 

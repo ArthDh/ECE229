@@ -101,7 +101,8 @@ def register_callbacks(dashapp):
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
         print(df['playlist_name'])
         print(playlists)
-        df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
+        if playlists:
+            df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
 
         new = pd.DataFrame()
         new['genre'] = df.index
