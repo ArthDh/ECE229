@@ -5,6 +5,7 @@ ECE229.wsgi
 .flask_session
 .spotify_caches
 me.json
+workspace.xml
 
 # Large files
 .csv_caches

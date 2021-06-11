@@ -4,12 +4,7 @@
     <list default="true" id="9905b333-a0b0-46f3-9ef2-31e23a549092" name="Default Changelist" comment="Merge branch 'frontend_design' of https://github.com/ArthDh/ECE229 into Recommender-test&#10;&#10;# Conflicts:&#10;#&#9;app/util/data_callbacks.py">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dashapp1/callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dashapp1/layout.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/dashapp1/layout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/data_callbacks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/data_callbacks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/recommender.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/recommender.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/webapp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/me.json" beforeDir="false" afterPath="$PROJECT_DIR$/me.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/me.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,15 +34,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/util" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/notebooks" />
       <recent name="$PROJECT_DIR$/app/util" />
       <recent name="$PROJECT_DIR$/app/assets/rec-files" />
       <recent name="$PROJECT_DIR$/Test" />
       <recent name="$PROJECT_DIR$/.csv_caches" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/util" />
     </key>
   </component>
   <component name="RunManager">
@@ -147,11 +142,11 @@
     </state>
     <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877/-2560.23.2560.1417@0.23.1440.877" timestamp="1621593584625" />
     <state x="397" y="294" key="com.intellij.ide.util.TipDialog/0.23.1440.877@0.23.1440.877" timestamp="1621204115501" />
-    <state x="385" y="195" width="671" height="695" key="search.everywhere.popup" timestamp="1622971591762">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="-1876" y="330" width="1192" height="1093" key="search.everywhere.popup" timestamp="1623390447361">
+      <screen x="-2560" y="23" width="2560" height="1417" />
     </state>
     <state x="385" y="195" width="671" height="695" key="search.everywhere.popup/0.0.1440.900/-2560.0.2560.1440@0.0.1440.900" timestamp="1622971591762" />
-    <state x="-1876" y="330" width="1192" height="1093" key="search.everywhere.popup/0.23.1440.877/-2560.23.2560.1417@-2560.23.2560.1417" timestamp="1622596904237" />
+    <state x="-1876" y="330" width="1192" height="1093" key="search.everywhere.popup/0.23.1440.877/-2560.23.2560.1417@-2560.23.2560.1417" timestamp="1623390447361" />
     <state x="385" y="213" width="670" height="676" key="search.everywhere.popup/0.23.1440.877/-2560.23.2560.1417@0.23.1440.877" timestamp="1622494515079" />
     <state x="385" y="213" width="670" height="676" key="search.everywhere.popup/0.23.1440.877@0.23.1440.877" timestamp="1622513926892" />
   </component>
