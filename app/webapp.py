@@ -1,3 +1,24 @@
+"""
+Prerequisites
+    pip3 install spotipy Flask Flask-Session
+    // from your [app settings](https://developer.spotify.com/dashboard/applications)
+    export SPOTIPY_CLIENT_ID=client_id_here
+    export SPOTIPY_CLIENT_SECRET=client_secret_here
+    export SPOTIPY_REDIRECT_URI='http://127.0.0.1:8080' // must contain a port
+    // SPOTIPY_REDIRECT_URI must be added to your [app settings](https://developer.spotify.com/dashboard/applications)
+    OPTIONAL
+    // in development environment for debug output
+    export FLASK_ENV=development
+    // so that you can invoke the app outside of the file's directory include
+    export FLASK_APP=/path/to/spotipy/examples/app.py
+ 
+    // on Windows, use `SET` instead of `export`
+Run app.py
+    python3 app.py OR python3 -m flask run
+    NOTE: If receiving "port already in use" error, try other ports: 5000, 8090, 8888, etc...
+        (will need to be updated in your Spotify app and SPOTIPY_REDIRECT_URI variable)
+"""
+
 import os
 from flask import Flask, session, request, redirect, render_template, url_for, Blueprint
 from flask_session import Session
@@ -5,6 +26,7 @@ import spotipy
 import uuid
 from dotenv import load_dotenv
 import sys
+# sys.path.append('..')
 from .util.data_callbacks import *
 import json
 import plotly
@@ -50,34 +72,47 @@ def index():
     # Step 4. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     
-    me =spotify.me() 
-    print(me)
+    me =spotify.me()
     me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': me['id']}
-    # me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': '11102560850'}
     
     json.dump( me_dict, open( "me.json", 'w' ) )
 
-    # # Creating a daemon to save the users CSV file
-    if not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_feature_kmean.csv'):
+    # Step 5. Creating daemons to save the users CSV file
+    if (not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_feature_kmean.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/playlist_songs_genre.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/playlist_full.csv')):
         save_tse_csv = Process( target=get_tsne_csv, args=([spotify]), \
                                                     kwargs={'min_songs_per_playlist':5,'max_songs_per_playlist':100, 'k':10},  daemon=True)
         save_tse_csv.start()
+        print("\n ---Process launched: generating TSNE files--- \n")
 
-    # #for saved song history csv file
-    if not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_audio_features.csv'):
+    # # for saved song history csv file
+    if (not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_audio_features.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/saved_track_history.csv')) or \
+            (not os.path.exists(f'{csv_folder}/{get_my_id()}/audio_features_monthly_mean.csv')):
+
         save_hist_csv = Process(target=get_saved_track_history_csv, args=([spotify]), \
                                                     kwargs={'ntracks':1000},  daemon=True)
         save_hist_csv.start()
+        print("\n ---Process launched: generating track history files--- \n")
 
     if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_5_artists.csv'):
         save_top_artist_csv = Process(target=get_top_artist_csv, args=([spotify]), daemon=True)
         save_top_artist_csv.start()
+        print("\n ---Process launched: generating top artist files--- \n")
 
     if not os.path.exists(f'{csv_folder}/{get_my_id()}/top_10_tracks.csv'):
         save_top_tracks_csv = Process(target=get_top_tracks_csv, args=([spotify]), daemon=True)
         save_top_tracks_csv.start()
+        print("\n ---Process launched: generating top artist files--- \n")
 
-    print("\n Done creating CSVs \n")
+    if not os.path.exists(f'{csv_folder}/{get_my_id()}/rec.json'):
+        save_rec_tracks = Process(target=recommend, args=([spotify]), daemon=True)
+        save_rec_tracks.start()
+        print("\n ---Process launched: generating recommended tracks files--- \n")
+
+    print("\n --- All files generation processes launched & running... --- \n")
+
     return redirect('/dashboard')
 
 
@@ -102,7 +137,7 @@ def sign_out():
 @server_bp.route('/docs')
 def serve_sphinx_docs():
     return redirect( url_for('static', filename='html/index.html'))
-    
+
 
 # @server_bp.route('/update')
 # def update():
@@ -161,5 +196,4 @@ def serve_sphinx_docs():
 #     spotify = spotipy.Spotify(auth_manager=auth_manager)
 
 
-#     # return     spotify.current_user_top_artists( limit=20, offset=0, time_range="long_term")
 #     return spotify.current_user_recently_played(limit=50, after=None, before=None)

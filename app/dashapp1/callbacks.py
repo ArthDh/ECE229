@@ -20,14 +20,15 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import textwrap
 
-
 caches_folder = './.spotify_caches/'
 if not os.path.exists(caches_folder):
     os.makedirs(caches_folder)
 scaler = MinMaxScaler()
 
+
 def session_cache_path():
     return caches_folder + session.get('uuid')
+
 
 def get_me(val):
     auth_manager, cache_handler = get_auth_manager(session_cache_path())
@@ -35,6 +36,7 @@ def get_me(val):
         return redirect('/')
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     return html.H1(spotify.me()[val])
+
 
 def register_callbacks(dashapp):
     @dashapp.callback(Output('radar-graph', 'figure'), [Input('radar-dropdown', 'value')])
@@ -114,12 +116,10 @@ def register_callbacks(dashapp):
         fig.add_trace(trace)
         return fig
 
-
-    @dashapp.callback(Output('my-h1',  component_property='children'), [Input('spotify_me', 'value')])
+    @dashapp.callback(Output('my-h1', component_property='children'), [Input('spotify_me', 'value')])
     def update_spotify(ip_value):
         me = get_me(ip_value)
         return me
-
 
     @dashapp.callback(Output('mood-graph', 'figure'), [Input('mood-dropdown', 'value')])
     def update_mood_graph(features):
@@ -164,7 +164,7 @@ def register_callbacks(dashapp):
                 textposition="top center",
                 mode="markers",
                 marker=dict(size=5, symbol="circle"),
-                hovertemplate = "Song:<br><b>%{text}<b> "
+                hovertemplate="Song:<br><b>%{text}<b> "
             )
             data.append(scatter)
 
@@ -180,17 +180,17 @@ def register_callbacks(dashapp):
         ],
     )
     def display_3d_scatter_plot(
-        playlist,
+            playlist,
     ):
         """Creates a 3d Scatter Plot for TSNE visualization colored using K-Means clustering
 
         :param playlist: Playlists for which the plot is to be shown
         :type playlist: List
-        :return: Scatter Plot   
+        :return: Scatter Plot
         :rtype: plotly.graph_object
         """
 
-        path =  f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
+        path = f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
@@ -213,9 +213,7 @@ def register_callbacks(dashapp):
         figure = generate_figure_image(groups, layout)
         figure.update_layout(showlegend=False)
 
-
         return figure
-
 
     @dashapp.callback(
         Output("div-plot-click-image", "children"),
@@ -225,16 +223,16 @@ def register_callbacks(dashapp):
         ],
     )
     def display_click_image(clickData, playlist):
-        """Display Focused view of points in 3D ScatterPlot for TSNE 
+        """Display Focused view of points in 3D ScatterPlot for TSNE
 
-        :param clickData: Content information of clicked point 
-        :type clickData: Dict   
+        :param clickData: Content information of clicked point
+        :type clickData: Dict
         :param playlist: Playlists for which the plot is to be shown
         :type playlist: List
         :return: Extended information of the clicked point
         :rtype: plotly.graph_object
         """
-        path =  f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
+        path = f'.csv_caches/{get_my_id()}/audio_feature_kmean.csv'
         try:
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
@@ -246,12 +244,13 @@ def register_callbacks(dashapp):
 
         try:
             name = clickData['points'][0]['text']
-            row = embedding_df[embedding_df['name']==name ]
+            row = embedding_df[embedding_df['name'] == name]
         except:
             return None
 
         if any(row):
             im = Image.open(requests.get(row.album_art.values[0], stream=True).raw)
+
             def b64(im_pil):
                 buff = BytesIO()
                 im_pil.save(buff, format="png")
@@ -268,8 +267,8 @@ def register_callbacks(dashapp):
                     src="data:image/png;base64, " + im_b64,
                     style={"height": "25vh", "display": "block", "margin": "auto"},
                 ),
-                
-            ],style={'float':'left', 'padding':'5vw', 'font-weight': '600'})
+
+            ], style={'float': 'left', 'padding': '5vw', 'font-weight': '600'})
             return ret
         return None
 
@@ -280,17 +279,16 @@ def register_callbacks(dashapp):
         ],
     )
     def display_era_click(clickData):
-        """Extended view of Era histogram that shows top-3 artists from that particular year 
+        """Extended view of Era histogram that shows top-3 artists from that particular year
 
         :param clickData: More information on the Histogram that was clicked
         :type clickData: Dict
-        :return: Extended view of Histogram that was clicked on 
+        :return: Extended view of Histogram that was clicked on
         :rtype: plotly.graph_object
         """
 
-        
         try:
-            path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
+            path = f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
             # print(
@@ -301,15 +299,15 @@ def register_callbacks(dashapp):
 
         try:
             year = math.floor(int(clickData['points'][0]['y']))
-            years = [year, year+1]
-            embedding_df['year'] = embedding_df.apply(lambda x:x.album_release_date.split('-')[0], axis=1)
+            years = [year, year + 1]
+            embedding_df['year'] = embedding_df.apply(lambda x: x.album_release_date.split('-')[0], axis=1)
             df_year = embedding_df.groupby('year')
 
-            artist_era =[]
+            artist_era = []
             for y in years:
                 artist_era.extend(list(df_year.get_group(str(y)).artist_names))
             t = []
-            _ = [ t.extend(a.split(',')) for a in  artist_era]
+            _ = [t.extend(a.split(',')) for a in artist_era]
             artists = [a.strip(' ') for a in t]
             artist_counter = Counter(artists)
             sorted_artists = sorted(artist_counter, key=artist_counter.get, reverse=True)
@@ -318,15 +316,16 @@ def register_callbacks(dashapp):
             if not auth_manager.validate_token(cache_handler.get_cached_token()):
                 return redirect('/')
             spotify = spotipy.Spotify(auth_manager=auth_manager)
-            artist_dict = [(artist, spotify.search(artist, type='artist', limit=1)['artists']['items'][0]['images'][0]['url']) for artist in sorted_artists[:3]]
+            artist_dict = [
+                (artist, spotify.search(artist, type='artist', limit=1)['artists']['items'][0]['images'][0]['url']) for
+                artist in sorted_artists[:3]]
 
             # print(artist_dict)
         except:
             return None
 
-
         def b64(im_pil):
-            """Conversion to Base64 
+            """Conversion to Base64
 
             :param im_pil: Pillow Image to be converted
             :type im_pil: Pillow Image
@@ -344,22 +343,20 @@ def register_callbacks(dashapp):
             im_b64 = b64(im)
             final_ret.append(
                 html.Div([
-                f'{years[0]} - {years[1]}' if ii==0 else None,
-                html.Br() if ii==0 else None,
-                i[0],
-                html.Br(),
-                html.Img(
-                    src="data:image/png;base64, " + im_b64,
-                    style={"height": "20vh", "display": "block", "margin": "auto"},
-                )
+                    f'{years[0]} - {years[1]}' if ii == 0 else None,
+                    html.Br() if ii == 0 else None,
+                    i[0],
+                    html.Br(),
+                    html.Img(
+                        src="data:image/png;base64, " + im_b64,
+                        style={"height": "20vh", "display": "block", "margin": "auto"},
+                    )
                 ],
-                 style={'font-weight':'600', 'text-align':'center'})
-                )
-
+                    style={'font-weight': '600', 'text-align': 'center'})
+            )
 
         ret = html.Div(final_ret)
         return ret
-
 
     @dashapp.callback(
         Output("div-era-results", "children"),
@@ -368,17 +365,16 @@ def register_callbacks(dashapp):
         ],
     )
     def display_era_res(clickData):
-        """Extended view of Era histogram that shows top-3 artists from that particular year 
+        """Extended view of Era histogram that shows top-3 artists from that particular year
 
         :param clickData: More information on the Histogram that was clicked
         :type clickData: Dict
-        :return: Extended view of Histogram that was clicked on 
+        :return: Extended view of Histogram that was clicked on
         :rtype: plotly.graph_object
         """
 
-        
         try:
-            path =  f'.csv_caches/{get_my_id()}/playlist_full.csv'
+            path = f'.csv_caches/{get_my_id()}/playlist_full.csv'
             embedding_df = pd.read_csv(path)
         except FileNotFoundError as error:
             # print(
@@ -389,15 +385,15 @@ def register_callbacks(dashapp):
 
         try:
             year = math.floor(int(clickData['points'][0]['y']))
-            years = [year, year+1]
-            embedding_df['year'] = embedding_df.apply(lambda x:x.album_release_date.split('-')[0], axis=1)
+            years = [year, year + 1]
+            embedding_df['year'] = embedding_df.apply(lambda x: x.album_release_date.split('-')[0], axis=1)
             df_year = embedding_df.groupby('year')
 
-            artist_era =[]
+            artist_era = []
             for y in years:
                 artist_era.extend(list(df_year.get_group(str(y)).artist_names))
             t = []
-            _ = [ t.extend(a.split(',')) for a in  artist_era]
+            _ = [t.extend(a.split(',')) for a in artist_era]
             artists = [a.strip(' ') for a in t]
             artist_counter = Counter(artists)
             sorted_artists = sorted(artist_counter, key=artist_counter.get, reverse=True)
@@ -411,9 +407,8 @@ def register_callbacks(dashapp):
         except:
             return None
 
-
         def b64(im_pil):
-            """Conversion to Base64 
+            """Conversion to Base64
 
             :param im_pil: Pillow Image to be converted
             :type im_pil: Pillow Image
@@ -424,15 +419,16 @@ def register_callbacks(dashapp):
             im_pil.save(buff, format="png")
             im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
             return im_b64
+
         # print(artist_dict)
         final_ret = []
 
         for artist in sorted_artists[:3]:
-            res           = spotify.search(artist, type='artist', limit=1)
-            artist_id     = res['artists']['items'][0]['id']
-            rec           = spotify.artist_top_tracks(artist_id)
-            latest_album  = rec['tracks'][0]['album']['name']
-            album_cover   = rec['tracks'][0]['album']['images'][1]['url']
+            res = spotify.search(artist, type='artist', limit=1)
+            artist_id = res['artists']['items'][0]['id']
+            rec = spotify.artist_top_tracks(artist_id)
+            latest_album = rec['tracks'][0]['album']['name']
+            album_cover = rec['tracks'][0]['album']['images'][1]['url']
             audio_preview = rec['tracks'][0]['preview_url']
 
             im = Image.open(requests.get(album_cover, stream=True).raw)
@@ -442,20 +438,20 @@ def register_callbacks(dashapp):
                 html.Div([
                     html.H4(latest_album),
                     html.Img(
-                    src="data:image/png;base64, " + im_b64,
-                    style={"height": "15vh", "display": "block", "margin": "auto"},
+                        src="data:image/png;base64, " + im_b64,
+                        style={"height": "15vh", "display": "block", "margin": "auto"},
                     ),
-                    html.Audio(src=audio_preview,controls=True, style={'margin-top':'1em', 'width':'80%'}),                  
-                ], style={'text-align':'center', 'width':'33%', 'float':'left'})
+                    html.Audio(src=audio_preview, controls=True, style={'margin-top': '1em', 'width': '80%'}),
+                ], style={'text-align': 'center', 'width': '33%', 'float': 'left'})
             )
 
-        ret = html.Div(final_ret, style={'margin-top':'2em'})
+        ret = html.Div(final_ret, style={'margin-top': '2em'})
         return ret
 
     @dashapp.callback(Output('era_title', 'style'), [Input("graph-era", "clickData")])
     def update_style(val):
-        if val==None: 
-            return  {'display': 'None'}
+        if val == None:
+            return {'display': 'None'}
         else:
             return {'display': 'inline'}
 
@@ -470,24 +466,24 @@ def register_callbacks(dashapp):
         :return: pie chart figure
         :rtype: plotly.graph_object
         """
-        dates_dict=get_slider_info()[1]
-        before=dates_dict[date_range[1]].tz_localize(None)
-        after=dates_dict[date_range[0]].tz_localize(None)
+        dates_dict = get_slider_info()[1]
+        before = dates_dict[date_range[1]].tz_localize(None)
+        after = dates_dict[date_range[0]].tz_localize(None)
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/saved_track_history.csv')
-        df['date_added'] = pd.to_datetime(df['date_added']).apply(lambda x: x.replace(tzinfo=None)) 
-        df=df[df['date_added']<before]
-        df=df[df['date_added']>after]
-        df=df['genre'].value_counts()
-        new=pd.DataFrame()
-        new['genre']=df.index
-        new['counts']=df.values
-        #clipped=new[new['counts']>5]# removing infrequent genres distribution
-        clipped=new
-        a=clipped['genre'].tolist()
-        b=clipped['counts'].tolist()
-        trace =go.Pie(labels=a, values=b )
-        data=[trace]
-        fig=go.Figure(data=data)
+        df['date_added'] = pd.to_datetime(df['date_added']).apply(lambda x: x.replace(tzinfo=None))
+        df = df[df['date_added'] < before]
+        df = df[df['date_added'] > after]
+        df = df['genre'].value_counts()
+        new = pd.DataFrame()
+        new['genre'] = df.index
+        new['counts'] = df.values
+        # clipped=new[new['counts']>5]# removing infrequent genres distribution
+        clipped = new
+        a = clipped['genre'].tolist()
+        b = clipped['counts'].tolist()
+        trace = go.Pie(labels=a, values=b)
+        data = [trace]
+        fig = go.Figure(data=data)
         return fig
 
     @dashapp.callback(
@@ -501,48 +497,47 @@ def register_callbacks(dashapp):
         :return: genre history chart
         :rtype:  plotly.express.graph_object
         """
-        number_of_stacked_genres=5
-        num_months=11
-        #need to make this a try block
-        df=pd.read_csv(f'.csv_caches/{get_my_id()}/saved_track_history.csv')
-        top10genres=df["genre"].value_counts()
-        counts=top10genres.index.to_list()[:10]
-        df=df[df["genre"].isin(counts)]
+        number_of_stacked_genres = 5
+        num_months = 11
+        # need to make this a try block
+        df = pd.read_csv(f'.csv_caches/{get_my_id()}/saved_track_history.csv')
+        top10genres = df["genre"].value_counts()
+        counts = top10genres.index.to_list()[:10]
+        df = df[df["genre"].isin(counts)]
 
-        df['date_added']=pd.to_datetime(df['date_added'])
-        df['month_yr']=df['date_added'].dt.to_period('M')
-        count_series=df.groupby(['month_yr','genre']).size()
-        new_df = count_series.to_frame(name = 'count')
+        df['date_added'] = pd.to_datetime(df['date_added'])
+        df['month_yr'] = df['date_added'].dt.to_period('M')
+        count_series = df.groupby(['month_yr', 'genre']).size()
+        new_df = count_series.to_frame(name='count')
         new_df = new_df.reset_index() \
-            .sort_values(['month_yr','count'],ascending=False) \
-            .set_index(['month_yr','genre']) \
+            .sort_values(['month_yr', 'count'], ascending=False) \
+            .set_index(['month_yr', 'genre']) \
             .rename_axis([None, 'genre'])
 
-        new_df=new_df.groupby(level=0).head(number_of_stacked_genres)
+        new_df = new_df.groupby(level=0).head(number_of_stacked_genres)
 
-        new_df=new_df.reset_index(level=[0,1])
-        new_df=new_df.rename(columns={'level_0':'month_yr'})
-        new_df=new_df[:4*num_months ]
-        new_df['month_yr']=new_df['month_yr'].astype(str)
+        new_df = new_df.reset_index(level=[0, 1])
+        new_df = new_df.rename(columns={'level_0': 'month_yr'})
+        new_df = new_df[:4 * num_months]
+        new_df['month_yr'] = new_df['month_yr'].astype(str)
         print(new_df.head())
-        fig=px.bar(new_df, x="month_yr", y="count", color="genre", hover_data={"genre":True,"count":True, "month_yr":False})
+        fig = px.bar(new_df, x="month_yr", y="count", color="genre",
+                     hover_data={"genre": True, "count": True, "month_yr": False})
         fig.update_layout(xaxis_title='Month', yaxis_title='Number of Songs Added')
         return fig
-
-
 
     @dashapp.callback(
         Output('rec_results', 'children'),
         [Input('gen_rec', 'n_clicks')])
     def update_output(n_clicks):
-        if n_clicks==0: 
-            return  None
+        if n_clicks == 0:
+            return None
         else:
-            if os.path.exists(os.path.join(f'{csv_folder}/{get_my_id()}','rec.json')):
-                data = json.load( open( os.path.join(f'{csv_folder}/{get_my_id()}','rec.json')) )
-                
+            if os.path.exists(os.path.join(f'{csv_folder}/{get_my_id()}', 'rec.json')):
+                data = json.load(open(os.path.join(f'{csv_folder}/{get_my_id()}', 'rec.json')))
+
                 def b64(im_pil):
-                    """Conversion to Base64 
+                    """Conversion to Base64
 
                     :param im_pil: Pillow Image to be converted
                     :type im_pil: Pillow Image
@@ -553,43 +548,43 @@ def register_callbacks(dashapp):
                     im_pil.save(buff, format="png")
                     im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
                     return im_b64
+
                 temp = []
 
-                for k,v in data.items():
+                for k, v in data.items():
                     im = Image.open(requests.get(v['img_href'], stream=True).raw)
                     im_b64 = b64(im)
 
                     temp.append(html.Div([
-                                html.H2(v['artist'], style={'text-align':'center', 'margin':'0'}),
-                                html.H3(v['track'], style={'text-align':'center', 'margin':'0'}),
-                                html.Img(
-                                src="data:image/png;base64, " + im_b64,
-                                style={"height": "25vh", "display": "block", "margin": "auto", 'border-radius':'15em'},
-                                ),
-                                
-                                html.Div([
+                        html.H2(v['artist'], style={'text-align': 'center', 'margin': '0'}),
+                        html.H3(v['track'], style={'text-align': 'center', 'margin': '0'}),
+                        html.Img(
+                            src="data:image/png;base64, " + im_b64,
+                            style={"height": "25vh", "display": "block", "margin": "auto", 'border-radius': '15em'},
+                        ),
 
-                                    html.Audio(src=v['preview_href'],controls=True, style={'margin-top':'1em'}),                  
+                        html.Div([
 
-                                ], style={'text-align':'center'})
+                            html.Audio(src=v['preview_href'], controls=True, style={'margin-top': '1em'}),
 
-                            ],style={'margin-top':'2em'}))
+                        ], style={'text-align': 'center'})
 
-                return html.Div(temp, style={'height':'1000px', 'overflow-y':'scroll'})
+                    ], style={'margin-top': '2em'}))
+
+                return html.Div(temp, style={'height': '1000px', 'overflow-y': 'scroll'})
 
     @dashapp.callback(
         Output('export_result', 'children'),
         [Input('export_playlist', 'n_clicks')])
     def export_playlist(n_clicks):
-        if n_clicks==0:
-            return  None
+        if n_clicks == 0:
+            return None
         auth_manager, cache_handler = get_auth_manager(session_cache_path())
         if not auth_manager.validate_token(cache_handler.get_cached_token()):
             return redirect('/')
         spotify = spotipy.Spotify(auth_manager=auth_manager)
         user_id = spotify.current_user()['id']
         playlist = spotify.user_playlist_create(user_id, 'Mus-X Recommendations')
-
 
         data = json.load(open("me.json"))
         rec = json.load(open(f".csv_caches/{data['id']}/rec.json", 'r'))
@@ -600,14 +595,15 @@ def register_callbacks(dashapp):
         return "done"
 
     @dashapp.callback(
-    Output('user_info', 'children'),
+        Output('user_info', 'children'),
         [Input('url', 'pathname')])
     def get_user_info(pathname):
         if os.path.exists('me.json'):
-            data = json.load( open( "me.json" ) )
+            data = json.load(open("me.json"))
             im = Image.open(requests.get(data['img_url'], stream=True).raw)
+
             def b64(im_pil):
-                """Conversion to Base64 
+                """Conversion to Base64
 
                 :param im_pil: Pillow Image to be converted
                 :type im_pil: Pillow Image
@@ -618,21 +614,22 @@ def register_callbacks(dashapp):
                 im_pil.save(buff, format="png")
                 im_b64 = base64.b64encode(buff.getvalue()).decode("utf-8")
                 return im_b64
+
             im_b64 = b64(im)
- 
-            return html.Div(className='user-info',children=[
-                    html.Img(
+
+            return html.Div(className='user-info', children=[
+                html.Img(
                     src="data:image/png;base64, " + im_b64,
                     className='user-image',
-                    ),
-                    html.P(children=[
+                ),
+                html.P(children=[
                     html.H3(children=["Hi ", data['name']], className='user-name')])
-                ],style={'margin-top':'1em'})
+            ], style={'margin-top': '1em'})
         else:
             return None
 
     @dashapp.callback(Output("temp", "children"),
-                [Input("logout", "n_clicks")])
+                      [Input("logout", "n_clicks")])
     def logout_user(n_clicks):
         if n_clicks:
             return dcc.Location(pathname="/sign_out", id="_")
