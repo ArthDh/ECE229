@@ -1,0 +1,92 @@
+.. MusEx documentation master file, created by
+   sphinx-quickstart on Sat May 15 14:19:26 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Structure
+=================================
+
+
+
+
+apps
+------------
+
+- __init__.py
+   Initialize the webapp.
+
+- webapp.py
+   Start data steaming by linking to spotify. Sign in and sign out.
+
+- assets
+
+      All stylesheets, images, and javascript should be in an assets folder
+
+- dashapp1
+
+   - callbacks.py
+
+      Callback functions for updating layouts. :ref:`app.dashapp.callbacks`
+
+   - Layout.py
+
+      Deploy layouts .
+
+- templates
+
+      HTML files that define Layouts.
+
+- util
+
+   - data_callbacks.py
+
+      Callback functions for processing data. :ref:`app.util.data_callbacks`
+
+   - Kmean.py
+
+      Predict genres with K-means. :ref:`app.util.K-means`
+
+   - recommender.py
+
+      Generate recommended songs. :ref:`app.util.recommender`
+
+   - spotify_interface.py
+
+      Login, create cache, and retrieve data. :ref:`app.util.spotify_interface`
+
+
+models
+------------
+Trained machine learning models.
+
+dashapp.py
+------------
+Run to launch the app.
+
+
+overview
+------------
+
+|  .
+| ├──apps
+| │   ├── assets
+| │   │   ├── css
+| │   │   ├── font-awesome
+| │   │   ├── images
+| │   └   └── js
+| │   ├── static
+| │   ├── dashapp1
+| │   ├── templates
+| │   └   └── signin.html
+| │   └── util
+| │   │   ├── data_callbacks.py
+| │   │   ├── Kmean.py
+| │   └   └── spotify_interface.py
+| │   ├── .env
+| │   └── __init__.py
+| ├──data
+| ├──docs
+| └──dashapp.py
+
+
+

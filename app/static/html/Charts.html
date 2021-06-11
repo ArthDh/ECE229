@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Charts &mdash; Mus-X  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Structure" href="Project%20structure.html" />
+    <link rel="prev" title="Installing and Implementing" href="Installing%20and%20Implementing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Mus-X
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing%20and%20Implementing.html">Installing and Implementing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Charts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sound-cloud">Sound Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feature-radar-plot">Feature Radar Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#histogram-of-years">Histogram of years</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#favorite-artists">Favorite Artists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#genre-pie-chart">Genre Pie Chart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bin-chart-of-history">Bin Chart of History</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mood-plot">Mood Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recommending-system">Recommending System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Project%20structure.html">Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Functions.html">Functions</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mus-X</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Charts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/Charts.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="charts">
+<h1>Charts<a class="headerlink" href="#charts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sound-cloud">
+<h2>Sound Cloud<a class="headerlink" href="#sound-cloud" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/tsne.jpg"><img alt="_images/tsne.jpg" src="_images/tsne.jpg" style="width: 521.62px; height: 259.16px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>14 acoustic features for songs of selected playlist.</p>
+</dd>
+<dt>Output</dt><dd><p>K-means clustering point cloud.</p>
+</dd>
+<dt>Hover:</dt><dd><p>The song information.</p>
+</dd>
+<dt>On-click</dt><dd><p>Display the song.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="feature-radar-plot">
+<h2>Feature Radar Plot<a class="headerlink" href="#feature-radar-plot" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/radar.jpg"><img alt="_images/radar.jpg" src="_images/radar.jpg" style="width: 516.34px; height: 259.16px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>14 acoustic features, for songs of selected playlist.</p>
+</dd>
+<dt>Output</dt><dd><p>K-means results of accumulated feature affinities for each major acoustic features.</p>
+</dd>
+<dt>On-click</dt><dd><p>Display a pie chart of Genre distribution.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="histogram-of-years">
+<h2>Histogram of years<a class="headerlink" href="#histogram-of-years" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/histogram2.jpg"><img alt="_images/histogram2.jpg" src="_images/histogram2.jpg" style="width: 510.18px; height: 254.76px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>Information of songs in all playlists.</p>
+</dd>
+<dt>Output</dt><dd><p>A histogram that summarizes number of songs released in every year.</p>
+</dd>
+<dt>On-click</dt><dd><ul class="simple">
+<li><p>Display the top artists in the selected year.</p></li>
+<li><p>Display the latest Songs by the top artists of the selected year.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="favorite-artists">
+<h2>Favorite Artists<a class="headerlink" href="#favorite-artists" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/top.jpg"><img alt="_images/top.jpg" src="_images/top.jpg" style="width: 528.66px; height: 264.44px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>Directly query top artists.</p>
+</dd>
+<dt>Output</dt><dd><p>Display of artist profile pictures.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="genre-pie-chart">
+<h2>Genre Pie Chart<a class="headerlink" href="#genre-pie-chart" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/pallete.jpg"><img alt="_images/pallete.jpg" src="_images/pallete.jpg" style="width: 507.54px; height: 253.88px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>Genre of user’s saved songs up to 5 queries per month, 1 year back total.</p>
+</dd>
+<dt>Output</dt><dd><p>A bin chart counting the genre distribution of selected years.</p>
+</dd>
+<dt>On-click</dt><dd><p>Pick the time period by sliding the filter around.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="bin-chart-of-history">
+<h2>Bin Chart of History<a class="headerlink" href="#bin-chart-of-history" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/pallete2.jpg"><img alt="_images/pallete2.jpg" src="_images/pallete2.jpg" style="width: 503.14px; height: 157.52px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>Genre of user’s saved songs up to 5 queries per month, 1 year back total.</p>
+</dd>
+<dt>Output</dt><dd><p>A bin chart counting the genre distribution of selected years.</p>
+</dd>
+<dt>On-click</dt><dd><p>Pick the time period by sliding the filter around.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="mood-plot">
+<h2>Mood Plot<a class="headerlink" href="#mood-plot" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/mood.jpg"><img alt="_images/mood.jpg" src="_images/mood.jpg" style="width: 563.86px; height: 181.94px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>Mean value of playlist features per months.</p>
+</dd>
+<dt>Output</dt><dd><p>A curve of selected features that suggests user’s mood changing with time.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="recommending-system">
+<h2>Recommending System<a class="headerlink" href="#recommending-system" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/recommend.jpg"><img alt="_images/recommend.jpg" src="_images/recommend.jpg" style="width: 474.1px; height: 248.6px;" /></a>
+</div></blockquote>
+<dl class="simple">
+<dt>Data</dt><dd><p>TODO: what data.</p>
+</dd>
+<dt>Output</dt><dd><p>A playlist of songs generated by recommending algorithms.</p>
+</dd>
+<dt>On-click</dt><dd><p>Click the button to start the analysis.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Project%20structure.html" class="btn btn-neutral float-right" title="Structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Installing%20and%20Implementing.html" class="btn btn-neutral float-left" title="Installing and Implementing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Arth, Jack, Chin, Moira, Tawaana,Zizhan.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

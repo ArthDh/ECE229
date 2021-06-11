@@ -1,9 +1,18 @@
+.csv_caches
+wsgi
+ECE229.wsgi
 .env
 .flask_session
 .spotify_caches
+me.json
+
 # Large files
+.csv_caches
 *.pkl
-SPF_user_song-score.csv
+SPF_user_song_score.csv
+
+# IDE
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -82,7 +91,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # IPython
 profile_default/

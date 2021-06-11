@@ -1,0 +1,857 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Functions &mdash; Mus-X  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Structure" href="Project%20structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Mus-X
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Installing%20and%20Implementing.html">Installing and Implementing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Charts.html">Charts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Project%20structure.html">Structure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#app-dashapp-callbacks">app.dashapp.callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app-util-recommender">app.util.recommender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app-util-data-callbacks">app.util.data_callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app-util-k-means">app.util.K-means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app-util-spotify-interface">app.util.spotify_interface</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mus-X</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/Functions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="functions">
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="app-dashapp-callbacks">
+<h2>app.dashapp.callbacks<a class="headerlink" href="#app-dashapp-callbacks" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-app.dashapp1.callback"></span><dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.display_3d_scatter_plot">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">display_3d_scatter_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">playlist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.display_3d_scatter_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a 3d Scatter Plot for TSNE visualization colored using K-Means clustering</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>playlist</strong> (<em>List</em>) – Playlists for which the plot is to be shown</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Scatter Plot</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.display_click_image">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">display_click_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clickData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">playlist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.display_click_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display Focused view of points in 3D ScatterPlot for TSNE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clickData</strong> (<em>Dict</em>) – Content information of clicked point</p></li>
+<li><p><strong>playlist</strong> (<em>List</em>) – Playlists for which the plot is to be shown</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extended information of the clicked point</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.display_era_click">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">display_era_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clickData</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.display_era_click" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extended view of Era histogram that shows top-3 artists from that particular year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>clickData</strong> (<em>Dict</em>) – More information on the Histogram that was clicked</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extended view of Histogram that was clicked on</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.display_era_res">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">display_era_res</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clickData</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.display_era_res" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extended view of Era histogram that shows top-3 artists from that particular year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>clickData</strong> (<em>Dict</em>) – More information on the Histogram that was clicked</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extended view of Histogram that was clicked on</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.generate_figure_image">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">generate_figure_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.generate_figure_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates figure for TSNE points given a specific layout</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groups</strong> (<em>List</em>) – K-Mean generated groups</p></li>
+<li><p><strong>layout</strong> (<em>plotly.graph_object.Layout</em>) – Figure layout for groups in TSNE visualization</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure containing the plotted scatter points</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.generate_genre_history_chart">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">generate_genre_history_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.generate_genre_history_chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates genre history chart of user saved saved tracks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test</strong> (<em>none</em>) – test var</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>genre history chart</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.express.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.generate_pie_chart">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">generate_pie_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_range</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.generate_pie_chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Genrates pie chart displaying genre distribution of users saved tracks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date_range</strong> – date range shown on slider to filter dataframe by</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pie chart figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.generate_playlist_pie_chart">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">generate_playlist_pie_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clickData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">playlists</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.generate_playlist_pie_chart" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate pie chart based on the selected playlist</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clickData</strong> (<em>Dict</em>) – Dictionary of the clicked datapoint</p></li>
+<li><p><strong>playlists</strong> (<em>List</em>) – Selected playlists from the dropdown menu</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure containing pie chart for the genres in the playlist</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_objs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.update_graph">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">update_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">playlists</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.update_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>callback function for radar graph for playlists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>playlists</strong> (<em>String</em><em> or </em><em>List of Strings</em>) – list of playlists</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Figure containing radar graph for audio features in playlists</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_objs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.dashapp1.callback.update_mood_graph">
+<span class="sig-prename descclassname"><span class="pre">app.dashapp1.callback.</span></span><span class="sig-name descname"><span class="pre">update_mood_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.dashapp1.callback.update_mood_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>callback function for mood graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>features</strong> (<em>String</em><em> or </em><em>List of Strings</em>) – list of audio features</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>line graph for mood over time</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plotly.graph_objs</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="app-util-recommender">
+<h2>app.util.recommender<a class="headerlink" href="#app-util-recommender" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-app.util.recommender"></span><dl class="py function">
+<dt class="sig sig-object py" id="app.util.recommender.generate_rec_songs">
+<span class="sig-prename descclassname"><span class="pre">app.util.recommender.</span></span><span class="sig-name descname"><span class="pre">generate_rec_songs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pool</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.recommender.generate_rec_songs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate recommended songs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – MSD user_id in training set</p></li>
+<li><p><strong>top</strong> – number of songs to recommend</p></li>
+<li><p><strong>pool</strong> – a list of Spotify song ID to recommend from</p></li>
+<li><p><strong>model</strong> – (top_songs, top_scores) a list of top song_ids and a list of predicted ratings(preference) to these songs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Songs of the biggest scores</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.recommender.get_new_songs">
+<span class="sig-prename descclassname"><span class="pre">app.util.recommender.</span></span><span class="sig-name descname"><span class="pre">get_new_songs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">saved_songs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">songs_pool_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.recommender.get_new_songs" title="Permalink to this definition">¶</a></dt>
+<dd><p>get a list of tracks the user hasn’t liked as the pool of tracks for recommendation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>saved_songs</strong> – a list of Spotify song ids for user saved songs</p></li>
+<li><p><strong>songs_pool_file</strong> – The path of songs-pool file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of Spotify song ID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.recommender.get_sim_user">
+<span class="sig-prename descclassname"><span class="pre">app.util.recommender.</span></span><span class="sig-name descname"><span class="pre">get_sim_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">song_id_user_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.recommender.get_sim_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find similar users by Cosine Similarity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_data</strong> – pd.DataFrame with weighted user saved songs</p></li>
+<li><p><strong>song_id_user_csv</strong> – filemane for curated user id - song id - rating dataset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>user_id of most similar user in the training set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.recommender.get_user_song_df">
+<span class="sig-prename descclassname"><span class="pre">app.util.recommender.</span></span><span class="sig-name descname"><span class="pre">get_user_song_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">saved_songs_csv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.recommender.get_user_song_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate DataFrame from csv file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>saved_songs_csv</strong> – a list of Spotify song ids for user saved songs</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a user song preference pd.DataFrame for find_sim_user</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="app-util-data-callbacks">
+<h2>app.util.data_callbacks<a class="headerlink" href="#app-util-data-callbacks" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-app.util.data_callbacks"></span><dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.add_single_genre">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">add_single_genre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tracks_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.add_single_genre" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a single genre to tracks data frame by mapping each arist to the most common genre attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tracks_df</strong> (<em>pd.DataFrame</em>) – Dataframe of Tracks</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dataframe with ‘genre’ column</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.audio_playlist_features">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">audio_playlist_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">playlist_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.audio_playlist_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queries Spotify API to generate an Audio Features Dataframe of songs in a given Playlist for the user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify Class object for a given user</p></li>
+<li><p><strong>playlist_df</strong> (<em>pandas.Dataframe</em>) – Cleaned DataFrame for that particular playlist</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Audio features dataframe for all songs in a given playlist</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.clean_playlist">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">clean_playlist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_playlists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">playlist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.clean_playlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean a filtered playlist from a given list of playlist for a particular user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify Class object for a given user</p></li>
+<li><p><strong>user_playlists</strong> (<em>List</em>) – All user playlists</p></li>
+<li><p><strong>playlist</strong> (<em>String</em>) – Playlist of interest</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Parsed Playlist specific to the user</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.clean_saved_tracks">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">clean_saved_tracks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.clean_saved_tracks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleans up Saved Tracks dataframe to make data usable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify Class object for a given user</p></li>
+<li><p><strong>tracks_df</strong> (<em>pandas.Dataframe</em>) – Unparsed Dataframe for given user spotify tracks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Parsed Dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.clean_top_tracks">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">clean_top_tracks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tracks_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.clean_top_tracks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleans up Playlist Tracks dataframe to make data usable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify Class object for a given user</p></li>
+<li><p><strong>tracks_df</strong> (<em>pandas.Dataframe</em>) – Unparsed Dataframe for given user spotify tracks</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Parsed Dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.display_era_plot">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">display_era_plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.display_era_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static plot of Artist distribution over years</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Plot of artists belonging to particular years</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>plotly.graph_objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.get_auth_manager">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">get_auth_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.get_auth_manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns authentication manager and Cache Handler for reusing in other functions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache_path</strong> (<em>String</em>) – Directory where cache is stored</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Authentication Manger, Cache Handler</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.get_saved_track_audio_features">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">get_saved_track_audio_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.get_saved_track_audio_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate csv for audio features from saved tracks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify class object for user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.get_saved_track_history_csv">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">get_saved_track_history_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntracks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.get_saved_track_history_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates csv for users saved spotify tracks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify class object for user</p></li>
+<li><p><strong>ntracks</strong> (<em>int</em><em>, </em><em>optional</em>) – max num of songs to grab, defaults to 1000</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.get_top_artist_csv">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">get_top_artist_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.get_top_artist_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate csv containing current user’s top artists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify class object for user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.get_tsne_csv">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">get_tsne_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_songs_per_playlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_songs_per_playlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./.csv_caches'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.get_tsne_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates base csv to perform TSNE</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spotify</strong> (<em>spotify.Spotify</em>) – Spotify class object for user</p></li>
+<li><p><strong>min_songs_per_playlist</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum number of songs a particular playlist must have, defaults to 5</p></li>
+<li><p><strong>max_songs_per_playlist</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of songs a particular playlist must have, defaults to 10</p></li>
+<li><p><strong>k</strong> (<em>int</em><em>, </em><em>optional</em>) – k-value for K-Means will define the number of clusters in the final plot, defaults to 10</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Saves and Returns the final CSV for plotting of TSNE</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.perform_tsne">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">perform_tsne</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.perform_tsne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs TSNE on saved audio feature dataset appended with Kmeans and saves to CSV</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.data_callbacks.recommend">
+<span class="sig-prename descclassname"><span class="pre">app.util.data_callbacks.</span></span><span class="sig-name descname"><span class="pre">recommend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spotify</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.data_callbacks.recommend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run recommendation model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spotify</strong> – Spotify auth token</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Recommended tracks</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="app-util-k-means">
+<h2>app.util.K-means<a class="headerlink" href="#app-util-k-means" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-app.util.Kmean"></span><dl class="py function">
+<dt class="sig sig-object py" id="app.util.Kmean.FeaturePlot">
+<span class="sig-prename descclassname"><span class="pre">app.util.Kmean.</span></span><span class="sig-name descname"><span class="pre">FeaturePlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.Kmean.FeaturePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the average features of data in specified genres in a polar plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>features</strong> (<em>string</em>) – the original features</p></li>
+<li><p><strong>genres</strong> (<em>list</em>) – the list of predicted genres that we want to show their features</p></li>
+<li><p><strong>name</strong> – name that we believe can best describe the predicted genres</p></li>
+<li><p><strong>color</strong> – the color of the plot</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>none</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.Kmean.Kmean">
+<span class="sig-prename descclassname"><span class="pre">app.util.Kmean.</span></span><span class="sig-name descname"><span class="pre">Kmean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.util.Kmean.Kmean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get csv files of K-means results. The input is playlist features.</p>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<div class="section" id="app-util-spotify-interface">
+<h2>app.util.spotify_interface<a class="headerlink" href="#app-util-spotify-interface" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><span class="target" id="module-app.util.spotify_interface"></span><dl class="py class">
+<dt class="sig sig-object py" id="app.util.spotify_interface.Artist">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">Artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genres</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">track_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.Artist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for ease of handling of JSON objects</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.util.spotify_interface.ArtistCollection">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">ArtistCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.ArtistCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collection of Artist class objects</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.spotify_interface.get_artist">
+<span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">get_artist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.get_artist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an artist class for ease of handling of JSON objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artists</strong> – List of artists</p></li>
+<li><p><strong>sp</strong> – Spotify token</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of Artist class objects for ease of use</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.spotify_interface.get_artists_rec">
+<span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">get_artists_rec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Drake'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.get_artists_rec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a List of recommendation which can be parsed in the notebook</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist_name</strong> – Name of artist to recommend based on</p></li>
+<li><p><strong>lim</strong> – Number of recommendations to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a List of recommendations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.spotify_interface.get_features">
+<span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">get_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.get_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get features that is used in KNN model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artist</strong> – Artist for which features are needed</p></li>
+<li><p><strong>sp</strong> – Spotify Token</p></li>
+<li><p><strong>features</strong> – List of features to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of features</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.spotify_interface.get_recommendations">
+<span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">get_recommendations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">artists</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.get_recommendations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of recommendations based on model generated artists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>artists</strong> – KNN predicted artists</p></li>
+<li><p><strong>sp</strong> – Spotify Token</p></li>
+<li><p><strong>lim</strong> – Number of recommendations to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of recommendations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.spotify_interface.get_spotify_token">
+<span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">get_spotify_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.get_spotify_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the token from Spotify.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – Username</p></li>
+<li><p><strong>scope</strong> – The confidence for Spotify users using third-party apps</p></li>
+<li><p><strong>redirect_url</strong> – Localhost for now</p></li>
+<li><p><strong>client_id</strong> – Client ID</p></li>
+<li><p><strong>client_secret</strong> – Client Secret</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the token from Spotify to perform various queries</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.util.spotify_interface.render_rec">
+<span class="sig-prename descclassname"><span class="pre">app.util.spotify_interface.</span></span><span class="sig-name descname"><span class="pre">render_rec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#app.util.spotify_interface.render_rec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the recommendation List in a Jupyter notebook</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rec</strong> – recommendation List</p></li>
+<li><p><strong>lim</strong> – Number of recommendations to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Project%20structure.html" class="btn btn-neutral float-left" title="Structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Arth, Jack, Chin, Moira, Tawaana,Zizhan.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
