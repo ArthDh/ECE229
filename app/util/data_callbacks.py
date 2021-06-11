@@ -200,28 +200,28 @@ def clean_saved_tracks(spotify, tracks_df):
     return tracks_df
 
 
-def clean_playlist(spotify, user_playlists, playlist):
-    """Clean a filtered playlist from a given list of playlist for a particular user
+# def clean_playlist(spotify, user_playlists, playlist):
+#     """Clean a filtered playlist from a given list of playlist for a particular user
 
-    :param spotify: Spotify Class object for a given user
-    :type spotify: spotify.Spotify
-    :param user_playlists: All user playlists
-    :type user_playlists: List
-    :param playlist: Playlist of interest
-    :type playlist: String
-    :return: Parsed Playlist specific to the user
-    :rtype: pandas.Dataframe
-    """
+#     :param spotify: Spotify Class object for a given user
+#     :type spotify: spotify.Spotify
+#     :param user_playlists: All user playlists
+#     :type user_playlists: List
+#     :param playlist: Playlist of interest
+#     :type playlist: String
+#     :return: Parsed Playlist specific to the user
+#     :rtype: pandas.Dataframe
+#     """
 
-    filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
-    filter_id = filter_playlist['id']
-    playlist_filter_id = spotify.playlist(filter_id)
-    playlist_tracks = playlist_filter_id['tracks']
-    list_tracks = [playlist_tracks['items'][i]['track'] for i in range(filter_playlist['tracks']['total'])]
-    temp = pd.DataFrame.from_dict(list_tracks)
-    temp_df = clean_top_tracks(temp)
+#     filter_playlist = [i for i in spotify.current_user_playlists()['items'] if i['name']==playlist_name][0]
+#     filter_id = filter_playlist['id']
+#     playlist_filter_id = spotify.playlist(filter_id)
+#     playlist_tracks = playlist_filter_id['tracks']
+#     list_tracks = [playlist_tracks['items'][i]['track'] for i in range(filter_playlist['tracks']['total'])]
+#     temp = pd.DataFrame.from_dict(list_tracks)
+#     temp_df = clean_top_tracks(temp)
 
-    return temp_df
+#     return temp_df
 
 def audio_playlist_features(spotify, playlist_df):
     """Queries Spotify API to generate an Audio Features Dataframe of songs in a given Playlist for the user
@@ -579,6 +579,7 @@ def get_saved_track_audio_features(spotify):
 
     monthly_mean.to_csv(join(csv_folder, 'audio_features_monthly_mean.csv'))
     print('--- get_saved_track_audio_features.csv SAVED ---')
+    return None
 
 def get_top_artist_csv(spotify):
     """
@@ -643,7 +644,13 @@ def recommend(spotify):
 
     saved_songs_csv = os.path.join(csv_folder, 'saved_track_history.csv')
 
-    model_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'rec_files')
+    # model_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'rec_files')
+    # model_folder = '/home/arth/Desktop/ECE229/app/assets/rec-files'
+    
+    model_folder = 'app/assets/rec-files'
+
+    
+
     print(model_folder)
 
     #model_folder = 'app/assets/rec-files/' # used to be absolute file path
