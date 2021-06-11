@@ -2,11 +2,15 @@
 
 By ECE 229 Group 4: Arth D., Chin L., John O., Moira F., Tawaana H., Zizhan C.
 
-(insert main page screenshot)
+![Home Page](readme_images/welcome_page.png?raw=true)
 
 ## About
 
-This dashboard is developed by a group of music-lover graduate students as the final project for ECE 229: Computational Data Science & Product Development at UCSD. If you're interested in learning more about your music listening preferences, this dashboard is for you. By signing in with your Spotify Credentials, you'll be able to see analysis and visualization of your music tastes, such as TSNE spatial clustering of all tracks, genre breakdown, top artists & top tracks, recommended tracks for you and more. We hope Mus-X brings our users a pleasant visual & interactive experience, and help understand one's music preferences better.
+This dashboard is developed by a group of music-lover graduate students as the final project for ECE 229: Computational Data Science & Product Development at UCSD. 
+
+If you're interested in learning more about your music listening preferences, this dashboard is for you. By signing in with your Spotify Credentials, you'll be able to see analysis and visualization of your music tastes, such as TSNE spatial clustering of all tracks, genre breakdown, top artists & top tracks, recommended tracks for you and more. 
+
+We hope Mus-X brings our users a pleasant visual & interactive experience, and help understand one's music preferences better.
 
 ## Installation
 
@@ -55,9 +59,17 @@ This will launch a server locally on your machine. Clicking on the url shown wil
 
 Note: We have also deployed this web app on AWS for the period of this course, but the site will be down when our credits run out.
 
+## OKR Summary
+
+There are a several main milestones that defined this project.
+
+![app architetcure](readme_images/OKRs.png?raw=true)
+
 ## Application Architecture
 
 We used Flask as the web framework, and integrated Dash by Plotly to create interactive data visualization plots that ties to modern UI elements. The web application is deployed on AWS EC2 Scaling Group, with S3 used for large files storage and Dynamo DB for session cache. Data analysis, processing and integration are coded in Python. The Spotify Python API and OAuth Security handles the Spotify user log-in credentials. 
+
+![app architetcure](readme_images/app_architetcure1.png?raw=true)
 
 ## Data Visualization
 
@@ -65,21 +77,26 @@ The plots in this dashcoard are coded using Plotly. We wrote callback functions 
 
 ### All Tracks TSNE
 
-We used K-mean for clustering and all visualizations regarding K-mean are also showed in final notebook. The original data used for hyper dimensional visualization are stoed in [data](https://github.com/ArthDh/ECE-143/tree/main/data) folder, named df_cleaned.tsv and df_cleaned_genre_10.tsv.
+We used TSNE(T-Distributed Stochastic Neighbor Embedding) to cluster and visualize tracks in a users playlists based on the 13 audio features of each track. The user can select playlists of interest in the dropdown list to visualize the similarity of songs.
 
-### Genre Radar Plot & Pie Charts for Playlists
+![TSNE plot](readme_images/TSNE.png?raw=true)
 
-PCA
+### Genre Breakdown Over Time
 
-![PCA](https://github.com/ArthDh/ECE-143/blob/main/images/PCA.gif)
+![data visual plot](readme_images/genre_time.png?raw=true)
 
-UMAP
+### Top Artists & Tracks
 
-![UMAP](https://github.com/ArthDh/ECE-143/blob/main/images/UMAP.gif)
-
-In order to see the 3D visualization of the dataset with predicted genres and artist names as index, use the following link:<br>
-[Embedding Visualizer](https://projector.tensorflow.org/?config=https://gist.githubusercontent.com/ArthDh/804b7297af76e5d0e626c8c01af2d158/raw/0d0c110e2ca731df7a63dcc7e8e0370d9dd29dd0/projector_config.json)
+![top artists & tracks](readme_images/top_artists.png?raw=true)
 
 ### Songs Recommender Model
 
-We built a user-item collaborative filtering recommender to generate personalized song recommendations for users. The model applies SVD (Probablistic Matrix Factorization) algorithm to learn user preferences of songs from external training dataset, and predicts scores of songs during inference.
+We built a user-item collaborative filtering recommender to generate personalized song recommendations for users. The model applies SVD (Probablistic Matrix Factorization) algorithm to learn user preferences of songs from external training dataset, and predicts scores of songs during inference. The user can export the recommended tracks playlist to Spotify by a simple button-click.
+
+![recommender](readme_images/recommender.png?raw=true)
+
+## To run code coverage tests:
+
+From the ECE229 directory: 
+-coverage run -m pytest
+-coverage report -m
