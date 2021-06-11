@@ -51,8 +51,9 @@ def index():
     spotify = spotipy.Spotify(auth_manager=auth_manager)
     
     me =spotify.me() 
-    # me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': me['id']}
-    me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': '11102560850'}
+    print(me)
+    me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': me['id']}
+    # me_dict = {'name': me['display_name'], 'img_url': me['images'][0]['url'], 'id': '11102560850'}
     
     json.dump( me_dict, open( "me.json", 'w' ) )
 

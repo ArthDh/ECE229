@@ -7,9 +7,6 @@ import pytest
 
 sys.path.append(path.dirname(path.dirname(__file__)))
 
-
-
-
 @pytest.fixture
 def app():
     yield create_app()

@@ -27,21 +27,19 @@ try:
     monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
     monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
     # print(monthly_mood_df.columns)
-except:
-    pass
-# except FileNotFoundError as error:
-#     artist_names = None
-#     playlists = None
-#     artist_images = None
-#     track_images_1 = None
-#     track_images_2 = None
-#     track_names_1 = None
-#     track_names_2 = None
-#     monthly_mood_df = None
+except FileNotFoundError as error:
+    artist_names = None
+    playlists = None
+    artist_images = None
+    track_images_1 = None
+    track_images_2 = None
+    track_names_1 = None
+    track_names_2 = None
+    monthly_mood_df = None
 
-#     playlists_kv = [dict()]
-#     monthly_mood_kv = [dict()]
-    # print ("One or more CSV Files not found ")
+    playlists_kv = [dict()]
+    monthly_mood_kv = [dict()]
+    print ("One or more CSV Files not found ")
 
 
 def generate_image_section(artist_images, titles):

@@ -62,7 +62,20 @@ def test_ui008_playlist_drop(dash_duo):
     dash_duo.wait_for_contains_text('#second', "What", timeout=5)
     dash_duo.select_dcc_dropdown('#radar-dropdown', index=0)
 
-    
+def test_ui008_playlist_drop(dash_duo):
+
+    from app.dashapp1.callbacks import register_callbacks
+
+    app =  dash.Dash(__name__)
+
+    app.layout = layout
+    register_callbacks(app)
+
+    dash_duo.start_server(app)
+    dash_duo.driver.maximize_window()
+    dash_duo.wait_for_contains_text('#six', "What", timeout=5)
+    dash_duo.select_dcc_dropdown('#mood-dropdown', index=0)
+
 
 
 
