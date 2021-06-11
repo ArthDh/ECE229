@@ -94,3 +94,8 @@ We used TSNE(T-Distributed Stochastic Neighbor Embedding) to cluster and visuali
 We built a user-item collaborative filtering recommender to generate personalized song recommendations for users. The model applies SVD (Probablistic Matrix Factorization) algorithm to learn user preferences of songs from external training dataset, and predicts scores of songs during inference. The user can export the recommended tracks playlist to Spotify by a simple button-click.
 
 ![recommender](readme_images/recommender.png?raw=true)
+
+##To run code coverage tests:
+From the ECE229 directory: 
+-coverage run -m pytest
+-coverage report -m
