@@ -45,14 +45,7 @@ def register_dashapps(app):
 
     # _protect_dashviews(dashapp1)
     return dashapp1
-
-
-def _protect_dashviews(dashapp):
-    for view_func in dashapp.server.view_functions:
-        if view_func.startswith(dashapp.config.url_base_pathname):
-            dashapp.server.view_functions[view_func] = dashapp.server.view_functions[view_func]
-
-
+    
 def register_blueprints(server):
     from .webapp import server_bp
 

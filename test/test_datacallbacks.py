@@ -6,7 +6,7 @@ import spotipy
 import plotly.graph_objects as go
 import dash_html_components as html
 
-
+# coverage run --source=app -m pytest
 
 class TestDataCallbackMethods(TestCase):
     
@@ -84,6 +84,13 @@ class TestDataCallbackMethods(TestCase):
 
         res = get_user_info()
         assert isinstance(res, (type(None), type(html.Div())))
+    
+   
+    def test_get_saved_track_audio_features(self):
+        from app.util.data_callbacks import  get_saved_track_audio_features
+
+        res = get_saved_track_audio_features(self.spotify)
+        assert isinstance(res, type(None))
 
     def test_get_slider_info(self):
         from app.util.data_callbacks import get_slider_info

@@ -27,25 +27,26 @@ try:
     monthly_mood_df = pd.read_csv(f'.csv_caches/{get_my_id()}/audio_features_monthly_mean.csv')
     monthly_mood_kv = [dict([('label', feature), ('value', feature)]) for feature in monthly_mood_df.columns[1:]]
     # print(monthly_mood_df.columns)
-except FileNotFoundError as error:
-    artist_names = None
-    playlists = None
-    artist_images = None
-    track_images_1 = None
-    track_images_2 = None
-    track_names_1 = None
-    track_names_2 = None
-    monthly_mood_df = None
+except:
+    pass
+# except FileNotFoundError as error:
+#     artist_names = None
+#     playlists = None
+#     artist_images = None
+#     track_images_1 = None
+#     track_images_2 = None
+#     track_names_1 = None
+#     track_names_2 = None
+#     monthly_mood_df = None
 
-    playlists_kv = [dict()]
-    monthly_mood_kv = [dict()]
+#     playlists_kv = [dict()]
+#     monthly_mood_kv = [dict()]
     # print ("One or more CSV Files not found ")
 
 
 def generate_image_section(artist_images, titles):
     if not artist_images:
         return ""
-
     row1 = html.Div([
         html.Div([
             html.Img(src=artist_images[0], className='img_in_row'),
@@ -330,7 +331,7 @@ layout = html.Div(className="is-preload", children=[html.Div(id="wrapper",
                                                                              children=["Check out our Documentation!"])
                                                                      ]),
                                                                      html.Div(className="content", children=[
-                                                                         html.A(className="signin", href="/docs",
+                                                                         html.A(id='docs', className="signin", href="/docs",
                                                                                 children=[html.H2("Made with ❤️")], )
 
                                                                      ])

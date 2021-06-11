@@ -395,10 +395,6 @@ def display_era_plot():
     try:
         embedding_df = pd.read_csv(path)
     except FileNotFoundError as error:
-        # print(
-        #     error,
-        #     "\nThe dataset was not found. Please generate it using generate_demo_embeddings.py",
-        # )
         return go.Figure()
 
     # Plot layout
@@ -562,10 +558,11 @@ def get_saved_track_audio_features(spotify):
         tmp_df = history.iloc[i * 20: (i + 1) * 20, :]
 
         audio_df = pd.DataFrame.from_dict(spotify.audio_features(track_ids))
-        merged_inner = pd.merge(left=tmp_df, right=audio_df, left_on='id', right_on='id')
-        drop_cols = ['Unnamed: 0', 'analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type', 'explicit', 'popularity']
-        merged_inner = merged_inner.drop(drop_cols, axis=1)
-        final_df = pd.concat([final_df, merged_inner], axis=0)
+        if 'id' in audio_df:
+            merged_inner = pd.merge(left=tmp_df, right=audio_df, left_on='id', right_on='id')
+            drop_cols = ['Unnamed: 0', 'analysis_url', 'duration_ms', 'time_signature', 'uri', 'track_href', 'type', 'explicit', 'popularity']
+            merged_inner = merged_inner.drop(drop_cols, axis=1)
+            final_df = pd.concat([final_df, merged_inner], axis=0)
 
     final_df['month_year'] = pd.to_datetime(final_df['date_added']).dt.to_period('M')
     final_df.to_csv(join(csv_folder, 'saved_track_audio_features.csv'))

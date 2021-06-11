@@ -9,45 +9,79 @@ from dashapp import server
 from app.dashapp1.layout import *
 
 
-# category_df = pd.read_csv(src.config.variables_file)
 
 
 def test_ui001_sunburst_plot_gives_select_category_prompt(dash_duo):
 
     app = dash.Dash(__name__)
-
-
     app.layout = layout
-
     dash_duo.start_server(app)
-
-
 
     dash_duo.find_element("#first")
     dash_duo.wait_for_contains_text('#first', "What does your music look like?", timeout=5)
 
 
-# def test_ui008_sunburst_plot_gives_select_score_prompt(dash_duo):
-#     dash_duo.start_server(app)
-#     dash_duo.find_element("#expl_continuous_selector span.Select-clear").click()
-#     dash_duo.wait_for_contains_text('#sunburst_plot', "Select a score", timeout=5)
+def test_ui008_signout(dash_duo):
+
+    app = dash.Dash(__name__)
+    app.layout = layout
+    dash_duo.start_server(app)
+
+    # dash_duo.driver.maximize_window()
+    dash_duo.find_element("#logout").click()
+
+def test_ui008_docs(dash_duo):
+
+    app = dash.Dash(__name__)
+    app.layout = layout
+    dash_duo.start_server(app)
+
+    # dash_duo.driver.maximize_window()
+    dash_duo.find_element("#docs").click()
+
+def test_ui008_recs(dash_duo):
+
+    app = dash.Dash(__name__)
+    app.layout = layout
+    dash_duo.start_server(app)
+
+    # dash_duo.driver.maximize_window()
+    dash_duo.find_element("#gen_rec").click()
+
+def test_ui008_playlist_drop(dash_duo):
+
+    from app.dashapp1.callbacks import register_callbacks
+
+    app =  dash.Dash(__name__)
+
+    app.layout = layout
+    register_callbacks(app)
+
+    dash_duo.start_server(app)
+    dash_duo.driver.maximize_window()
+    dash_duo.wait_for_contains_text('#second', "What", timeout=5)
+    dash_duo.select_dcc_dropdown('#radar-dropdown', index=0)
+
+    
+
+
+
+##  -----
+
 
 
 # def test_ui002_second_univariate_plot_frequency(dash_duo):
 #     dash_duo.start_server(app)
 #     dash_duo.wait_for_contains_text('#plot_selector', "frequency plot", timeout=5)
 
-#     dash_duo.select_dcc_dropdown('#expl_category_selector', index=1)
 #     dash_duo.wait_for_contains_text('#second_explore_plot', "plotly-logomark", timeout=5)
 
 
 # def test_ui009_second_univariate_plot_box_gives_select_score_prompt(dash_duo):
 #     dash_duo.start_server(app)
 #     dash_duo.wait_for_contains_text('#plot_selector', "frequency plot", timeout=5)
-
 #     dash_duo.select_dcc_dropdown('#expl_category_selector', index=1)
 #     dash_duo.find_element("#expl_continuous_selector span.Select-clear").click()
-#     dash_duo.select_dcc_dropdown('#plot_selector', index=0)
 #     dash_duo.wait_for_contains_text('#second_explore_plot', "select a score", timeout=5)
 
 
