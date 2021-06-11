@@ -54,7 +54,7 @@ def get_sim_user(user_data, song_id_user_csv=None):
     song_id_user_csv: filemane for curated user id - song id - rating dataset
     returns: user_id of most similar user in the training set
     """
-    num_entries = 500000  # dataset to large to be used in full, has to cap # of entries
+    num_entries = 700000  # dataset to large to be used in full, has to cap # of entries
     df_song_id_user = pd.read_csv(song_id_user_csv).iloc[:num_entries, :10]
     df_song_id_user.append(user_data)
 
@@ -65,10 +65,13 @@ def get_sim_user(user_data, song_id_user_csv=None):
     # calculate pairwise cosine similarity between users based on listening preference
     cos_sim = cosine_similarity(song_user_mat)
     # get most similar user
-    sim_score = cos_sim[-1, :-1].max()
-    user_index = cos_sim[-1, :-1].argmax()
+    sim_score = cos_sim[-1, :-1]
+    sorted_sim_score = np.sort(sim_score)[::-1][:30]
+    user_index = np.argsort(sim_score)[::-1][:30]
+    pick = np.random.randint(low=0, high=29)
+    print(pick)
 
-    return song_user.index[user_index], sim_score
+    return song_user.index[user_index[pick]], sorted_sim_score[pick]
 
 
 def generate_rec_songs(user_id=None, top=20, pool=None, model=None):
@@ -89,8 +92,10 @@ def generate_rec_songs(user_id=None, top=20, pool=None, model=None):
         pred_scores.append((pred.iid, pred.est))
 
     pred_scores.sort(key=lambda tup: tup[1], reverse=True)
-    top_songs = [song for song, score in pred_scores[:top]]
-    top_scores = [score for song, score in pred_scores[:top]]
+    pick = list(np.random.choice(top*10, top))
+    selected = [pred_scores[i] for i in pick]
+    top_songs = [song for song, score in selected]
+    top_scores = [score for song, score in selected]
 
     return top_songs, top_scores
 

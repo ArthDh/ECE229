@@ -45,7 +45,7 @@ def register_dashapps(app):
 
     # _protect_dashviews(dashapp1)
     return dashapp1
-    
+
 def register_blueprints(server):
     from .webapp import server_bp
 

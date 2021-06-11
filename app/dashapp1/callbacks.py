@@ -101,8 +101,7 @@ def register_callbacks(dashapp):
             idx = clickData['points'][0]['curveNumber']
         fig = go.Figure()
         df = pd.read_csv(f'.csv_caches/{get_my_id()}/playlist_songs_genre.csv')
-        print(df['playlist_name'])
-        print(playlists)
+
         if playlists:
             df = df[df['playlist_name'] == playlists[idx]]['genre'].value_counts()
 

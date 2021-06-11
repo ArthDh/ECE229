@@ -39,7 +39,7 @@ except FileNotFoundError as error:
 
     playlists_kv = [dict()]
     monthly_mood_kv = [dict()]
-    print ("One or more CSV Files not found ")
+    print("One or More Layout Element Missing...")
 
 
 def generate_image_section(artist_images, titles):
