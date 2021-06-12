@@ -95,8 +95,14 @@ We built a user-item collaborative filtering recommender to generate personalize
 
 ![recommender](readme_images/recommender.png?raw=true)
 
+### To View Doumentation 
+Documentation is created via Sphinx. From  the section of the dashboard titled "check out our documentation" select the made "made with" to be redirected  to our documentation page
+
+![Docs Page](readme_images/Documentation.png.png?raw=true)
 ## To run code coverage tests:
+Coverage report is generated from the coverage python package
 
 From the ECE229 directory: 
+
 -coverage run -m pytest
 -coverage report -m
