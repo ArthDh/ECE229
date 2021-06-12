@@ -139,7 +139,7 @@ export PATH=$PATH:/path/to/chromedriver
 
 From the ECE229 (root) directory, run the following commands: 
 ```
-coverage run -m pytest
+coverage run --source=app -m pytest
 ```
 ```
 coverage report -m
