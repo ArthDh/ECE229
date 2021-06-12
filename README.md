@@ -123,7 +123,7 @@ We built a user-item collaborative filtering recommender to generate personalize
 ### To View Doumentation 
 Documentation is created via Sphinx. From  the section of the dashboard titled "check out our documentation" select the made "made with" to be redirected  to our documentation page
 
-![Docs Page](readme_images/Documentation.png.png?raw=true)
+![Docs Page](readme_images/Documentation.png?raw=true)
 ## To run code coverage tests:
 Coverage report is generated from the coverage python package
 
