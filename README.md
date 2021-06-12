@@ -56,8 +56,8 @@ From https://developer.spotify.com/dashboard/applications :
 - Choose an app name and description,  eg. "test", "test" 
 - Select "edit settings"
 - Set redirct url, eg. http://127.0.0.1:5000
-- From the application page select show "client secret" either (1)  create a .env file ad save in under the 'app', 'utils' and 'test' folder 
-.env will appear as follows: 
+- From the application page select show "client secret" either (1)  create a .env file ad save in under the 'app', 'util' and 'test' folders. 
+- .env will appear as follows: 
 ```
 SPOTIPY_CLIENT_ID='YOUR_CLIENT_ID'
 SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
