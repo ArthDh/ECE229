@@ -126,11 +126,16 @@ Documentation is created via Sphinx. From  the section of the dashboard titled "
 ![Docs Page](readme_images/Documentation.png?raw=true)
 ## To run code coverage tests:
 Coverage report is generated from the coverage python package
+chromedriver needs to be in the path variable, it can be added using:
+
+```
+export PATH=$PATH:/path/to/chromedriver
+```
 
 From the ECE229 (root) directory, run the following commands: 
 ```
 coverage run -m pytest
 ```
 ```
--coverage report -m
+coverage report -m
 ```
