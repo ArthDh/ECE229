@@ -49,26 +49,31 @@ Deactivate when done making changes
 deactivate
 ```
 ## Spotify Setup
--Create a spotify developer account (its free)
-https://developer.spotify.com/dashboard/login
+-Create a spotify developer account (its free) https://developer.spotify.com/dashboard/login
 
--from https://developer.spotify.com/dashboard/applications :
--select "create an app"
--choose an app name and description,  eg. "test", "test" 
--select "edit settings"
--set redirct url, eg. http://127.0.0.1:5000
-From the application page select show "client secret"
-either (1)  create a .env file ad save in under the FILL folder 
+From https://developer.spotify.com/dashboard/applications :
+- Select "create an app"
+- Choose an app name and description,  eg. "test", "test" 
+- Select "edit settings"
+- Set redirct url, eg. http://127.0.0.1:5000
+- From the application page select show "client secret" either (1)  create a .env file ad save in under the 'app', 'utils' and 'test' folder 
 .env will appear as follows: 
+```
 SPOTIPY_CLIENT_ID='YOUR_CLIENT_ID'
 SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
 SPOTIPY_REDIRECT_URI='YOUR_REDIRECT_URL'
+```
 
-or (2) in the python enviorment (linux only):
-- export SPOTIPY_CLIENT_ID='YOUR_CLIENT_ID'
-- export SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
-- export SPOTIPY_REDIRECT_URI='YOUR_REDIRECT_URL'
-
+or (2) in the python environment (linux only):
+```
+export SPOTIPY_CLIENT_ID='YOUR_CLIENT_ID'
+```
+```
+export SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
+```
+```
+export SPOTIPY_REDIRECT_URI='YOUR_REDIRECT_URL'
+```
 ## Usage
 
 To run this webapp on your machine, go to the directory where this repository sits, and type in your terminal:
@@ -122,7 +127,10 @@ Documentation is created via Sphinx. From  the section of the dashboard titled "
 ## To run code coverage tests:
 Coverage report is generated from the coverage python package
 
-From the ECE229 directory: 
-
--coverage run -m pytest
+From the ECE229 (root) directory, run the following commands: 
+```
+coverage run -m pytest
+```
+```
 -coverage report -m
+```
