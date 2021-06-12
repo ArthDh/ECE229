@@ -48,6 +48,26 @@ Deactivate when done making changes
 ```
 deactivate
 ```
+## Spotify Setup
+-Create a spotify developer account (its free)
+https://developer.spotify.com/dashboard/login
+
+-from https://developer.spotify.com/dashboard/applications :
+-select "create an app"
+-choose an app name and description,  eg. "test", "test" 
+-select "edit settings"
+-set redirct url, eg. http://127.0.0.1:5000
+From the application page select show "client secret"
+either (1)  create a .env file ad save in under the FILL folder 
+.env will appear as follows: 
+SPOTIPY_CLIENT_ID='YOUR_CLIENT_ID'
+SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
+SPOTIPY_REDIRECT_URI='YOUR_REDIRECT_URL'
+
+or (2) in the python enviorment (linux only):
+- export SPOTIPY_CLIENT_ID='YOUR_CLIENT_ID'
+- export SPOTIPY_CLIENT_SECRET='YOUR_CLIENT_SECRET'
+- export SPOTIPY_REDIRECT_URI='YOUR_REDIRECT_URL'
 
 ## Usage
 
