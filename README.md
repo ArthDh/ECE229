@@ -84,6 +84,10 @@ This will launch a server locally on your machine. Clicking on the url shown wil
 
 Note: We have also deployed this web app on AWS for the period of this course, but the site will be down when our credits run out.
 
+Note 2: Initial run of the app may not show the graphs as the CSVs are being built in the background. You should see the progress in the console. You should have 8 CSVs under .csv_caches/'YOUR_USER_ID' when the process is completed. You may have to restart the app and sign-in again to view the graphs.
+
+Note 3: The recommendation system model are a couple of big file which can be downloaded from here: [Model Link](https://drive.google.com/file/d/1F0i5-YRZ8ZgEGaADKYXz95X9hWPk3yfO/view?usp=sharing) and need to be placed under app/assets/rec-files for the recommendation engine to work.
+
 ## OKR Summary
 
 There are a several main milestones that defined this project.
